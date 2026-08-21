@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>12A Sets and Venn diagrams — Year 11 Mathematics Advanced</title>
+<title>Chapter 12 Probability — Year 11 Mathematics Advanced</title>
 <style>
   :root {
     --ink: #1c2333;
@@ -15,6 +15,7 @@
     --teal: #1e6b66;
     --gold: #c9a227;
     --rail: 300px;
+    --toc: 208px;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
@@ -25,8 +26,8 @@
   }
   .app {
     display: grid;
-    grid-template-columns: 1fr var(--rail);
-    grid-template-rows: auto 1fr auto;
+    grid-template-columns: var(--toc) 1fr var(--rail);
+    grid-template-rows: auto auto 1fr auto;
     height: 100%;
   }
   header {
@@ -38,6 +39,25 @@
   header .meta { margin-left: auto; font-size: 12px; opacity: .85; }
   .progress { height: 4px; background: #3a4150; grid-column: 1 / -1; }
   .progress > span { display: block; height: 100%; background: var(--gold); width: 0; }
+  aside.toc {
+    background: #141820; color: #f3eadb; overflow: auto;
+    padding: 10px 8px 24px; border-right: 1px solid #000;
+  }
+  aside.toc h3 {
+    margin: 0 8px 10px; font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  aside.toc button {
+    display: block; width: 100%; text-align: left; font: inherit;
+    background: transparent; color: #e8dfcf; border: 0;
+    border-radius: 8px; padding: 8px 10px; margin: 0 0 4px;
+    cursor: pointer; line-height: 1.25;
+  }
+  aside.toc button:hover { background: #2a3142; }
+  aside.toc button.on { background: var(--gold); color: #1c2333; font-weight: 700; }
+  aside.toc button .code { display: block; font-weight: 800; font-size: 14px; }
+  aside.toc button .sub { display: block; font-size: 12px; opacity: .85; }
+  aside.toc button.on .sub { opacity: 1; }
   main { overflow: auto; padding: 18px 22px 36px; }
   .slide { display: none; max-width: 940px; }
   .slide.on { display: block; }
@@ -119,9 +139,15 @@
     display: grid; grid-template-columns: 1fr minmax(260px, 380px);
     gap: 12px; align-items: start;
   }
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 1fr var(--rail); }
+    aside.toc { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; max-height: none; padding: 8px; }
+    aside.toc h3 { width: 100%; margin-bottom: 4px; }
+    aside.toc button { width: auto; }
+  }
   @media (max-width: 980px) {
-    .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr auto auto; }
-    aside.rail { grid-row: 5; max-height: 36vh; }
+    .app { grid-template-columns: 1fr; grid-template-rows: auto auto auto 1fr auto auto; }
+    aside.rail { max-height: 36vh; }
     .two, .qa { grid-template-columns: 1fr; }
     header .meta { display: none; }
   }
@@ -136,31 +162,20 @@
 <body>
 <div class="app">
 <header>
-  <h1>Year 11 Mathematics Advanced · 12A Sets and Venn diagrams</h1>
-  <div class="meta">NESA 2024 · Probability and data · 45 minutes</div>
+  <h1 id="hdr-title">Year 11 Mathematics Advanced · Chapter 12 Probability</h1>
+  <div class="meta">NESA 2024 · Probability and data · 45 minutes per section</div>
 </header>
 <div class="progress"><span id="bar"></span></div>
-<main id="deck"></main>
-<aside class="rail" id="formula-list">
-  <h3>Formula List — keep this in view</h3>
-  <div class="fcard" data-formula="set"><b>Set</b><br>A collection of things (elements), written in curly brackets.<br><span class="sym">A = {1, 3, 5}</span></div>
-  <div class="fcard" data-formula="cardinality"><b>How many?</b><br><span class="sym">|A|</span> or <span class="sym">n(A)</span> = number of elements.<br>Empty set: <span class="sym">∅</span> and |∅| = 0.</div>
-  <div class="fcard" data-formula="subset"><b>Equal / subset</b><br>Equal: same elements, any order.<br><span class="sym">A ⊆ B</span> every element of A is in B.<br><span class="sym">A ⊂ B</span> subset, and A is not all of B (proper).</div>
-  <div class="fcard" data-formula="intersection"><b>AND = intersection</b><br><span class="sym">A ∩ B</span> = in A <b>and</b> in B.</div>
-  <div class="fcard" data-formula="union"><b>OR = union</b><br><span class="sym">A ∪ B</span> = in A <b>or</b> in B (or both).<br>In maths, “or” always means <b>and/or</b>.</div>
-  <div class="fcard" data-formula="disjoint"><b>Disjoint</b><br>No overlap: <span class="sym">A ∩ B = ∅</span></div>
-  <div class="fcard" data-formula="complement"><b>NOT = complement</b><br>Universal set <span class="sym">E</span> (everything we are talking about).<br><span class="sym">Ā</span> or <span class="sym">A′</span> or <span class="sym">A<sup>c</sup></span> = in E but <b>not</b> in A.<br><span class="sym">A ∩ Ā = ∅</span> &nbsp; <span class="sym">A ∪ Ā = E</span></div>
-  <div class="fcard" data-formula="counting-rule"><b>Counting rule (must memorise)</b><br><span class="sym">|A ∪ B| = |A| + |B| − |A ∩ B|</span><br>Subtract the overlap because it was counted twice.<br>If disjoint: <span class="sym">|A ∪ B| = |A| + |B|</span></div>
-  <div class="fcard" data-formula="fill-middle"><b>Fill-from-the-middle</b><br>1. Put the <b>both</b> number in the overlap first.<br>2. Only-A = |A| − both.<br>3. Only-B = |B| − both.<br>4. Neither = total − (only-A + both + only-B).</div>
-  <div class="fcard" data-formula="de-morgan"><b>De Morgan (Development Q10)</b><br><span class="sym">Ā ∪ B̄ = (A ∩ B) with a bar</span><br><span class="sym">Ā ∩ B̄ = (A ∪ B) with a bar</span></div>
-  <div class="fcard" data-formula="three-sets"><b>Three sets (Challenge Q18)</b><br><span class="sym">|A∪B∪C| = |A|+|B|+|C|<br>− |A∩B| − |A∩C| − |B∩C|<br>+ |A∩B∩C|</span><br>Pairwise counts <b>include</b> the all-three people.</div>
-  <p class="small" style="color:#c9b892;font-size:11px;line-height:1.35">NESA Mathematics Advanced 11–12 (2024): Year 11 Statistical analysis → Probability and data → Sets and set notation. Outcomes MAO-WM-01, MAV-11-09.<br>Exercises: CambridgeMATHS NSW Advanced Year 11, Ch.12A, pp. 428–430 (ISBN 978-1-009-65470-8).</p>
+<aside class="toc" id="toc">
+  <h3>Choose a section</h3>
 </aside>
+<main id="deck"></main>
+<aside class="rail" id="formula-list"></aside>
 <footer class="bar">
   <button class="nav" id="prev" type="button">← Back</button>
   <span id="counter">1 / 1</span>
   <button class="nav" id="next" type="button">Next →</button>
-  <span class="hint">Arrow keys · scroll the page for diagrams · F hides Formula List</span>
+  <span class="hint">Left panel picks a section · arrows change slides · F hides Formula List</span>
 </footer>
 </div>
 <script>
@@ -188,6 +203,19 @@ function venn2(o = {}) {
 
   let bodies = "";
   if (mode === "overlap" || mode === "disjoint") {
+    if (shade === "outside") {
+      bodies = `
+      <defs>
+        <mask id="${u}-out">
+          <rect x="10" y="36" width="340" height="184" fill="white"/>
+          <circle cx="${cxL}" cy="${cy}" r="${r}" fill="black"/>
+          <circle cx="${cxR}" cy="${cy}" r="${r}" fill="black"/>
+        </mask>
+      </defs>
+      <rect x="10" y="36" width="340" height="184" fill="#f7f4ee"/>
+      <rect x="10" y="36" width="340" height="184" fill="${colBoth}" mask="url(#${u}-out)"/>
+      ${outline}`;
+    } else {
     const showL = shade === "regions" || shade === "union" || shade === "onlyL";
     const showR = shade === "regions" || shade === "union" || shade === "onlyR";
     const showB = (mode === "overlap") && (shade === "regions" || shade === "union" || shade === "both");
@@ -213,6 +241,7 @@ function venn2(o = {}) {
       <rect width="360" height="230" fill="${fR}" mask="url(#${u}-onlyR)"/>
       ${mode === "overlap" ? `<g clip-path="url(#${u}-L)"><circle cx="${cxR}" cy="${cy}" r="${r}" fill="${fB}"/></g>` : ""}
       ${outline}`;
+    }
   } else if (mode === "AinB") {
     bodies = `
       <rect x="10" y="36" width="340" height="184" fill="#f7f4ee"/>
@@ -273,6 +302,23 @@ function venn3(o = {}) {
     ${shade === "center" ? `<g clip-path="url(#${u}-p)"><g clip-path="url(#${u}-q)">
       <circle cx="${R.x}" cy="${R.y}" r="${R.r}" fill="${colBoth}" fill-opacity="1"/>
     </g></g>` : ""}
+    ${shade === "r-and" ? `<g clip-path="url(#${u}-r)">
+      <circle cx="${P.x}" cy="${P.y}" r="${P.r}" fill="${colBoth}" fill-opacity="0.95"/>
+      <circle cx="${Q.x}" cy="${Q.y}" r="${Q.r}" fill="${colBoth}" fill-opacity="0.95"/>
+    </g>` : ""}
+    ${shade === "except-center" ? `
+      <defs>
+        <mask id="${u}-ex">
+          <rect x="8" y="8" width="344" height="234" fill="white"/>
+          <g clip-path="url(#${u}-p)"><g clip-path="url(#${u}-q)">
+            <circle cx="${R.x}" cy="${R.y}" r="${R.r}" fill="black"/>
+          </g></g>
+        </mask>
+      </defs>
+      <rect x="8" y="8" width="344" height="234" fill="${colBoth}" fill-opacity="0.82" mask="url(#${u}-ex)"/>
+      <circle cx="${P.x}" cy="${P.y}" r="${P.r}" fill="none" stroke="#1c2333" stroke-width="2.5"/>
+      <circle cx="${Q.x}" cy="${Q.y}" r="${Q.r}" fill="none" stroke="#1c2333" stroke-width="2.5"/>
+      <circle cx="${R.x}" cy="${R.y}" r="${R.r}" fill="none" stroke="#1c2333" stroke-width="2.5"/>` : ""}
     <text x="88" y="64" font-size="18" font-weight="800">${o.p || "P"}</text>
     <text x="252" y="64" font-size="18" font-weight="800">${o.q || "Q"}</text>
     <text x="168" y="238" font-size="18" font-weight="800">${o.r || "R"}</text>
@@ -287,7 +333,92 @@ function venn3(o = {}) {
   </svg>`;
 }
 
-const slides = [];
+const LESSONS = {};
+const ORDER = ["12A","12B","12C","12D","12E","12F","12G","REV"];
+const META = {
+  "12A": { code: "12A", sub: "Sets and Venn diagrams" },
+  "12B": { code: "12B", sub: "Probability and sample spaces" },
+  "12C": { code: "12C", sub: "Graphs and tree diagrams" },
+  "12D": { code: "12D", sub: "Venn diagrams and addition" },
+  "12E": { code: "12E", sub: "Product rule" },
+  "12F": { code: "12F", sub: "Probability trees" },
+  "12G": { code: "12G", sub: "Conditional probability" },
+  "REV": { code: "Review", sub: "Chapter Review Exercise" }
+};
+function formulaShell(cards, note) {
+  return `<h3>Formula List — keep this in view</h3>${cards}<p class="small" style="color:#c9b892;font-size:11px;line-height:1.35">${note}</p>`;
+}
+const FORMULAS = {
+  "12A": formulaShell(`
+  <div class="fcard" data-formula="set"><b>Set</b><br>A collection of things (elements), written in curly brackets.<br><span class="sym">A = {1, 3, 5}</span></div>
+  <div class="fcard" data-formula="cardinality"><b>How many?</b><br><span class="sym">|A|</span> or <span class="sym">n(A)</span> = number of elements.<br>Empty set: <span class="sym">∅</span> and |∅| = 0.</div>
+  <div class="fcard" data-formula="subset"><b>Equal / subset</b><br>Equal: same elements, any order.<br><span class="sym">A ⊆ B</span> every element of A is in B.<br><span class="sym">A ⊂ B</span> subset, and A is not all of B (proper).</div>
+  <div class="fcard" data-formula="intersection"><b>AND = intersection</b><br><span class="sym">A ∩ B</span> = in A <b>and</b> in B.</div>
+  <div class="fcard" data-formula="union"><b>OR = union</b><br><span class="sym">A ∪ B</span> = in A <b>or</b> in B (or both).<br>In maths, “or” always means <b>and/or</b>.</div>
+  <div class="fcard" data-formula="disjoint"><b>Disjoint</b><br>No overlap: <span class="sym">A ∩ B = ∅</span></div>
+  <div class="fcard" data-formula="complement"><b>NOT = complement</b><br>Universal set <span class="sym">E</span> (everything we are talking about).<br><span class="sym">Ā</span> or <span class="sym">A′</span> or <span class="sym">A<sup>c</sup></span> = in E but <b>not</b> in A.<br><span class="sym">A ∩ Ā = ∅</span> &nbsp; <span class="sym">A ∪ Ā = E</span></div>
+  <div class="fcard" data-formula="counting-rule"><b>Counting rule (must memorise)</b><br><span class="sym">|A ∪ B| = |A| + |B| − |A ∩ B|</span><br>Subtract the overlap because it was counted twice.<br>If disjoint: <span class="sym">|A ∪ B| = |A| + |B|</span></div>
+  <div class="fcard" data-formula="fill-middle"><b>Fill-from-the-middle</b><br>1. Put the <b>both</b> number in the overlap first.<br>2. Only-A = |A| − both.<br>3. Only-B = |B| − both.<br>4. Neither = total − (only-A + both + only-B).</div>
+  <div class="fcard" data-formula="de-morgan"><b>De Morgan (Development Q10)</b><br><span class="sym">Ā ∪ B̄ = (A ∩ B) with a bar</span><br><span class="sym">Ā ∩ B̄ = (A ∪ B) with a bar</span></div>
+  <div class="fcard" data-formula="three-sets"><b>Three sets (Challenge Q18)</b><br><span class="sym">|A∪B∪C| = |A|+|B|+|C|<br>− |A∩B| − |A∩C| − |B∩C|<br>+ |A∩B∩C|</span><br>Pairwise counts <b>include</b> the all-three people.</div>
+  `, "NESA Mathematics Advanced 11–12 (2024): Year 11 Statistical analysis → Probability and data → Sets and set notation. Exercises: CambridgeMATHS NSW Advanced Year 11, Ch.12A, pp. 428–430."),
+  "12B": formulaShell(`
+  <div class="fcard" data-formula="basic-p"><b>Basic formula</b><br>If every outcome is equally likely:<br><span class="sym">P(E) = |E| / |S|</span><br>favourable ÷ possible.</div>
+  <div class="fcard" data-formula="complement-p"><b>Complement</b><br><span class="sym">P(not E) = 1 − P(E)</span><br>Use this when “not” is easier to count.</div>
+  <div class="fcard" data-formula="range"><b>Probability range</b><br><span class="sym">0 ≤ P(E) ≤ 1</span><br>Impossible = 0. Certain = 1.</div>
+  <div class="fcard" data-formula="relative-freq"><b>Experimental</b><br><span class="sym">relative frequency = count / trials</span><br>This estimates P, it is not the exact theoretical value.</div>
+  <div class="fcard" data-formula="expected"><b>Expected count</b><br><span class="sym">expected = n × P</span></div>
+  <div class="fcard" data-formula="cards"><b>Pack of cards</b><br>52 cards, 4 suits of 13.<br>26 red, 26 black. 12 court cards (J, Q, K).</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 12B, printed pp. 437–439."),
+  "12C": formulaShell(`
+  <div class="fcard" data-formula="dot-graph"><b>Two-stage graph</b><br>First stage on the across axis.<br>Second stage on the up axis.<br>Each dot = one equally likely pair.</div>
+  <div class="fcard" data-formula="count-tree"><b>Counting tree</b><br>Start column, then one column per stage, then Outcome.<br>Count the listed outcomes. They are equally likely.</div>
+  <div class="fcard" data-formula="product-count"><b>How many outcomes?</b><br>If stages are independent and you list them,<br><span class="sym">|S| = (choices stage 1) × (choices stage 2) × ⋯</span></div>
+  <div class="fcard" data-formula="basic-p"><b>Then use</b><br><span class="sym">P(E) = |E| / |S|</span></div>
+  <div class="fcard" data-formula="complement-p"><b>Complement still works</b><br><span class="sym">P(not E) = 1 − P(E)</span></div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 12C, printed pp. 443–444."),
+  "12D": formulaShell(`
+  <div class="fcard" data-formula="mutex"><b>Mutually exclusive</b><br>Cannot both happen: <span class="sym">A ∩ B = ∅</span><br>Then <span class="sym">P(A or B) = P(A) + P(B)</span><br>and <span class="sym">P(A and B) = 0</span></div>
+  <div class="fcard" data-formula="addition"><b>Addition rule (must memorise)</b><br><span class="sym">P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</span><br>Same idea as the counting rule. Subtract the overlap.</div>
+  <div class="fcard" data-formula="and-or"><b>Words</b><br>and / but = ∩ &nbsp; or = ∪ (and/or)<br><span class="sym">P(A and B) = P(A ∩ B)</span></div>
+  <div class="fcard" data-formula="complement-p"><b>Neither</b><br><span class="sym">P(neither) = 1 − P(A or B)</span></div>
+  <div class="fcard" data-formula="fill-middle"><b>Fill-from-the-middle</b><br>Put “both” in first, then only-A and only-B.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 12D, printed pp. 448–450."),
+  "12E": formulaShell(`
+  <div class="fcard" data-formula="product"><b>Product rule</b><br>Independent stages:<br><span class="sym">P(A then B) = P(A) × P(B)</span></div>
+  <div class="fcard" data-formula="independent"><b>Independent</b><br>One stage does not change the next probabilities.<br>Coin then die: independent. Draw without replacement: not independent.</div>
+  <div class="fcard" data-formula="without"><b>Without replacement</b><br>The second fraction has a smaller bottom (and maybe a smaller top).<br><span class="sym">P(both) = (first) × (second, after the first is gone)</span></div>
+  <div class="fcard" data-formula="at-least"><b>At least one</b><br><span class="sym">P(at least one) = 1 − P(none)</span></div>
+  <div class="fcard" data-formula="list-add"><b>Several orders</b><br>List the mutually exclusive paths, then add their probabilities.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 12E, printed pp. 454–456."),
+  "12F": formulaShell(`
+  <div class="fcard" data-formula="p-tree"><b>Probability tree</b><br>Write probabilities on the branches.<br>Last column = probability of that whole path.</div>
+  <div class="fcard" data-formula="multiply"><b>Along a path: multiply</b><br>Successive stages → multiply the branch numbers.</div>
+  <div class="fcard" data-formula="add-paths"><b>Across paths: add</b><br>Mutually exclusive outcomes → add the last-column numbers.</div>
+  <div class="fcard" data-formula="check-one"><b>Check</b><br>All last-column probabilities must add to 1.</div>
+  <div class="fcard" data-formula="without"><b>Without replacement</b><br>The second-stage branches change after the first draw.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 12F, printed pp. 459–461."),
+  "12G": formulaShell(`
+  <div class="fcard" data-formula="given"><b>Given that</b><br>Shrink the sample space to what you now know.<br><span class="sym">P(A | B) = |A ∩ B| / |B|</span></div>
+  <div class="fcard" data-formula="cond-formula"><b>Formula</b><br><span class="sym">P(A | B) = P(A ∩ B) / P(B)</span></div>
+  <div class="fcard" data-formula="independent"><b>Independent test</b><br>A and B independent ⇔ <span class="sym">P(A ∩ B) = P(A)P(B)</span><br>also ⇔ <span class="sym">P(A | B) = P(A)</span></div>
+  <div class="fcard" data-formula="twoway"><b>Two-way table</b><br>Add row and column totals first.<br>P(this | that) uses the reduced row or column as the new |S|.</div>
+  <div class="fcard" data-formula="four"><b>Four formulae of the chapter</b><br>1. P(not A) = 1 − P(A)<br>2. P(A or B) = P(A)+P(B)−P(A and B)<br>3. P(A|B) = P(A ∩ B) / P(B)<br>4. Independent ⇔ P(A and B) = P(A)P(B)</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 12G, printed pp. 469–473."),
+  "REV": formulaShell(`
+  <div class="fcard" data-formula="basic-p"><b>Basic</b><br><span class="sym">P(E) = |E| / |S|</span></div>
+  <div class="fcard" data-formula="complement-p"><b>Not</b><br><span class="sym">P(not E) = 1 − P(E)</span></div>
+  <div class="fcard" data-formula="addition"><b>Or</b><br><span class="sym">P(A ∪ B) = P(A)+P(B)−P(A ∩ B)</span></div>
+  <div class="fcard" data-formula="product"><b>Independent and</b><br><span class="sym">P(A and B) = P(A)P(B)</span></div>
+  <div class="fcard" data-formula="given"><b>Given that</b><br><span class="sym">P(A | B) = P(A ∩ B) / P(B)</span></div>
+  <div class="fcard" data-formula="p-tree"><b>Tree</b><br>Multiply along. Add across.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Chapter Review Exercise, printed pp. 475–477. Use this as independent mixed practice after 12A–12G.")
+};
+let slides = [];
+function pack(key) {
+  LESSONS[key] = slides;
+  slides = [];
+}
 
 slides.push({
   used: "",
@@ -324,12 +455,12 @@ slides.push({
   html: `
     <table class="mini">
       <tr><th>Mins</th><th>Move</th><th>Book item we work</th></tr>
-      <tr><td>0–6</td><td>What is a set? How many?</td><td>Q1a Foundation p.428</td></tr>
-      <tr><td>6–14</td><td>AND and OR</td><td>Q2a Foundation p.428</td></tr>
-      <tr><td>14–22</td><td>NOT (complement)</td><td>Q4 Foundation p.429</td></tr>
-      <tr><td>22–30</td><td>Counting rule + word problem</td><td>Q15b, Q16a Development p.430</td></tr>
-      <tr><td>30–38</td><td>Listing with bars + shading</td><td>Q9, Q11a–c Development p.429</td></tr>
-      <tr><td>38–45</td><td>Three circles</td><td>Q17a, Q18 Challenge p.430</td></tr>
+      <tr><td>0–6</td><td>What is a set? How many?</td><td>Q1a–d Foundation p.428</td></tr>
+      <tr><td>6–14</td><td>AND and OR</td><td>Q2a–e Foundation p.428</td></tr>
+      <tr><td>14–22</td><td>NOT (complement)</td><td>Q4a–h Foundation p.429</td></tr>
+      <tr><td>22–30</td><td>Counting rule + word problem</td><td>Q15a–c, Q16a–c Development p.430</td></tr>
+      <tr><td>30–38</td><td>Listing with bars + shading</td><td>Q9a–f, Q11a–f Development p.429</td></tr>
+      <tr><td>38–45</td><td>Three circles</td><td>Q17a–c, Q18 Challenge p.430</td></tr>
     </table>
     <p class="small">If you run late, skip Q9 listing and keep Q16a then Q18.</p>`
 });
@@ -351,20 +482,57 @@ slides.push({
 slides.push({
   used: "set,cardinality",
   kicker: "Worked from the book",
-  title: "Exercise 12A Question 1a",
+  title: "Exercise 12A Question 1",
   html: `
-    <div class="cite">FOUNDATION · Exercise 12A Q1a · printed p. 428</div>
-    <p>Write down the following set by listing its elements.</p>
-    <p><b>a</b> Odd positive integers less than 10.</p>
-    <button class="reveal" type="button" data-w="w1">Show working</button>
-    <div class="working" id="w1">
-      <ol class="steps">
-        <li>Positive integers: 1, 2, 3, 4, …</li>
-        <li>Odd and less than 10: 1, 3, 5, 7, 9.</li>
-        <li class="ans">Answer: {1, 3, 5, 7, 9}</li>
-      </ol>
-      <p class="small">Independently later: Q1b–d.</p>
-    </div>`
+    <div class="cite">FOUNDATION · Exercise 12A Q1a–d · printed p. 428</div>
+    <p>Write down the following sets by listing their elements.</p>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> Odd positive integers less than 10.</p>
+        <button class="reveal" type="button" data-w="w1a">Show working</button>
+        <div class="working" id="w1a">
+          <ol class="steps">
+            <li>Positive integers start 1, 2, 3, 4, …</li>
+            <li>Keep those that are odd and less than 10: 1, 3, 5, 7, 9.</li>
+            <li class="ans">Answer: {1, 3, 5, 7, 9}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>b</b> The first six positive multiples of 6.</p>
+        <button class="reveal" type="button" data-w="w1b">Show working</button>
+        <div class="working" id="w1b">
+          <ol class="steps">
+            <li>Multiples of 6: 6 × 1, 6 × 2, 6 × 3, …</li>
+            <li>The first six: 6, 12, 18, 24, 30, 36.</li>
+            <li class="ans">Answer: {6, 12, 18, 24, 30, 36}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> The numbers on a die.</p>
+        <button class="reveal" type="button" data-w="w1c">Show working</button>
+        <div class="working" id="w1c">
+          <ol class="steps">
+            <li>A standard die has six faces, numbered 1 to 6.</li>
+            <li>List each face once (order does not matter).</li>
+            <li class="ans">Answer: {1, 2, 3, 4, 5, 6}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>d</b> The factors of 20.</p>
+        <button class="reveal" type="button" data-w="w1d">Show working</button>
+        <div class="working" id="w1d">
+          <ol class="steps">
+            <li>A factor of 20 divides 20 exactly (no remainder).</li>
+            <li>Pairs: 1 × 20, 2 × 10, 4 × 5.</li>
+            <li class="ans">Answer: {1, 2, 4, 5, 10, 20}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <p class="small">Pose a, b, c, d one at a time. Click <b>Show working</b> only after students have listed the set.</p>`
 });
 
 slides.push({
@@ -388,26 +556,83 @@ slides.push({
 slides.push({
   used: "intersection,union,counting-rule",
   kicker: "Worked from the book",
-  title: "Exercise 12A Question 2a",
+  title: "Exercise 12A Question 2",
   html: `
-    <div class="cite">FOUNDATION · Exercise 12A Q2a · printed p. 428</div>
-    <div class="qa">
-      <div>
-        <p>Find A ∪ B and A ∩ B.</p>
-        <p>A = {1, 3, 5} &nbsp;&nbsp; B = {3, 5, 7}</p>
-        <button class="reveal" type="button" data-w="w2">Show working</button>
+    <div class="cite">FOUNDATION · Exercise 12A Q2a–e · printed p. 428</div>
+    <p>Find A ∪ B and A ∩ B for each pair of sets.</p>
+    <div class="say">∩ = <b>AND</b> (middle only). ∪ = <b>OR</b> (left + middle + right).</div>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> A = {1, 3, 5} &nbsp;&nbsp; B = {3, 5, 7}</p>
+        <button class="reveal" type="button" data-w="w2a">Show working</button>
+        <div class="working" id="w2a">
+          <div class="qa">
+            <ol class="steps">
+              <li>AND (middle): in both lists → 3 and 5.</li>
+              <li>OR (all three regions): 1, 3, 5, 7.</li>
+              <li class="ans">A ∩ B = {3, 5}</li>
+              <li class="ans">A ∪ B = {1, 3, 5, 7}</li>
+            </ol>
+            ${venn2({ shade: "regions", tL: "1", tBoth: "3, 5", tR: "7" })}
+          </div>
+          <div class="say">Check: |A ∪ B| = 3 + 3 − 2 = 4.</div>
+        </div>
       </div>
-      ${venn2({ shade: "regions", tL: "1", tBoth: "3, 5", tR: "7" })}
+      <div class="box">
+        <p><b>b</b> A = {1, 3, 4, 8, 9} &nbsp;&nbsp; B = {2, 4, 5, 6, 9, 10}</p>
+        <button class="reveal" type="button" data-w="w2b">Show working</button>
+        <div class="working" id="w2b">
+          <div class="qa">
+            <ol class="steps">
+              <li>AND: in both → 4 and 9.</li>
+              <li>Only A: 1, 3, 8. Only B: 2, 5, 6, 10.</li>
+              <li>OR: join those lists.</li>
+              <li class="ans">A ∩ B = {4, 9}</li>
+              <li class="ans">A ∪ B = {1, 2, 3, 4, 5, 6, 8, 9, 10}</li>
+            </ol>
+            ${venn2({ shade: "regions", tL: "1,3,8", tBoth: "4,9", tR: "2,5,6,10" })}
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> A = {h, o, b, a, r, t} &nbsp;&nbsp; B = {b, i, c, h, e, n, o}</p>
+        <button class="reveal" type="button" data-w="w2c">Show working</button>
+        <div class="working" id="w2c">
+          <ol class="steps">
+            <li>AND: letters in both words → h, o, b.</li>
+            <li>OR: hobart letters plus the extra kitchen letters i, c, e, n.</li>
+            <li class="ans">A ∩ B = {h, o, b}</li>
+            <li class="ans">A ∪ B = {h, o, b, a, r, t, i, c, e, n}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>d</b> A = {j, a, c, k} &nbsp;&nbsp; B = {e, m, m, a}</p>
+        <button class="reveal" type="button" data-w="w2d">Show working</button>
+        <div class="working" id="w2d">
+          <ol class="steps">
+            <li>Repeats do not add extras, so B = {e, m, a}.</li>
+            <li>AND: only <b>a</b> sits in both.</li>
+            <li class="ans">A ∩ B = {a}</li>
+            <li class="ans">A ∪ B = {j, a, c, k, e, m}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>e</b> A = {prime numbers less than 10}, &nbsp; B = {odd numbers less than 10}</p>
+        <button class="reveal" type="button" data-w="w2e">Show working</button>
+        <div class="working" id="w2e">
+          <ol class="steps">
+            <li>List A first: primes less than 10 are 2, 3, 5, 7 (1 is not prime).</li>
+            <li>List B: odd numbers less than 10 are 1, 3, 5, 7, 9.</li>
+            <li>AND: 3, 5, 7. OR: 1, 2, 3, 5, 7, 9.</li>
+            <li class="ans">A ∩ B = {3, 5, 7}</li>
+            <li class="ans">A ∪ B = {1, 2, 3, 5, 7, 9}</li>
+          </ol>
+        </div>
+      </div>
     </div>
-    <div class="working" id="w2">
-      <ol class="steps">
-        <li>AND (middle): in both lists → 3 and 5.</li>
-        <li>OR (all three regions): 1, 3, 5, 7.</li>
-        <li class="ans">A ∩ B = {3, 5}</li>
-        <li class="ans">A ∪ B = {1, 3, 5, 7}</li>
-      </ol>
-      <div class="say">Check: |A ∪ B| = 3 + 3 − 2 = 4.</div>
-    </div>`
+    <p class="small">Pose a–e one at a time. Click <b>Show working</b> only after students have listed ∩ and ∪.</p>`
 });
 
 slides.push({
@@ -432,101 +657,268 @@ slides.push({
   kicker: "Worked from the book",
   title: "Exercise 12A Question 4",
   html: `
-    <div class="cite">FOUNDATION · Exercise 12A Q4 · printed p. 429</div>
+    <div class="cite">FOUNDATION · Exercise 12A Q4a–h · printed p. 429</div>
+    <p>A = {1, 3, 5}, &nbsp; B = {3, 4}, &nbsp; E = {1, 2, 3, 4, 5}. Find each of the following.</p>
     <div class="qa">
-      <div>
-        <p>A = {1, 3, 5}, &nbsp; B = {3, 4}, &nbsp; E = {1, 2, 3, 4, 5}.</p>
-        <p>Find: a |A| &nbsp; b |B| &nbsp; c A ∪ B &nbsp; d |A ∪ B| &nbsp; e A ∩ B &nbsp; f |A ∩ B| &nbsp; g Ā &nbsp; h B̄</p>
-        <button class="reveal" type="button" data-w="w4">Show working</button>
-      </div>
-      ${venn2({ shade: "regions", tL: "1,5", tBoth: "3", tR: "4", nOut: "2" })}
+      <p class="small">Use this blank Venn (A, B, and outside both still in E). Fill it as you go.</p>
+      ${venn2({ shade: "regions" })}
     </div>
-    <div class="working" id="w4">
-      <ol class="steps">
-        <li>|A| = 3. &nbsp; |B| = 2.</li>
-        <li>A ∪ B = {1, 3, 4, 5} so |A ∪ B| = 4.</li>
-        <li>A ∩ B = {3} so |A ∩ B| = 1.</li>
-        <li>Ā = {2, 4}. &nbsp; B̄ = {1, 2, 5}.</li>
-      </ol>
-      <p class="ans">a 3 &nbsp; b 2 &nbsp; c {1, 3, 4, 5} &nbsp; d 4 &nbsp; e {3} &nbsp; f 1 &nbsp; g {2, 4} &nbsp; h {1, 2, 5}</p>
-    </div>`
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> |A|</p>
+        <button class="reveal" type="button" data-w="w4a">Show working</button>
+        <div class="working" id="w4a">
+          <ol class="steps">
+            <li>|A| means “how many elements in A?”</li>
+            <li>A has 1, 3 and 5 — three things.</li>
+            <li class="ans">Answer: 3</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>b</b> |B|</p>
+        <button class="reveal" type="button" data-w="w4b">Show working</button>
+        <div class="working" id="w4b">
+          <ol class="steps">
+            <li>B has 3 and 4 — two things.</li>
+            <li class="ans">Answer: 2</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> A ∪ B</p>
+        <button class="reveal" type="button" data-w="w4c">Show working</button>
+        <div class="working" id="w4c">
+          <ol class="steps">
+            <li>∪ is <b>OR</b>: in A, or in B, or in both.</li>
+            <li>Join {1, 3, 5} and {3, 4}. Do not write 3 twice.</li>
+            <li class="ans">Answer: {1, 3, 4, 5}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>d</b> |A ∪ B|</p>
+        <button class="reveal" type="button" data-w="w4d">Show working</button>
+        <div class="working" id="w4d">
+          <ol class="steps">
+            <li>Count the set from part c: {1, 3, 4, 5} has four elements.</li>
+            <li>Check with the formula: |A| + |B| − |A ∩ B| = 3 + 2 − 1 = 4.</li>
+            <li class="ans">Answer: 4</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>e</b> A ∩ B</p>
+        <button class="reveal" type="button" data-w="w4e">Show working</button>
+        <div class="working" id="w4e">
+          <ol class="steps">
+            <li>∩ is <b>AND</b>: in A and in B — the middle only.</li>
+            <li>The only shared number is 3.</li>
+            <li class="ans">Answer: {3}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>f</b> |A ∩ B|</p>
+        <button class="reveal" type="button" data-w="w4f">Show working</button>
+        <div class="working" id="w4f">
+          <ol class="steps">
+            <li>Count the set from part e: {3} has one element.</li>
+            <li class="ans">Answer: 1</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>g</b> Ā &nbsp; (in E, not in A)</p>
+        <button class="reveal" type="button" data-w="w4g">Show working</button>
+        <div class="working" id="w4g">
+          <ol class="steps">
+            <li>NOT A: start from E = {1, 2, 3, 4, 5} and cross out A’s members 1, 3, 5.</li>
+            <li>Left: 2 and 4. (4 is in B, but it is still not in A.)</li>
+            <li class="ans">Answer: {2, 4}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>h</b> B̄ &nbsp; (in E, not in B)</p>
+        <button class="reveal" type="button" data-w="w4h">Show working</button>
+        <div class="working" id="w4h">
+          <ol class="steps">
+            <li>NOT B: start from E and cross out B’s members 3 and 4.</li>
+            <li>Left: 1, 2 and 5.</li>
+            <li class="ans">Answer: {1, 2, 5}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <p class="small">Pose a–h one at a time. Click <b>Show working</b> only after students have an answer.</p>`
 });
 
 slides.push({
   used: "subset,disjoint",
   kicker: "Worked from the book · diagrams stay with the question",
-  title: "Exercise 12A Question 14a",
+  title: "Exercise 12A Question 14",
   html: `
-    <div class="cite">DEVELOPMENT · Exercise 12A Q14a · printed p. 430</div>
-    <p>Select the Venn diagram that best shows:</p>
-    <p>A = {Tasmania}, &nbsp; B = {states of Australia}</p>
+    <div class="cite">DEVELOPMENT · Exercise 12A Q14a–d · printed p. 430</div>
+    <p>Select the Venn diagram that best shows the relationship between each pair of sets.</p>
     <div class="two">
-      <div class="box"><b>I overlap</b>${venn2({ shade: "regions" })}</div>
-      <div class="box"><b>II disjoint</b>${venn2({ mode: "disjoint", shade: "regions" })}</div>
+      <div class="box"><b>I overlap</b>${venn2({ shade: "blank" })}</div>
+      <div class="box"><b>II disjoint</b>${venn2({ mode: "disjoint", shade: "blank" })}</div>
       <div class="box"><b>III A inside B</b> (A ⊂ B)${venn2({ mode: "AinB" })}</div>
       <div class="box"><b>IV B inside A</b> (B ⊂ A)${venn2({ mode: "BinA" })}</div>
     </div>
-    <button class="reveal" type="button" data-w="w14">Show working</button>
-    <div class="working" id="w14">
-      <ol class="steps">
-        <li>Tasmania <b>is</b> a state of Australia, so every element of A is in B, and B is larger.</li>
-        <li class="ans">Diagram <b>III</b>.</li>
-      </ol>
-      <p class="small">Independently: Q14b–d (same four pictures in the book).</p>
-    </div>`
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> A = {Tasmania}, &nbsp; B = {states of Australia}</p>
+        <button class="reveal" type="button" data-w="w14a">Show working</button>
+        <div class="working" id="w14a">
+          <ol class="steps">
+            <li>Tasmania <b>is</b> a state of Australia, so every element of A is in B, and B is larger.</li>
+            <li class="ans">Diagram <b>III</b>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>b</b> A = {7, 1, 4, 8, 3, 5}, &nbsp; B = {2, 9, 0, 7}</p>
+        <button class="reveal" type="button" data-w="w14b">Show working</button>
+        <div class="working" id="w14b">
+          <ol class="steps">
+            <li>AND: only 7 is in both, so they overlap. Neither list sits inside the other.</li>
+            <li class="ans">Diagram <b>I</b>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> A = {l, e, a, r, n}, &nbsp; B = {s, t, u, d, y}</p>
+        <button class="reveal" type="button" data-w="w14c">Show working</button>
+        <div class="working" id="w14c">
+          <ol class="steps">
+            <li>No shared letters, so A ∩ B = ∅ (disjoint).</li>
+            <li class="ans">Diagram <b>II</b>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>d</b> A = {politicians in Australia}, &nbsp; B = {politicians in NSW}</p>
+        <button class="reveal" type="button" data-w="w14d">Show working</button>
+        <div class="working" id="w14d">
+          <ol class="steps">
+            <li>Every NSW politician is an Australian politician, so B ⊂ A, and A is larger.</li>
+            <li class="ans">Diagram <b>IV</b>.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <p class="small">Pose a–d one at a time. Click <b>Show working</b> after students pick I, II, III or IV.</p>`
 });
 
 slides.push({
   used: "counting-rule",
   kicker: "22–30 min · formula + book question",
-  title: "The counting rule · Exercise 12A Q15b",
+  title: "The counting rule · Exercise 12A Q15",
   html: `
     <div class="box" style="text-align:center;font-size:24px;font-weight:800;">
       |A ∪ B| = |A| + |B| − |A ∩ B|
     </div>
     <p>Add |A| and |B|, then subtract the middle because it was counted twice.</p>
     ${venn2({ shade: "regions", tL: "only A", tBoth: "both", tR: "only B" })}
-    <div class="cite">DEVELOPMENT · Exercise 12A Q15b · printed p. 430</div>
-    <p>If |A ∪ B| = 17, |A| = 12 and |B| = 10, find |A ∩ B|.</p>
-    <button class="reveal" type="button" data-w="w15">Show working</button>
-    <div class="working" id="w15">
-      <ol class="steps">
-        <li>17 = 12 + 10 − |A ∩ B|</li>
-        <li>17 = 22 − |A ∩ B|</li>
-        <li class="ans">|A ∩ B| = 5</li>
-      </ol>
-      <p class="small">Independently: Q15a, Q15c.</p>
-    </div>`
+    <div class="cite">DEVELOPMENT · Exercise 12A Q15a–c · printed p. 430</div>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> Explain the counting rule by referring to the Venn diagram.</p>
+        <button class="reveal" type="button" data-w="w15a">Show working</button>
+        <div class="working" id="w15a">
+          <ol class="steps">
+            <li>|A| counts the left crescent <b>and</b> the middle. |B| counts the right crescent <b>and</b> the middle.</li>
+            <li>If you add |A| + |B|, the middle is counted twice.</li>
+            <li class="ans">|A ∩ B| is subtracted so that it is not counted twice.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>b</b> If |A ∪ B| = 17, |A| = 12 and |B| = 10, find |A ∩ B|.</p>
+        <button class="reveal" type="button" data-w="w15b">Show working</button>
+        <div class="working" id="w15b">
+          <ol class="steps">
+            <li>17 = 12 + 10 − |A ∩ B|</li>
+            <li>17 = 22 − |A ∩ B|</li>
+            <li class="ans">|A ∩ B| = 5</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> Show that the rule is satisfied when A = {3, 5, 6, 8, 9} and B = {2, 3, 5, 6, 7, 8}.</p>
+        <button class="reveal" type="button" data-w="w15c">Show working</button>
+        <div class="working" id="w15c">
+          <ol class="steps">
+            <li>|A| = 5. |B| = 6. A ∩ B = {3, 5, 6, 8} so |A ∩ B| = 4.</li>
+            <li>A ∪ B = {2, 3, 5, 6, 7, 8, 9} so |A ∪ B| = 7.</li>
+            <li>Right-hand side: 5 + 6 − 4 = 7.</li>
+            <li class="ans">LHS = 7, RHS = 5 + 6 − 4 = 7.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <p class="small">Pose a–c one at a time.</p>`
 });
 
 slides.push({
   used: "fill-middle,counting-rule",
   kicker: "Worked from the book",
-  title: "Exercise 12A Question 16a",
+  title: "Exercise 12A Question 16",
   html: `
-    <div class="cite">DEVELOPMENT · Exercise 12A Q16a · printed p. 430</div>
-    <p>In a group of 20 people, there are 8 who play the piano, 5 who play the violin and 3 who play both. How many people play neither instrument?</p>
+    <div class="cite">DEVELOPMENT · Exercise 12A Q16a–c · printed p. 430</div>
     <div class="say">Method: write <b>both</b> in the middle first, then the two crescents, then neither outside.</div>
-    <div class="qa">
-      <div>
-        <button class="reveal" type="button" data-w="w16">Show working</button>
-        <p class="small">Diagram for this question: piano (P) and violin (V). Fill middle first.</p>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> In a group of 20 people, there are 8 who play the piano, 5 who play the violin and 3 who play both. How many people play neither instrument?</p>
+        <div class="qa">
+          <div>
+            <button class="reveal" type="button" data-w="w16a">Show working</button>
+            <p class="small">Blank diagram: piano (P) and violin (V).</p>
+          </div>
+          ${venn2({ left: "P", right: "V", shade: "blank" })}
+        </div>
+        <div class="working" id="w16a">
+          <div class="qa">
+            <ol class="steps">
+              <li>Both = <b>3</b> (middle first).</li>
+              <li>Piano only = 8 − 3 = <b>5</b>.</li>
+              <li>Violin only = 5 − 3 = <b>2</b>.</li>
+              <li>Inside = 5 + 3 + 2 = 10. Neither = 20 − 10 = <b>10</b>.</li>
+            </ol>
+            ${venn2({ left: "P", right: "V", shade: "regions", nL: "(5)", nBoth: "(3)", nR: "(2)", nOut: "(10)" })}
+          </div>
+          <p class="ans">10 people play neither.</p>
+        </div>
       </div>
-      ${venn2({ left: "P", right: "V", shade: "regions" })}
+      <div class="box">
+        <p><b>b</b> Each person in a group of 30 plays either tennis or golf. 17 play tennis, while 9 play both. How many play golf?</p>
+        <button class="reveal" type="button" data-w="w16b">Show working</button>
+        <div class="working" id="w16b">
+          <ol class="steps">
+            <li>“Either … or …” here means everyone plays at least one, so neither = 0 and |T ∪ G| = 30.</li>
+            <li>30 = 17 + |G| − 9</li>
+            <li>30 = 8 + |G|, so |G| = 22.</li>
+            <li>Check: tennis only 8, golf only 13, both 9 → 8 + 13 + 9 = 30.</li>
+          </ol>
+          <p class="ans">22 play golf.</p>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> In a class of 28 students, 19 like geometry and 16 like trigonometry. How many like both if 5 students don’t like either?</p>
+        <button class="reveal" type="button" data-w="w16c">Show working</button>
+        <div class="working" id="w16c">
+          <ol class="steps">
+            <li>|G ∪ T| = 28 − 5 = 23 (drop the 5 who like neither).</li>
+            <li>23 = 19 + 16 − |G ∩ T|</li>
+            <li>23 = 35 − |G ∩ T|, so both = 12.</li>
+          </ol>
+          <p class="ans">12 like both.</p>
+        </div>
+      </div>
     </div>
-    <div class="working" id="w16">
-      <div class="qa">
-        <ol class="steps">
-          <li>Both = <b>3</b> (middle first).</li>
-          <li>Piano only = 8 − 3 = <b>5</b>.</li>
-          <li>Violin only = 5 − 3 = <b>2</b>.</li>
-          <li>Inside = 5 + 3 + 2 = 10. Neither = 20 − 10 = <b>10</b>.</li>
-        </ol>
-        ${venn2({ left: "P", right: "V", shade: "regions", nL: "(5)", nBoth: "(3)", nR: "(2)", nOut: "(10)" })}
-      </div>
-      <p class="ans">10 people play neither.</p>
-      <p class="small">Independently: Q16b, Q16c.</p>
-    </div>`
+    <p class="small">Pose a–c one at a time.</p>`
 });
 
 slides.push({
@@ -534,58 +926,175 @@ slides.push({
   kicker: "30–38 min · Development listing",
   title: "Exercise 12A Question 9",
   html: `
-    <div class="cite">DEVELOPMENT · Exercise 12A Q9 · printed p. 429</div>
-    <div class="qa">
-      <div>
-        <p>A = {1, 3, 7, 10}, &nbsp; B = {4, 6, 7, 9}, &nbsp; E = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}.</p>
-        <p>List: a Ā &nbsp; b B̄ &nbsp; c A ∩ B &nbsp; d overline(A ∩ B) &nbsp; e A ∪ B &nbsp; f overline(A ∪ B)</p>
-        <button class="reveal" type="button" data-w="w9">Show working</button>
+    <div class="cite">DEVELOPMENT · Exercise 12A Q9a–f · printed p. 429</div>
+    <p>A = {1, 3, 7, 10}, &nbsp; B = {4, 6, 7, 9}, &nbsp; E = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}.</p>
+    <p>List the elements of each set. Use the blank Venn (do not fill numbers until you work).</p>
+    ${venn2({ shade: "blank" })}
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> Ā &nbsp; (in E, not in A)</p>
+        <button class="reveal" type="button" data-w="w9a">Show working</button>
+        <div class="working" id="w9a">
+          <ol class="steps">
+            <li>Start from E and cross out 1, 3, 7, 10.</li>
+            <li class="ans">Answer: {2, 4, 5, 6, 8, 9}</li>
+          </ol>
+        </div>
       </div>
-      ${venn2({ shade: "regions", tL: "1,3,10", tBoth: "7", tR: "4,6,9", nOut: "2,5,8" })}
+      <div class="box">
+        <p><b>b</b> B̄ &nbsp; (in E, not in B)</p>
+        <button class="reveal" type="button" data-w="w9b">Show working</button>
+        <div class="working" id="w9b">
+          <ol class="steps">
+            <li>Start from E and cross out 4, 6, 7, 9.</li>
+            <li class="ans">Answer: {1, 2, 3, 5, 8, 10}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> A ∩ B</p>
+        <button class="reveal" type="button" data-w="w9c">Show working</button>
+        <div class="working" id="w9c">
+          <ol class="steps">
+            <li>AND: the only shared number is 7.</li>
+            <li class="ans">Answer: {7}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>d</b> overline(A ∩ B) &nbsp; (in E, not in the middle)</p>
+        <button class="reveal" type="button" data-w="w9d">Show working</button>
+        <div class="working" id="w9d">
+          <ol class="steps">
+            <li>A ∩ B = {7}, so drop 7 from E.</li>
+            <li class="ans">Answer: {1, 2, 3, 4, 5, 6, 8, 9, 10}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>e</b> A ∪ B</p>
+        <button class="reveal" type="button" data-w="w9e">Show working</button>
+        <div class="working" id="w9e">
+          <ol class="steps">
+            <li>OR: join A and B, write 7 once.</li>
+            <li class="ans">Answer: {1, 3, 4, 6, 7, 9, 10}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="box">
+        <p><b>f</b> overline(A ∪ B) &nbsp; (outside both circles)</p>
+        <button class="reveal" type="button" data-w="w9f">Show working</button>
+        <div class="working" id="w9f">
+          <ol class="steps">
+            <li>Start from E and drop every number that is in A or B. Left: 2, 5, 8.</li>
+            <li class="ans">Answer: {2, 5, 8}</li>
+          </ol>
+        </div>
+      </div>
     </div>
-    <div class="working" id="w9">
-      <ol class="steps">
-        <li>Ā = {2, 4, 5, 6, 8, 9}.</li>
-        <li>B̄ = {1, 2, 3, 5, 8, 10}.</li>
-        <li>A ∩ B = {7}.</li>
-        <li>overline(A ∩ B) = {1, 2, 3, 4, 5, 6, 8, 9, 10}.</li>
-        <li>A ∪ B = {1, 3, 4, 6, 7, 9, 10}.</li>
-        <li>overline(A ∪ B) = {2, 5, 8} (the outside numbers).</li>
-      </ol>
-      <p class="ans">a {2,4,5,6,8,9} &nbsp; b {1,2,3,5,8,10} &nbsp; c {7}<br>
-      d {1,2,3,4,5,6,8,9,10} &nbsp; e {1,3,4,6,7,9,10} &nbsp; f {2,5,8}</p>
-      <div class="say">Q10 is this skill plus De Morgan (Formula List). Do Q10 independently.</div>
+    <div class="say">Q10 is this skill plus De Morgan (Formula List). Do Q10 independently.</div>`
+});
+
+slides.push({
+  used: "intersection,complement,union",
+  kicker: "Shading — each part with its own diagram",
+  title: "Exercise 12A Question 11",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12A Q11a–f · printed p. 429</div>
+    <p>On copies of the two-circle diagram, shade each region. The blank copy is shown first; click to reveal the shading.</p>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> A ∩ B</p>
+        ${venn2({ shade: "blank" })}
+        <button class="reveal" type="button" data-w="w11a">Show working</button>
+        <div class="working" id="w11a">
+          <p>AND — middle only.</p>
+          ${venn2({ shade: "both" })}
+        </div>
+      </div>
+      <div class="box">
+        <p><b>b</b> Ā ∩ B &nbsp; (in B, not in A)</p>
+        ${venn2({ shade: "blank" })}
+        <button class="reveal" type="button" data-w="w11b">Show working</button>
+        <div class="working" id="w11b">
+          <p>Right crescent only.</p>
+          ${venn2({ shade: "onlyR" })}
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> A ∩ B̄ &nbsp; (in A, not in B)</p>
+        ${venn2({ shade: "blank" })}
+        <button class="reveal" type="button" data-w="w11c">Show working</button>
+        <div class="working" id="w11c">
+          <p>Left crescent only.</p>
+          ${venn2({ shade: "onlyL" })}
+        </div>
+      </div>
+      <div class="box">
+        <p><b>d</b> A ∪ B</p>
+        ${venn2({ shade: "blank" })}
+        <button class="reveal" type="button" data-w="w11d">Show working</button>
+        <div class="working" id="w11d">
+          <p>OR — left, middle and right (the whole two circles).</p>
+          ${venn2({ shade: "union" })}
+        </div>
+      </div>
+      <div class="box">
+        <p><b>e</b> overline(A ∪ B) &nbsp; (outside both)</p>
+        ${venn2({ shade: "blank" })}
+        <button class="reveal" type="button" data-w="w11e">Show working</button>
+        <div class="working" id="w11e">
+          <p>In E, but in neither circle.</p>
+          ${venn2({ shade: "outside" })}
+        </div>
+      </div>
+      <div class="box">
+        <p><b>f</b> ∅ &nbsp; (the empty set)</p>
+        ${venn2({ shade: "blank" })}
+        <button class="reveal" type="button" data-w="w11f">Show working</button>
+        <div class="working" id="w11f">
+          <p>Shade nothing. The empty set has no elements.</p>
+          ${venn2({ shade: "blank" })}
+        </div>
+      </div>
     </div>`
 });
 
 slides.push({
-  used: "intersection,complement",
-  kicker: "Shading — each part with its own diagram",
-  title: "Exercise 12A Question 11a–c",
-  html: `
-    <div class="cite">DEVELOPMENT · Exercise 12A Q11a–c · printed p. 429</div>
-    <p>On copies of the two-circle diagram, shade:</p>
-    <div class="stack">
-      <div class="box"><p><b>a</b> A ∩ B &nbsp; (AND — middle only)</p>${venn2({ shade: "both" })}</div>
-      <div class="box"><p><b>b</b> Ā ∩ B &nbsp; (in B, not in A — right crescent)</p>${venn2({ shade: "onlyR" })}</div>
-      <div class="box"><p><b>c</b> A ∩ B̄ &nbsp; (in A, not in B — left crescent)</p>${venn2({ shade: "onlyL" })}</div>
-    </div>
-    <p class="small">Independently shade 11d A ∪ B, 11e outside both, 11f empty set (shade nothing).</p>`
-});
-
-slides.push({
-  used: "intersection,three-sets",
+  used: "intersection,union,complement,three-sets",
   kicker: "38–45 min · Challenge",
-  title: "Exercise 12A Question 17a",
+  title: "Exercise 12A Question 17",
   html: `
-    <div class="cite">CHALLENGE · Exercise 12A Q17a · printed p. 430</div>
-    <div class="qa">
-      <div>
-        <p>On the three-circle diagram in the book, shade <b>P ∩ Q ∩ R</b>.</p>
-        <div class="say">AND three times → only the true centre (P and Q and R). Not a separate extra circle.</div>
-        <p class="small">Independently: 17b (P ∩ R) ∪ (Q ∩ R); 17c P̄ ∪ Q̄ ∪ R̄ (everything except the centre).</p>
+    <div class="cite">CHALLENGE · Exercise 12A Q17a–c · printed p. 430</div>
+    <p>Shade each region on a copy of the three-circle diagram.</p>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> P ∩ Q ∩ R</p>
+        ${venn3({ shade: "pale" })}
+        <button class="reveal" type="button" data-w="w17a">Show working</button>
+        <div class="working" id="w17a">
+          <p>AND three times → only the true centre (P and Q and R).</p>
+          ${venn3({ shade: "center" })}
+        </div>
       </div>
-      ${venn3({ shade: "center" })}
+      <div class="box">
+        <p><b>b</b> (P ∩ R) ∪ (Q ∩ R)</p>
+        ${venn3({ shade: "pale" })}
+        <button class="reveal" type="button" data-w="w17b">Show working</button>
+        <div class="working" id="w17b">
+          <p>In R and also in P or Q (or both). That is the part of the bottom circle that overlaps P or Q, including the centre.</p>
+          ${venn3({ shade: "r-and" })}
+        </div>
+      </div>
+      <div class="box">
+        <p><b>c</b> P̄ ∪ Q̄ ∪ R̄</p>
+        ${venn3({ shade: "pale" })}
+        <button class="reveal" type="button" data-w="w17c">Show working</button>
+        <div class="working" id="w17c">
+          <p>NOT-P or NOT-Q or NOT-R is everything except the true centre (De Morgan).</p>
+          ${venn3({ shade: "except-center" })}
+        </div>
+      </div>
     </div>`
 });
 
@@ -598,7 +1107,7 @@ slides.push({
     <p>80 people: 20 jog, 22 swim, 18 gym. Also 10 jog and swim, 11 jog and gym, 6 swim and gym. 43 do none. How many do <b>all three</b>?</p>
     <div class="qa">
       <div>
-        <p class="small">Pairwise counts already include the all-three people. Start with |J ∪ S ∪ G| = 80 − 43 = 37.</p>
+        <p class="small">Pairwise counts already include the all-three people.</p>
         <button class="reveal" type="button" data-w="w18">Show working</button>
       </div>
       ${venn3({ p: "J", q: "S", r: "G" })}
@@ -625,12 +1134,12 @@ slides.push({
     <p>Do these <b>from the textbook PDF</b>.</p>
     <table class="mini">
       <tr><th>Band</th><th>Questions</th><th>Page</th></tr>
-      <tr><td>Foundation (if needed)</td><td>Q1b–d, Q2b–e, Q3, Q5–8</td><td>428–429</td></tr>
-      <tr><td>Development</td><td>Q10, Q11d–f, Q12, Q13, Q14b–d, Q15a,c, Q16b,c</td><td>429–430</td></tr>
-      <tr><td>Challenge</td><td>Q17b, Q17c (and redo Q18 without notes)</td><td>430</td></tr>
+      <tr><td>Foundation (if needed)</td><td>Q3, Q5–8</td><td>428–429</td></tr>
+      <tr><td>Development</td><td>Q10, Q12, Q13</td><td>429–430</td></tr>
+      <tr><td>Challenge</td><td>Redo Q18 without notes</td><td>430</td></tr>
     </table>
     <div class="say">Stuck? Use the Formula List — the gold card is the one for this page’s idea.</div>
-    <p class="small">Worked as models: Q1a, Q2a, Q4, Q9, Q11a–c, Q14a, Q15b, Q16a, Q17a, Q18.</p>`
+    <p class="small">Worked as models: Q1a–d, Q2a–e, Q4a–h, Q9a–f, Q11a–f, Q14a–d, Q15a–c, Q16a–c, Q17a–c, Q18.</p>`
 });
 
 slides.push({
@@ -647,24 +1156,908 @@ slides.push({
       <p class="ans">1. AND · OR (and/or) · NOT &nbsp; 2. |A| + |B| − |A ∩ B| &nbsp; 3. The overlap (“both”).</p>
     </div>`
 });
+pack("12A");
+
+function leftover(dev, chal, extra) {
+  return `
+    <div class="cite">Independent work — question numbers only</div>
+    <p>Do these from the book. Do not copy extra question text here.</p>
+    <div class="box"><b>Development:</b> ${dev}</div>
+    <div class="box"><b>Challenge:</b> ${chal}</div>
+    ${extra || ""}
+    <div class="say">If you get stuck, the gold Formula List card is the method for that type.</div>`;
+}
+
+/* ========== 12B ========== */
+slides.push({
+  used: "",
+  kicker: "12B · 45 minutes",
+  title: "Probability and sample spaces",
+  html: `
+    <p>Today’s three words: <b>favourable</b>, <b>possible</b>, <b>not</b>.</p>
+    <div class="say">If every outcome is equally likely, probability is a fraction: how many you want, over how many there are.</div>
+    <p class="small">CambridgeMATHS NSW Advanced Year 11 · Exercise 12B · printed pp. 437–439.</p>`
+});
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `
+    <ol>
+      <li>Write <b>P(E) = |E| / |S|</b> for a uniform sample space.</li>
+      <li>Use <b>P(not E) = 1 − P(E)</b>.</li>
+      <li>Know that 0 means impossible and 1 means certain.</li>
+      <li>Tell theoretical probability from relative frequency.</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `
+    <table class="mini">
+      <tr><th>Mins</th><th>Move</th></tr>
+      <tr><td>0–8</td><td>Formula + equally likely</td></tr>
+      <tr><td>8–22</td><td>Foundation: Q1, Q2, Q3</td></tr>
+      <tr><td>22–32</td><td>Development: cards Q15a–c</td></tr>
+      <tr><td>32–40</td><td>Experimental Q12 + Challenge Q20a</td></tr>
+      <tr><td>40–45</td><td>Independent list</td></tr>
+    </table>
+    <p class="small">Drop extra Foundation if late. Keep Q15 and Q20a.</p>`
+});
+slides.push({
+  used: "basic-p,range",
+  kicker: "0–8 min · Idea",
+  title: "Favourable over possible",
+  html: `
+    <div class="box">
+      <p>Throw a die. Event: at least 3.</p>
+      <p>S = {1, 2, 3, 4, 5, 6} &nbsp; so |S| = 6.</p>
+      <p>E = {3, 4, 5, 6} &nbsp; so |E| = 4.</p>
+      <p class="ans">P(E) = 4/6 = 2/3.</p>
+    </div>
+    <div class="warn">Only use this formula when the outcomes are <b>equally likely</b>.</div>`
+});
+slides.push({
+  used: "complement-p",
+  kicker: "Idea",
+  title: "The NOT shortcut",
+  html: `
+    <p>If P(win) = 3/60, then P(not win) = 1 − 3/60 = 57/60.</p>
+    <div class="say">Count the easy event, then subtract from 1.</div>`
+});
+slides.push({
+  used: "basic-p,complement-p",
+  kicker: "8–14 min · Foundation",
+  title: "Exercise 12B Question 1",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12B Q1a–b · printed p. 437</div>
+    <p>A pupil has 3 tickets in the class raffle. There were 60 tickets and one ticket is drawn. Find the probability that the pupil:</p>
+    <div class="stack">
+      <div class="box">
+        <p><b>a</b> wins</p>
+        <button class="reveal" type="button" data-w="b1a">Show working</button>
+        <div class="working" id="b1a"><ol class="steps"><li>|E| = 3, |S| = 60.</li><li class="ans">Answer: 3/60 = 1/20</li></ol></div>
+      </div>
+      <div class="box">
+        <p><b>b</b> does not win</p>
+        <button class="reveal" type="button" data-w="b1b">Show working</button>
+        <div class="working" id="b1b"><ol class="steps"><li>P(not) = 1 − 1/20.</li><li class="ans">Answer: 19/20</li></ol></div>
+      </div>
+    </div>`
+});
+slides.push({
+  used: "basic-p,range",
+  kicker: "Foundation",
+  title: "Exercise 12B Question 2",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12B Q2a–d · printed p. 437</div>
+    <p>A coin is tossed. Write down the probability that it shows:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> a head</p><button class="reveal" type="button" data-w="b2a">Show working</button><div class="working" id="b2a"><p class="ans">Answer: 1/2</p></div></div>
+      <div class="box"><p><b>b</b> a tail</p><button class="reveal" type="button" data-w="b2b">Show working</button><div class="working" id="b2b"><p class="ans">Answer: 1/2</p></div></div>
+      <div class="box"><p><b>c</b> either a head or a tail</p><button class="reveal" type="button" data-w="b2c">Show working</button><div class="working" id="b2c"><ol class="steps"><li>This is certain.</li><li class="ans">Answer: 1</li></ol></div></div>
+      <div class="box"><p><b>d</b> neither a head nor a tail</p><button class="reveal" type="button" data-w="b2d">Show working</button><div class="working" id="b2d"><ol class="steps"><li>This is impossible.</li><li class="ans">Answer: 0</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "basic-p",
+  kicker: "Foundation",
+  title: "Exercise 12B Question 3",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12B Q3a–d · printed p. 437</div>
+    <p>If a die is rolled, find the probability that the uppermost face is:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> a three</p><button class="reveal" type="button" data-w="b3a">Show working</button><div class="working" id="b3a"><p class="ans">Answer: 1/6</p></div></div>
+      <div class="box"><p><b>b</b> an even number</p><button class="reveal" type="button" data-w="b3b">Show working</button><div class="working" id="b3b"><ol class="steps"><li>Even: 2, 4, 6.</li><li class="ans">Answer: 3/6 = 1/2</li></ol></div></div>
+      <div class="box"><p><b>c</b> a number greater than four</p><button class="reveal" type="button" data-w="b3c">Show working</button><div class="working" id="b3c"><ol class="steps"><li>Greater than 4: 5, 6.</li><li class="ans">Answer: 2/6 = 1/3</li></ol></div></div>
+      <div class="box"><p><b>d</b> a multiple of three</p><button class="reveal" type="button" data-w="b3d">Show working</button><div class="working" id="b3d"><ol class="steps"><li>Multiples of 3: 3, 6.</li><li class="ans">Answer: 2/6 = 1/3</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "basic-p,cards",
+  kicker: "22–32 min · Development",
+  title: "Exercise 12B Question 15",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12B Q15a–c · printed p. 439</div>
+    <p>From a regular pack of 52 cards, one card is drawn at random. Find the probability that:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> it is black</p><button class="reveal" type="button" data-w="b15a">Show working</button><div class="working" id="b15a"><ol class="steps"><li>26 black cards.</li><li class="ans">Answer: 26/52 = 1/2</li></ol></div></div>
+      <div class="box"><p><b>b</b> it is red</p><button class="reveal" type="button" data-w="b15b">Show working</button><div class="working" id="b15b"><p class="ans">Answer: 26/52 = 1/2</p></div></div>
+      <div class="box"><p><b>c</b> it is a king</p><button class="reveal" type="button" data-w="b15c">Show working</button><div class="working" id="b15c"><ol class="steps"><li>4 kings.</li><li class="ans">Answer: 4/52 = 1/13</li></ol></div></div>
+    </div>
+    <div class="say">Finish Q15d–i independently tonight (numbers only on the last slide).</div>`
+});
+slides.push({
+  used: "relative-freq,expected",
+  kicker: "32–38 min · Experimental",
+  title: "Exercise 12B Question 12",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12B Q12a–b · printed p. 438</div>
+    <p>When a die is rolled, the theoretical probability of throwing a six is 1/6, which is about 17%.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> How many sixes would you expect if a die is thrown 60 times?</p><button class="reveal" type="button" data-w="b12a">Show working</button><div class="working" id="b12a"><ol class="steps"><li>expected = 60 × 1/6.</li><li class="ans">Answer: 10 sixes</li></ol></div></div>
+      <div class="box"><p><b>b i</b> In an experiment a six turned up 18 times in 60 throws. What was the relative frequency of throwing a six?</p><button class="reveal" type="button" data-w="b12bi">Show working</button><div class="working" id="b12bi"><ol class="steps"><li>18/60 = 3/10 = 30%.</li><li class="ans">Answer: 18/60 = 30%</li></ol></div></div>
+      <div class="box"><p><b>b ii</b> What does this suggest is the experimental probability?</p><button class="reveal" type="button" data-w="b12bii">Show working</button><div class="working" id="b12bii"><p class="ans">Answer: about 30% (or 0.3)</p></div></div>
+      <div class="box"><p><b>b iii</b> Comment on whether the die is biased or fair.</p><button class="reveal" type="button" data-w="b12biii">Show working</button><div class="working" id="b12biii"><p class="ans">18 is much larger than the expected 10, so the die appears biased.</p></div></div>
+    </div>`
+});
+slides.push({
+  used: "basic-p",
+  kicker: "38–42 min · Challenge method",
+  title: "Exercise 12B Question 20a",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12B Q20a · printed p. 439</div>
+    <p>Comment on this argument. Identify any fallacy, and if possible say how to correct it.</p>
+    <p>“On every day of the year it either rains or it doesn’t. Therefore the chance that it will rain tomorrow is 1/2.”</p>
+    <button class="reveal" type="button" data-w="b20a">Show working</button>
+    <div class="working" id="b20a">
+      <ol class="steps">
+        <li>The two outcomes “rain” and “not rain” are not equally likely.</li>
+        <li>You cannot write P = 1/2 just because there are two words.</li>
+        <li class="ans">Fallacy: treating unequal outcomes as equally likely. Use weather data (relative frequency), not 1/2.</li>
+      </ol>
+    </div>
+    <div class="say">Q20b–e use the same idea. Do them independently.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("Q14–19 (finish Q15d–i)", "Q20b–e, Q21", `<p class="small">Foundation leftover if needed: Q4–11, Q13.</p>`)
+});
+pack("12B");
+
+/* ========== 12C ========== */
+slides.push({
+  used: "",
+  kicker: "12C · 45 minutes",
+  title: "Sample space graphs and tree diagrams",
+  html: `<p>Today’s three words: <b>list</b>, <b>count</b>, <b>divide</b>.</p>
+    <div class="say">Draw the sample space first. Then circle the event. Then P = circled ÷ all.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `<ol>
+      <li>Draw a two-stage <b>dot graph</b> (first across, second up).</li>
+      <li>Draw a <b>counting tree</b> with Start and Outcome columns.</li>
+      <li>Find P by counting equally likely listed outcomes.</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `<table class="mini">
+      <tr><th>Mins</th><th>Move</th></tr>
+      <tr><td>0–8</td><td>Dot graph + counting tree</td></tr>
+      <tr><td>8–22</td><td>Foundation Q1 then Q2</td></tr>
+      <tr><td>22–34</td><td>Development Q7 (three coins)</td></tr>
+      <tr><td>34–42</td><td>Challenge Q12a (how many numbers)</td></tr>
+      <tr><td>42–45</td><td>Independent list</td></tr>
+    </table>`
+});
+slides.push({
+  used: "dot-graph,basic-p",
+  kicker: "Idea",
+  title: "Two dice = 36 dots",
+  html: `<p>First throw across. Second throw up. 6 × 6 = 36 equally likely pairs.</p>
+    <div class="box"><p>Double six is one dot. P = 1/36.</p>
+    <p>Sum of 7 is six dots. P = 6/36 = 1/6.</p></div>`
+});
+slides.push({
+  used: "count-tree,basic-p",
+  kicker: "Idea",
+  title: "Two coins are not “three outcomes”",
+  html: `<p>Wrong: HH, TT, “one of each” so P(one of each) = 1/3.</p>
+    <p>Right tree: HH, HT, TH, TT. Two of those are mixed.</p>
+    <p class="ans">P(one of each) = 2/4 = 1/2.</p>
+    <div class="warn">HT and TH are different outcomes.</div>`
+});
+slides.push({
+  used: "count-tree,basic-p",
+  kicker: "8–16 min · Foundation",
+  title: "Exercise 12C Question 1",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12C Q1a–b · printed p. 443</div>
+    <p>A fair coin is tossed twice.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Use a tree diagram to list the four possible outcomes.</p>
+        <button class="reveal" type="button" data-w="c1a">Show working</button>
+        <div class="working" id="c1a"><p class="ans">Answer: HH, HT, TH, TT</p></div></div>
+      <div class="box"><p><b>b i</b> two heads</p>
+        <button class="reveal" type="button" data-w="c1bi">Show working</button>
+        <div class="working" id="c1bi"><p class="ans">Answer: 1/4</p></div></div>
+      <div class="box"><p><b>b ii</b> a head and a tail</p>
+        <button class="reveal" type="button" data-w="c1bii">Show working</button>
+        <div class="working" id="c1bii"><ol class="steps"><li>HT and TH.</li><li class="ans">Answer: 2/4 = 1/2</li></ol></div></div>
+      <div class="box"><p><b>b iii</b> a head on the first toss and a tail on the second</p>
+        <button class="reveal" type="button" data-w="c1biii">Show working</button>
+        <div class="working" id="c1biii"><p class="ans">Answer: 1/4</p></div></div>
+    </div>`
+});
+slides.push({
+  used: "count-tree,basic-p,product-count",
+  kicker: "Foundation",
+  title: "Exercise 12C Question 2",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12C Q2a–b · printed p. 443</div>
+    <p>A coin is tossed and a die is thrown.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Use a tree diagram to list all 12 possible outcomes.</p>
+        <button class="reveal" type="button" data-w="c2a">Show working</button>
+        <div class="working" id="c2a"><p class="ans">Answer: H1, H2, H3, H4, H5, H6, T1, T2, T3, T4, T5, T6</p></div></div>
+      <div class="box"><p><b>b i</b> a head and an even number</p>
+        <button class="reveal" type="button" data-w="c2bi">Show working</button>
+        <div class="working" id="c2bi"><ol class="steps"><li>H2, H4, H6 → 3 out of 12.</li><li class="ans">Answer: 3/12 = 1/4</li></ol></div></div>
+      <div class="box"><p><b>b ii</b> a tail and a number greater than 4</p>
+        <button class="reveal" type="button" data-w="c2bii">Show working</button>
+        <div class="working" id="c2bii"><ol class="steps"><li>T5, T6.</li><li class="ans">Answer: 2/12 = 1/6</li></ol></div></div>
+      <div class="box"><p><b>b iii</b> a tail and a number less than 4</p>
+        <button class="reveal" type="button" data-w="c2biii">Show working</button>
+        <div class="working" id="c2biii"><ol class="steps"><li>T1, T2, T3.</li><li class="ans">Answer: 3/12 = 1/4</li></ol></div></div>
+      <div class="box"><p><b>b iv</b> a head and a prime number</p>
+        <button class="reveal" type="button" data-w="c2biv">Show working</button>
+        <div class="working" id="c2biv"><ol class="steps"><li>Primes on a die: 2, 3, 5. So H2, H3, H5.</li><li class="ans">Answer: 3/12 = 1/4</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "count-tree,basic-p",
+  kicker: "22–34 min · Development",
+  title: "Exercise 12C Question 7",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12C Q7a–c · printed p. 444</div>
+    <p>A coin is tossed three times. Draw a tree. Then find the probability of:</p>
+    <div class="stack">
+      <div class="box"><p>List first (8 outcomes).</p>
+        <button class="reveal" type="button" data-w="c7list">Show working</button>
+        <div class="working" id="c7list"><p class="ans">HHH, HHT, HTH, HTT, THH, THT, TTH, TTT</p></div></div>
+      <div class="box"><p><b>a</b> three heads</p>
+        <button class="reveal" type="button" data-w="c7a">Show working</button>
+        <div class="working" id="c7a"><p class="ans">Answer: 1/8</p></div></div>
+      <div class="box"><p><b>b</b> a head and two tails</p>
+        <button class="reveal" type="button" data-w="c7b">Show working</button>
+        <div class="working" id="c7b"><ol class="steps"><li>HTT, THT, TTH.</li><li class="ans">Answer: 3/8</li></ol></div></div>
+      <div class="box"><p><b>c</b> at least two tails</p>
+        <button class="reveal" type="button" data-w="c7c">Show working</button>
+        <div class="working" id="c7c"><ol class="steps"><li>Two tails or three tails: HTT, THT, TTH, TTT.</li><li class="ans">Answer: 4/8 = 1/2</li></ol></div></div>
+    </div>
+    <div class="say">Finish Q7d–f independently.</div>`
+});
+slides.push({
+  used: "count-tree,product-count",
+  kicker: "34–42 min · Challenge method",
+  title: "Exercise 12C Question 12a",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12C Q12a · printed p. 444</div>
+    <p>Three-digit numbers are formed from the digits 2, 5, 7 and 8, without repetition.</p>
+    <p><b>a</b> Use a tree diagram to list all the possible outcomes. How many are there?</p>
+    <button class="reveal" type="button" data-w="c12a">Show working</button>
+    <div class="working" id="c12a">
+      <ol class="steps">
+        <li>First digit: 4 choices. Second: 3 left. Third: 2 left.</li>
+        <li>4 × 3 × 2 = 24.</li>
+        <li class="ans">Answer: 24 outcomes</li>
+      </ol>
+    </div>
+    <div class="say">Q12b i–iv: list, then count. Do independently.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("Q7d–f, Q8–11", "Q12b, Q13", `<p class="small">Foundation leftover: Q3–6.</p>`)
+});
+pack("12C");
+
+/* ========== 12D ========== */
+slides.push({
+  used: "",
+  kicker: "12D · 45 minutes",
+  title: "Venn diagrams and the addition theorem",
+  html: `<p>Today’s three words: <b>or</b>, <b>and</b>, <b>overlap</b>.</p>
+    <div class="say">If they can both happen, do not just add. Subtract the overlap.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `<ol>
+      <li>Spot <b>mutually exclusive</b> events (no overlap).</li>
+      <li>Use <b>P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</b>.</li>
+      <li>Find P(neither) as 1 − P(or).</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `<table class="mini">
+      <tr><th>Mins</th><th>Move</th></tr>
+      <tr><td>0–8</td><td>Exclusive vs overlap</td></tr>
+      <tr><td>8–20</td><td>Foundation Q1 then Q4</td></tr>
+      <tr><td>20–32</td><td>Development Q7 then Q9</td></tr>
+      <tr><td>32–42</td><td>Challenge: set up Q13, leave the rest</td></tr>
+      <tr><td>42–45</td><td>Independent list</td></tr>
+    </table>`
+});
+slides.push({
+  used: "mutex",
+  kicker: "Idea",
+  title: "Cannot both happen → just add",
+  html: `<p>Die: less than 3 or greater than 4.</p>
+    <p>{1,2} and {5,6} do not overlap.</p>
+    <p class="ans">P = 2/6 + 2/6 = 4/6 = 2/3.</p>`
+});
+slides.push({
+  used: "addition,and-or",
+  kicker: "Idea",
+  title: "Can overlap → subtract once",
+  html: `<p class="ans">P(A or B) = P(A) + P(B) − P(A and B)</p>
+    <p>You added the middle twice, so take it off once.</p>`
+});
+slides.push({
+  used: "basic-p,mutex,addition",
+  kicker: "8–16 min · Foundation",
+  title: "Exercise 12D Question 1",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12D Q1a–h · printed p. 448</div>
+    <p>A die is rolled. If n denotes the number on the uppermost face, find:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> P(n = 5)</p><button class="reveal" type="button" data-w="d1a">Show working</button><div class="working" id="d1a"><p class="ans">Answer: 1/6</p></div></div>
+      <div class="box"><p><b>b</b> P(n ≠ 5)</p><button class="reveal" type="button" data-w="d1b">Show working</button><div class="working" id="d1b"><p class="ans">Answer: 5/6</p></div></div>
+      <div class="box"><p><b>c</b> P(n = 4 or n = 5)</p><button class="reveal" type="button" data-w="d1c">Show working</button><div class="working" id="d1c"><p class="ans">Answer: 2/6 = 1/3</p></div></div>
+      <div class="box"><p><b>d</b> P(n = 4 and n = 5)</p><button class="reveal" type="button" data-w="d1d">Show working</button><div class="working" id="d1d"><ol class="steps"><li>Impossible on one roll.</li><li class="ans">Answer: 0</li></ol></div></div>
+      <div class="box"><p><b>e</b> P(n is even or odd)</p><button class="reveal" type="button" data-w="d1e">Show working</button><div class="working" id="d1e"><p class="ans">Answer: 1</p></div></div>
+      <div class="box"><p><b>f</b> P(n is neither even nor odd)</p><button class="reveal" type="button" data-w="d1f">Show working</button><div class="working" id="d1f"><p class="ans">Answer: 0</p></div></div>
+      <div class="box"><p><b>g</b> P(n is even and divisible by three)</p><button class="reveal" type="button" data-w="d1g">Show working</button><div class="working" id="d1g"><ol class="steps"><li>Even and multiple of 3: only 6.</li><li class="ans">Answer: 1/6</li></ol></div></div>
+      <div class="box"><p><b>h</b> P(n is even or divisible by three)</p><button class="reveal" type="button" data-w="d1h">Show working</button><div class="working" id="d1h"><ol class="steps"><li>Even {2,4,6} or multiple of 3 {3,6} → {2,3,4,6}.</li><li>Or: 3/6 + 2/6 − 1/6 = 4/6.</li><li class="ans">Answer: 4/6 = 2/3</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "addition,mutex",
+  kicker: "Foundation",
+  title: "Exercise 12D Question 4",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12D Q4a–b · printed p. 449</div>
+    <p>A die is thrown. A = even. B = greater than 2.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Are A and B mutually exclusive?</p>
+        <button class="reveal" type="button" data-w="d4a">Show working</button>
+        <div class="working" id="d4a"><ol class="steps"><li>A = {2,4,6}, B = {3,4,5,6}. Overlap {4,6}.</li><li class="ans">Answer: no</li></ol></div></div>
+      <div class="box"><p><b>b i</b> P(A)</p><button class="reveal" type="button" data-w="d4bi">Show working</button><div class="working" id="d4bi"><p class="ans">Answer: 1/2</p></div></div>
+      <div class="box"><p><b>b ii</b> P(B)</p><button class="reveal" type="button" data-w="d4bii">Show working</button><div class="working" id="d4bii"><p class="ans">Answer: 4/6 = 2/3</p></div></div>
+      <div class="box"><p><b>b iii</b> P(A ∩ B)</p><button class="reveal" type="button" data-w="d4biii">Show working</button><div class="working" id="d4biii"><p class="ans">Answer: 2/6 = 1/3</p></div></div>
+      <div class="box"><p><b>b iv</b> P(A ∪ B)</p><button class="reveal" type="button" data-w="d4biv">Show working</button><div class="working" id="d4biv"><ol class="steps"><li>1/2 + 2/3 − 1/3 = 5/6.</li><li class="ans">Answer: 5/6</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "addition",
+  kicker: "20–28 min · Development",
+  title: "Exercise 12D Question 7",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12D Q7a–d · printed p. 449</div>
+    <p>Use P(A ∪ B) = P(A) + P(B) − P(A ∩ B).</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> P(A)=1/5, P(B)=1/3, P(A ∩ B)=1/15. Find P(A ∪ B).</p>
+        <button class="reveal" type="button" data-w="d7a">Show working</button>
+        <div class="working" id="d7a"><ol class="steps"><li>1/5 + 1/3 − 1/15 = 3/15 + 5/15 − 1/15.</li><li class="ans">Answer: 7/15</li></ol></div></div>
+      <div class="box"><p><b>b</b> P(A)=1/2, P(B)=1/3, P(A ∪ B)=5/6. Find P(A ∩ B).</p>
+        <button class="reveal" type="button" data-w="d7b">Show working</button>
+        <div class="working" id="d7b"><ol class="steps"><li>5/6 = 1/2 + 1/3 − P(and) → P(and) = 1/2 + 1/3 − 5/6 = 0.</li><li class="ans">Answer: 0</li></ol></div></div>
+      <div class="box"><p><b>c</b> P(A ∪ B)=9/10, P(A ∩ B)=1/5, P(A)=1/2. Find P(B).</p>
+        <button class="reveal" type="button" data-w="d7c">Show working</button>
+        <div class="working" id="d7c"><ol class="steps"><li>9/10 = 1/2 + P(B) − 1/5 → P(B) = 9/10 − 1/2 + 1/5 = 3/5.</li><li class="ans">Answer: 3/5</li></ol></div></div>
+      <div class="box"><p><b>d</b> Mutually exclusive, P(A)=1/7, P(B)=4/7. Find P(A ∪ B).</p>
+        <button class="reveal" type="button" data-w="d7d">Show working</button>
+        <div class="working" id="d7d"><p class="ans">Answer: 5/7</p></div></div>
+    </div>`
+});
+slides.push({
+  used: "fill-middle,complement-p,addition",
+  kicker: "Development Venn",
+  title: "Exercise 12D Question 9",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12D Q9a–c · printed p. 450</div>
+    <p>50 students. 26 Latin, 15 Greek, 8 both. Find the probability a student chosen at random:</p>
+    ${venn2({ left: "L", right: "G", shade: "blank" })}
+    <div class="stack">
+      <div class="box"><p><b>a</b> studies only Latin</p>
+        <button class="reveal" type="button" data-w="d9a">Show working</button>
+        <div class="working" id="d9a"><ol class="steps"><li>Only Latin = 26 − 8 = 18.</li><li class="ans">Answer: 18/50 = 9/25</li></ol></div></div>
+      <div class="box"><p><b>b</b> studies only Greek</p>
+        <button class="reveal" type="button" data-w="d9b">Show working</button>
+        <div class="working" id="d9b"><ol class="steps"><li>Only Greek = 15 − 8 = 7.</li><li class="ans">Answer: 7/50</li></ol></div></div>
+      <div class="box"><p><b>c</b> does not study either language</p>
+        <button class="reveal" type="button" data-w="d9c">Show working</button>
+        <div class="working" id="d9c"><ol class="steps"><li>Inside = 18 + 8 + 7 = 33. Neither = 50 − 33 = 17.</li><li class="ans">Answer: 17/50</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "fill-middle,three-sets",
+  kicker: "32–42 min · Challenge method",
+  title: "Exercise 12D Question 13 — start here",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12D Q13 · printed p. 450</div>
+    <p>60 students. Rugby 32, soccer 29, cross country 15. Pairwise: R∩S = 11, S∩C = 9, R∩C = 8. All three = 5.</p>
+    <div class="say">Method: put 5 in the centre first. Then each pairwise overlap is “pairwise minus 5”.</div>
+    <p>Do a–d independently after you fill the diagram.</p>`
+});
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("Q6, Q8, Q10, Q11", "Q12, Q13", `<p class="small">Foundation leftover: Q2, Q3, Q5.</p>`)
+});
+pack("12D");
+/* ========== 12E ========== */
+slides.push({
+  used: "",
+  kicker: "12E · 45 minutes",
+  title: "Multi-stage experiments and the product rule",
+  html: `<p>Today’s three words: <b>times</b>, <b>independent</b>, <b>then</b>.</p>
+    <div class="say">AND for successive stages usually means multiply.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `<ol>
+      <li>Multiply independent stages: P(A then B) = P(A)×P(B).</li>
+      <li>Change the second fraction when there is no replacement.</li>
+      <li>Use 1 − P(none) for “at least one”.</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `<table class="mini">
+      <tr><th>Mins</th><th>Move</th></tr>
+      <tr><td>0–8</td><td>Product rule + without replacement</td></tr>
+      <tr><td>8–20</td><td>Foundation Q2 then Q5</td></tr>
+      <tr><td>20–32</td><td>Development Q6</td></tr>
+      <tr><td>32–42</td><td>Challenge Q14a (two layers)</td></tr>
+      <tr><td>42–45</td><td>Independent list</td></tr>
+    </table>`
+});
+slides.push({
+  used: "product,independent",
+  kicker: "Idea",
+  title: "Independent → multiply",
+  html: `<p>Die then coin. P(at least 2 and a head) = (5/6)×(1/2) = 5/12.</p>
+    <div class="warn">Do not multiply if one stage changes the other (without replacement).</div>`
+});
+slides.push({
+  used: "without,product",
+  kicker: "Idea",
+  title: "Without replacement → second fraction changes",
+  html: `<p>Five discs 1–5. Two draws, no replacement. P(both even).</p>
+    <p>Even: 2 and 4. First even 2/5. Then 1 even left out of 4.</p>
+    <p class="ans">P = (2/5)×(1/4) = 1/10.</p>`
+});
+slides.push({
+  used: "product,independent",
+  kicker: "8–16 min · Foundation",
+  title: "Exercise 12E Question 2",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12E Q2a–d · printed p. 454</div>
+    <p>A coin and a die are tossed. Use the product rule to find the probability of obtaining:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> a three and a head</p><button class="reveal" type="button" data-w="e2a">Show working</button><div class="working" id="e2a"><ol class="steps"><li>(1/6)×(1/2).</li><li class="ans">Answer: 1/12</li></ol></div></div>
+      <div class="box"><p><b>b</b> a six and a tail</p><button class="reveal" type="button" data-w="e2b">Show working</button><div class="working" id="e2b"><p class="ans">Answer: 1/12</p></div></div>
+      <div class="box"><p><b>c</b> an even number and a tail</p><button class="reveal" type="button" data-w="e2c">Show working</button><div class="working" id="e2c"><ol class="steps"><li>(1/2)×(1/2).</li><li class="ans">Answer: 1/4</li></ol></div></div>
+      <div class="box"><p><b>d</b> a number less than five and a head</p><button class="reveal" type="button" data-w="e2d">Show working</button><div class="working" id="e2d"><ol class="steps"><li>Less than 5: 1,2,3,4 so 4/6 = 2/3. Times 1/2.</li><li class="ans">Answer: 1/3</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "without,product",
+  kicker: "Foundation",
+  title: "Exercise 12E Question 5",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12E Q5a–d · printed p. 455</div>
+    <p>A box contains five light bulbs, two of which are faulty. Two bulbs are selected, one at a time without replacement.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> both bulbs are faulty</p><button class="reveal" type="button" data-w="e5a">Show working</button><div class="working" id="e5a"><ol class="steps"><li>(2/5)×(1/4).</li><li class="ans">Answer: 1/10</li></ol></div></div>
+      <div class="box"><p><b>b</b> neither bulb is faulty</p><button class="reveal" type="button" data-w="e5b">Show working</button><div class="working" id="e5b"><ol class="steps"><li>3 working. (3/5)×(2/4).</li><li class="ans">Answer: 3/10</li></ol></div></div>
+      <div class="box"><p><b>c</b> the first is faulty and the second is not</p><button class="reveal" type="button" data-w="e5c">Show working</button><div class="working" id="e5c"><ol class="steps"><li>(2/5)×(3/4).</li><li class="ans">Answer: 3/10</li></ol></div></div>
+      <div class="box"><p><b>d</b> the second is faulty and the first is not</p><button class="reveal" type="button" data-w="e5d">Show working</button><div class="working" id="e5d"><ol class="steps"><li>(3/5)×(2/4).</li><li class="ans">Answer: 3/10</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "product,independent",
+  kicker: "20–32 min · Development",
+  title: "Exercise 12E Question 6",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12E Q6a–e · printed p. 455</div>
+    <p>A die is rolled twice. Using the product rule, find the probability of throwing:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> a six and then a five</p><button class="reveal" type="button" data-w="e6a">Show working</button><div class="working" id="e6a"><p class="ans">Answer: 1/36</p></div></div>
+      <div class="box"><p><b>b</b> a one and then an odd number</p><button class="reveal" type="button" data-w="e6b">Show working</button><div class="working" id="e6b"><ol class="steps"><li>(1/6)×(1/2).</li><li class="ans">Answer: 1/12</li></ol></div></div>
+      <div class="box"><p><b>c</b> a double six</p><button class="reveal" type="button" data-w="e6c">Show working</button><div class="working" id="e6c"><p class="ans">Answer: 1/36</p></div></div>
+      <div class="box"><p><b>d</b> two numbers greater than four</p><button class="reveal" type="button" data-w="e6d">Show working</button><div class="working" id="e6d"><ol class="steps"><li>Greater than 4: 5 or 6, so 1/3 each time. (1/3)×(1/3).</li><li class="ans">Answer: 1/9</li></ol></div></div>
+      <div class="box"><p><b>e</b> a number greater than four and then a number less than four</p><button class="reveal" type="button" data-w="e6e">Show working</button><div class="working" id="e6e"><ol class="steps"><li>(2/6)×(3/6) = (1/3)×(1/2).</li><li class="ans">Answer: 1/6</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "product,at-least",
+  kicker: "32–42 min · Challenge method",
+  title: "Exercise 12E Question 14a",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12E Q14a · printed p. 456</div>
+    <p>One layer of tinting cuts out 1/5 of the sun’s UV rays at a certain frequency.</p>
+    <p><b>a</b> What fraction would be cut out by using two layers?</p>
+    <button class="reveal" type="button" data-w="e14a">Show working</button>
+    <div class="working" id="e14a">
+      <ol class="steps">
+        <li>Each layer lets 4/5 through. Two layers let (4/5)×(4/5) = 16/25 through.</li>
+        <li>Cut out = 1 − 16/25 = 9/25.</li>
+        <li class="ans">Answer: 9/25</li>
+      </ol>
+    </div>
+    <div class="say">Q14b–c and Q15 use the same “what is left” idea. Independent tonight.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("Q7–13", "Q14b–c, Q15–17", `<p class="small">Foundation leftover: Q1, Q3, Q4.</p>`)
+});
+pack("12E");
+
+/* ========== 12F ========== */
+slides.push({
+  used: "",
+  kicker: "12F · 45 minutes",
+  title: "Probability tree diagrams",
+  html: `<p>Today’s three words: <b>on the branch</b>, <b>multiply</b>, <b>add</b>.</p>
+    <div class="say">This is the 12E product rule, drawn so you do not lose a case.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `<ol>
+      <li>Write probabilities on branches.</li>
+      <li>Multiply along a path.</li>
+      <li>Add mutually exclusive last-column answers.</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `<table class="mini">
+      <tr><th>Mins</th><th>Move</th></tr>
+      <tr><td>0–8</td><td>How to read a probability tree</td></tr>
+      <tr><td>8–24</td><td>Foundation Q1 (with, then without replacement)</td></tr>
+      <tr><td>24–34</td><td>Foundation Q3 or Development Q6</td></tr>
+      <tr><td>34–42</td><td>Challenge Q20a</td></tr>
+      <tr><td>42–45</td><td>Independent list</td></tr>
+    </table>`
+});
+slides.push({
+  used: "p-tree,multiply,add-paths,check-one",
+  kicker: "Idea",
+  title: "Multiply along, add across",
+  html: `<ol>
+      <li>Put a probability on every branch.</li>
+      <li>Last column = product along that path.</li>
+      <li>Want “one of these or one of those”? Add those last-column numbers.</li>
+      <li>Check: all last-column numbers add to 1.</li>
+    </ol>`
+});
+slides.push({
+  used: "p-tree,multiply,add-paths",
+  kicker: "8–20 min · Foundation",
+  title: "Exercise 12F Question 1a–b",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12F Q1a–b · printed p. 459</div>
+    <p>A bag contains three black and four white discs. A disc is selected, noted, and <b>returned</b> before a second draw.</p>
+    <div class="stack">
+      <div class="box"><p><b>a i</b> P(BB)</p><button class="reveal" type="button" data-w="f1ai">Show working</button><div class="working" id="f1ai"><ol class="steps"><li>P(B)=3/7. With replacement, second is still 3/7.</li><li class="ans">Answer: 9/49</li></ol></div></div>
+      <div class="box"><p><b>a ii</b> P(BW)</p><button class="reveal" type="button" data-w="f1aii">Show working</button><div class="working" id="f1aii"><p class="ans">Answer: 12/49</p></div></div>
+      <div class="box"><p><b>a iii</b> P(WB)</p><button class="reveal" type="button" data-w="f1aiii">Show working</button><div class="working" id="f1aiii"><p class="ans">Answer: 12/49</p></div></div>
+      <div class="box"><p><b>a iv</b> P(WW)</p><button class="reveal" type="button" data-w="f1aiv">Show working</button><div class="working" id="f1aiv"><p class="ans">Answer: 16/49</p></div></div>
+      <div class="box"><p><b>b i</b> both the same colour</p><button class="reveal" type="button" data-w="f1bi">Show working</button><div class="working" id="f1bi"><ol class="steps"><li>BB + WW = 9/49 + 16/49.</li><li class="ans">Answer: 25/49</li></ol></div></div>
+      <div class="box"><p><b>b ii</b> different colours</p><button class="reveal" type="button" data-w="f1bii">Show working</button><div class="working" id="f1bii"><ol class="steps"><li>BW + WB = 24/49. Check: 25/49 + 24/49 = 1.</li><li class="ans">Answer: 24/49</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "p-tree,without,add-paths",
+  kicker: "Foundation",
+  title: "Exercise 12F Question 1c",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12F Q1c · printed p. 459</div>
+    <p>Repeat part b if the first ball is <b>not</b> replaced.</p>
+    <div class="stack">
+      <div class="box"><p><b>i</b> same colour</p>
+        <button class="reveal" type="button" data-w="f1ci">Show working</button>
+        <div class="working" id="f1ci"><ol class="steps">
+          <li>P(BB) = (3/7)×(2/6) = 6/42.</li>
+          <li>P(WW) = (4/7)×(3/6) = 12/42.</li>
+          <li>Same = 18/42 = 3/7.</li>
+          <li class="ans">Answer: 3/7</li>
+        </ol></div></div>
+      <div class="box"><p><b>ii</b> different colours</p>
+        <button class="reveal" type="button" data-w="f1cii">Show working</button>
+        <div class="working" id="f1cii"><ol class="steps"><li>1 − 3/7.</li><li class="ans">Answer: 4/7</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "p-tree,multiply,add-paths",
+  kicker: "Foundation",
+  title: "Exercise 12F Question 3",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12F Q3a–b · printed p. 459</div>
+    <p>Bag 1: 3 red, 2 blue. Bag 2: 2 red, 3 blue. One ball from each bag.</p>
+    <div class="stack">
+      <div class="box"><p><b>a i</b> P(RR)</p><button class="reveal" type="button" data-w="f3ai">Show working</button><div class="working" id="f3ai"><p class="ans">Answer: (3/5)×(2/5) = 6/25</p></div></div>
+      <div class="box"><p><b>a ii</b> P(RB)</p><button class="reveal" type="button" data-w="f3aii">Show working</button><div class="working" id="f3aii"><p class="ans">Answer: (3/5)×(3/5) = 9/25</p></div></div>
+      <div class="box"><p><b>a iii</b> P(BR)</p><button class="reveal" type="button" data-w="f3aiii">Show working</button><div class="working" id="f3aiii"><p class="ans">Answer: (2/5)×(2/5) = 4/25</p></div></div>
+      <div class="box"><p><b>a iv</b> P(BB)</p><button class="reveal" type="button" data-w="f3aiv">Show working</button><div class="working" id="f3aiv"><p class="ans">Answer: (2/5)×(3/5) = 6/25</p></div></div>
+      <div class="box"><p><b>b i</b> same colour</p><button class="reveal" type="button" data-w="f3bi">Show working</button><div class="working" id="f3bi"><ol class="steps"><li>RR + BB = 6/25 + 6/25.</li><li class="ans">Answer: 12/25</li></ol></div></div>
+      <div class="box"><p><b>b ii</b> different colours</p><button class="reveal" type="button" data-w="f3bii">Show working</button><div class="working" id="f3bii"><ol class="steps"><li>RB + BR = 9/25 + 4/25.</li><li class="ans">Answer: 13/25</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "p-tree,add-paths",
+  kicker: "24–34 min · Development",
+  title: "Exercise 12F Question 6",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12F Q6a–b · printed p. 460</div>
+    <p>P(green) = 3/5 at a set of lights. Two independent sets.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> both green</p><button class="reveal" type="button" data-w="f6a">Show working</button><div class="working" id="f6a"><p class="ans">Answer: (3/5)×(3/5) = 9/25</p></div></div>
+      <div class="box"><p><b>b</b> at least one green</p><button class="reveal" type="button" data-w="f6b">Show working</button><div class="working" id="f6b"><ol class="steps"><li>P(neither green) = (2/5)×(2/5) = 4/25.</li><li>1 − 4/25 = 21/25.</li><li class="ans">Answer: 21/25</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "p-tree,multiply",
+  kicker: "34–42 min · Challenge method",
+  title: "Exercise 12F Question 20a",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12F Q20a · printed p. 461</div>
+    <p>Two dice. The score is the <b>maximum</b> of the two faces. Find P(score a one).</p>
+    <button class="reveal" type="button" data-w="f20a">Show working</button>
+    <div class="working" id="f20a">
+      <ol class="steps">
+        <li>The maximum is 1 only if both dice show 1.</li>
+        <li>P = (1/6)×(1/6) = 1/36.</li>
+        <li class="ans">Answer: 1/36</li>
+      </ol>
+    </div>
+    <div class="say">Q20b–c and Q21 use listing or a tree. Independent tonight.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("Q6 (if not finished), Q7–19", "Q20b–c, Q21, Q22", `<p class="small">Foundation leftover: Q2, Q4, Q5.</p>`)
+});
+pack("12F");
+
+/* ========== 12G ========== */
+slides.push({
+  used: "",
+  kicker: "12G · 45 minutes",
+  title: "Conditional probability",
+  html: `<p>Today’s three words: <b>given that</b>, <b>shrink</b>, <b>divide</b>.</p>
+    <div class="say">New information makes the sample space smaller. Divide by the new total.</div>`
+});
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `<ol>
+      <li>Find P(A | B) by shrinking to B, then counting A ∩ B.</li>
+      <li>Use P(A | B) = P(A ∩ B) / P(B).</li>
+      <li>Read a two-way table using row or column totals.</li>
+      <li>Test independence with P(A and B) =? P(A)P(B).</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `<table class="mini">
+      <tr><th>Mins</th><th>Move</th></tr>
+      <tr><td>0–8</td><td>Given that = shrink the box</td></tr>
+      <tr><td>8–20</td><td>Foundation Q1 then Q6</td></tr>
+      <tr><td>20–32</td><td>Two-way table Q2</td></tr>
+      <tr><td>32–42</td><td>Independence Q7 + Challenge setup Q25</td></tr>
+      <tr><td>42–45</td><td>Independent list</td></tr>
+    </table>`
+});
+slides.push({
+  used: "given",
+  kicker: "Idea",
+  title: "Given that → smaller box",
+  html: `<p>Win if the die is odd. Someone says “it is prime”.</p>
+    <p>New sample space B = {2, 3, 5}. Odd primes: {3, 5}.</p>
+    <p class="ans">P(odd | prime) = 2/3.</p>`
+});
+slides.push({
+  used: "cond-formula,independent",
+  kicker: "Idea",
+  title: "The two formulae",
+  html: `<p><span class="ans">P(A | B) = P(A ∩ B) / P(B)</span></p>
+    <p>Independent means the given-that does not change P(A):</p>
+    <p class="ans">P(A | B) = P(A) &nbsp; and &nbsp; P(A ∩ B) = P(A)P(B)</p>`
+});
+slides.push({
+  used: "given",
+  kicker: "8–16 min · Foundation",
+  title: "Exercise 12G Question 1",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12G Q1a–d · printed p. 469</div>
+    <p>Two dice. It is revealed that the <b>first</b> die shows an even number.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Circle the reduced sample space (do this on paper).</p>
+        <button class="reveal" type="button" data-w="g1a">Show working</button>
+        <div class="working" id="g1a"><p class="ans">Keep only first-die 2, 4 or 6: 18 equally likely dots.</p></div></div>
+      <div class="box"><p><b>b</b> P(two sixes | first even)</p>
+        <button class="reveal" type="button" data-w="g1b">Show working</button>
+        <div class="working" id="g1b"><ol class="steps"><li>Only (6,6) in the reduced space. 1 out of 18.</li><li class="ans">Answer: 1/18</li></ol></div></div>
+      <div class="box"><p><b>c</b> P(at least one six | first even)</p>
+        <button class="reveal" type="button" data-w="g1c">Show working</button>
+        <div class="working" id="g1c"><ol class="steps"><li>First even: 18 outcomes. Favourable: (2,6), (4,6), (6,1), (6,2), (6,3), (6,4), (6,5), (6,6). Eight outcomes.</li><li class="ans">Answer: 8/18 = 4/9</li></ol></div></div>
+      <div class="box"><p><b>d</b> P(sum is five | first even)</p>
+        <button class="reveal" type="button" data-w="g1d">Show working</button>
+        <div class="working" id="g1d"><ol class="steps"><li>Sum 5 with first even: (2,3) and (4,1). Two out of 18.</li><li class="ans">Answer: 2/18 = 1/9</li></ol></div></div>
+    </div>`
+});
+slides.push({
+  used: "twoway,given",
+  kicker: "20–32 min · Two-way table",
+  title: "Exercise 12G Question 2",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12G Q2a–d · printed p. 469</div>
+    <table class="mini">
+      <tr><th></th><th>Coalition</th><th>Labor</th><th>Other</th><th>Total</th></tr>
+      <tr><td>Male</td><td>130</td><td>340</td><td>110</td><td>580</td></tr>
+      <tr><td>Female</td><td>210</td><td>190</td><td>20</td><td>420</td></tr>
+      <tr><td>Total</td><td>340</td><td>530</td><td>130</td><td>1000</td></tr>
+    </table>
+    <div class="stack">
+      <div class="box"><p><b>a</b> P(voted Coalition)</p><button class="reveal" type="button" data-w="g2a">Show working</button><div class="working" id="g2a"><p class="ans">Answer: 340/1000 = 17/50</p></div></div>
+      <div class="box"><p><b>b</b> P(Labor | female)</p><button class="reveal" type="button" data-w="g2b">Show working</button><div class="working" id="g2b"><p class="ans">Answer: 190/420 = 19/42</p></div></div>
+      <div class="box"><p><b>c</b> P(male | Coalition)</p><button class="reveal" type="button" data-w="g2c">Show working</button><div class="working" id="g2c"><p class="ans">Answer: 130/340 = 13/34</p></div></div>
+      <div class="box"><p><b>d</b> Robin voted Other. P(female | Other)</p><button class="reveal" type="button" data-w="g2d">Show working</button><div class="working" id="g2d"><p class="ans">Answer: 20/130 = 2/13</p></div></div>
+    </div>`
+});
+slides.push({
+  used: "cond-formula",
+  kicker: "Formula drill",
+  title: "Exercise 12G Question 6",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12G Q6a–c · printed p. 470</div>
+    <p>Use P(A | B) = P(A ∩ B) / P(B).</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> P(A ∩ B)=0.5, P(B)=0.7</p><button class="reveal" type="button" data-w="g6a">Show working</button><div class="working" id="g6a"><p class="ans">Answer: 0.5/0.7 = 5/7</p></div></div>
+      <div class="box"><p><b>b</b> P(A ∩ B)=0.15, P(B)=0.4</p><button class="reveal" type="button" data-w="g6b">Show working</button><div class="working" id="g6b"><p class="ans">Answer: 0.15/0.4 = 3/8</p></div></div>
+      <div class="box"><p><b>c</b> P(E ∩ F)=0.8, P(F)=0.95</p><button class="reveal" type="button" data-w="g6c">Show working</button><div class="working" id="g6c"><p class="ans">Answer: 0.8/0.95 = 16/19</p></div></div>
+    </div>`
+});
+slides.push({
+  used: "independent",
+  kicker: "Independence",
+  title: "Exercise 12G Question 7",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 12G Q7a–d · printed p. 471</div>
+    <p>A and B are independent.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> P(A)=0.4, P(B)=0.6. Find P(A ∩ B).</p><button class="reveal" type="button" data-w="g7a">Show working</button><div class="working" id="g7a"><p class="ans">Answer: 0.4 × 0.6 = 0.24</p></div></div>
+      <div class="box"><p><b>b</b> P(A)=0.3, P(B)=0.5. Find P(A ∩ B).</p><button class="reveal" type="button" data-w="g7b">Show working</button><div class="working" id="g7b"><p class="ans">Answer: 0.15</p></div></div>
+      <div class="box"><p><b>c</b> P(A)=0.4, P(B)=0.6. Find P(A | B).</p><button class="reveal" type="button" data-w="g7c">Show working</button><div class="working" id="g7c"><ol class="steps"><li>Independent ⇒ P(A | B) = P(A).</li><li class="ans">Answer: 0.4</li></ol></div></div>
+      <div class="box"><p><b>d</b> P(A)=0.7, P(B)=0.2. Find P(A | B).</p><button class="reveal" type="button" data-w="g7d">Show working</button><div class="working" id="g7d"><p class="ans">Answer: 0.7</p></div></div>
+    </div>`
+});
+slides.push({
+  used: "four,cond-formula",
+  kicker: "32–42 min · Challenge method",
+  title: "Exercise 12G Question 25 — the method",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12G Q25 · printed p. 473</div>
+    <p>Draw a probability tree: Disease (1%) or not (99%), then Positive/Negative.</p>
+    <ul>
+      <li>P(D) = 0.01, P(+ | D) = 0.80, P(+ | not D) = 0.05.</li>
+      <li>a: P(+) = all paths that end +.</li>
+      <li>c: false positive = P(not D | +) = P(+ and not D) / P(+).</li>
+    </ul>
+    <div class="say">We model the tree in class. Finish a–e independently from the book.</div>`
+});
+slides.push({
+  used: "four",
+  kicker: "Keep",
+  title: "Four formulae of the chapter",
+  html: `<ol>
+      <li>P(not A) = 1 − P(A)</li>
+      <li>P(A or B) = P(A) + P(B) − P(A and B)</li>
+      <li>P(A | B) = P(A ∩ B) / P(B)</li>
+      <li>Independent ⇔ P(A and B) = P(A)P(B)</li>
+    </ol>`
+});
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("Q3–5, Q8–24", "Q25–29", `<p class="small">Foundation leftover: Q4 if not done in class.</p>`)
+});
+pack("12G");
+
+/* ========== Review ========== */
+slides.push({
+  used: "",
+  kicker: "Chapter Review · mixed practice",
+  title: "Chapter Review Exercise",
+  html: `<p>This is not a new idea. It mixes 12A–12G.</p>
+    <div class="say">Use the left panel to jump back to a section if a review question uses that formula.</div>
+    <p class="small">CambridgeMATHS NSW Advanced Year 11 · Chapter Review Exercise · printed pp. 475–477.</p>`
+});
+slides.push({
+  used: "basic-p,complement-p,addition,product,given,p-tree",
+  kicker: "Which formula?",
+  title: "Match the question type",
+  html: `<ul>
+      <li>One die / one card / one letter → <b>P = |E|/|S|</b></li>
+      <li>“Does not” → <b>1 − P</b></li>
+      <li>Two-stage list (two coins, two dice) → <b>dot graph or counting tree</b></li>
+      <li>Survey Venn → <b>fill the middle, then addition</b></li>
+      <li>Independent stages → <b>multiply</b></li>
+      <li>Weights on branches → <b>probability tree</b></li>
+      <li>“Given that” / two-way table → <b>shrink, then divide</b></li>
+    </ul>`
+});
+slides.push({
+  used: "",
+  kicker: "Independent",
+  title: "Chapter Review Exercise — numbers only",
+  html: `
+    <div class="cite">Chapter Review Exercise · printed pp. 475–477</div>
+    <p>Do these from the book after 12A–12G. Question numbers only:</p>
+    <div class="box"><b>All review items:</b> Q1–16</div>
+    <p>Suggested short set: Q1, Q3, Q5, Q7, Q9, Q12, Q14.</p>
+    <div class="warn">Worked class items live in 12A–12G. Open that section from the left panel if you need a model.</div>`
+});
+pack("REV");
+
+
 
 const deck = document.getElementById("deck");
-slides.forEach((s, idx) => {
-  const el = document.createElement("section");
-  el.className = "slide" + (idx === 0 ? " on" : "");
-  el.setAttribute("data-used-formulas", s.used || "");
-  el.innerHTML = `<p class="kicker">${s.kicker}</p><h2>${s.title}</h2>${s.html}`;
-  deck.appendChild(el);
-});
-
-let i = 0;
-const all = [...document.querySelectorAll(".slide")];
+const toc = document.getElementById("toc");
 const bar = document.getElementById("bar");
 const counter = document.getElementById("counter");
 const prev = document.getElementById("prev");
 const next = document.getElementById("next");
+let currentKey = "12A";
+let i = 0;
+let all = [];
 
 function syncFormulas(slideEl) {
+  if (!slideEl) return;
   const used = (slideEl.getAttribute("data-used-formulas") || "")
     .split(",").map((s) => s.trim()).filter(Boolean);
   document.querySelectorAll("#formula-list [data-formula]").forEach((card) => {
@@ -672,6 +2065,7 @@ function syncFormulas(slideEl) {
   });
 }
 function go(n) {
+  if (!all.length) return;
   i = Math.max(0, Math.min(all.length - 1, n));
   all.forEach((el, k) => el.classList.toggle("on", k === i));
   counter.textContent = (i + 1) + " / " + all.length;
@@ -681,6 +2075,35 @@ function go(n) {
   syncFormulas(all[i]);
   document.querySelector("main").scrollTop = 0;
 }
+function loadLesson(key) {
+  currentKey = key;
+  if (location.hash.slice(1) !== key) location.hash = key;
+  const meta = META[key];
+  document.getElementById("hdr-title").textContent =
+    "Year 11 Mathematics Advanced · " + meta.code + " " + meta.sub;
+  document.getElementById("formula-list").innerHTML = FORMULAS[key];
+  toc.querySelectorAll("button[data-key]").forEach((b) => {
+    b.classList.toggle("on", b.dataset.key === key);
+  });
+  deck.innerHTML = "";
+  (LESSONS[key] || []).forEach((s, idx) => {
+    const el = document.createElement("section");
+    el.className = "slide" + (idx === 0 ? " on" : "");
+    el.setAttribute("data-used-formulas", s.used || "");
+    el.innerHTML = `<p class="kicker">${s.kicker}</p><h2>${s.title}</h2>${s.html}`;
+    deck.appendChild(el);
+  });
+  all = [...deck.querySelectorAll(".slide")];
+  go(0);
+}
+ORDER.forEach((key) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.key = key;
+  b.innerHTML = `<span class="code">${META[key].code}</span><span class="sub">${META[key].sub}</span>`;
+  b.onclick = () => loadLesson(key);
+  toc.appendChild(b);
+});
 prev.onclick = () => go(i - 1);
 next.onclick = () => go(i + 1);
 document.addEventListener("keydown", (e) => {
@@ -696,9 +2119,16 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("click", (e) => {
   const b = e.target.closest("button.reveal");
   if (!b) return;
-  document.getElementById(b.dataset.w).classList.toggle("show");
+  const panel = document.getElementById(b.dataset.w);
+  if (!panel) return;
+  panel.classList.toggle("show");
+  b.textContent = panel.classList.contains("show") ? "Hide working" : "Show working";
 });
-go(0);
+window.addEventListener("hashchange", () => {
+  const k = location.hash.slice(1);
+  if (ORDER.includes(k) && k !== currentKey) loadLesson(k);
+});
+loadLesson((ORDER.includes((location.hash || "").slice(1)) ? location.hash.slice(1) : "12A"));
 </script>
 </body>
 </html>
