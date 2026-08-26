@@ -129,7 +129,9 @@
     font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
     color: #c9a227; margin-bottom: 4px;
   }
-  svg.venn { max-width: 420px; width: 100%; height: auto; display: block; margin: 6px auto; }
+  svg.venn, svg.tree, svg.dots { max-width: 100%; width: 100%; height: auto; display: block; margin: 6px auto; }
+  svg.tree, svg.dots { max-width: 640px; background: #fffdf8; border: 1px solid var(--line); border-radius: 8px; }
+  .wplain p { margin: 8px 0; font-size: 18px; }
   table.mini { border-collapse: collapse; width: 100%; font-size: 16px; }
   table.mini th, table.mini td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; }
   table.mini th { background: #efe7d8; }
@@ -333,6 +335,189 @@ function venn3(o = {}) {
   </svg>`;
 }
 
+function treeLine(x1, y1, x2, y2) {
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1c2333" stroke-width="2"/>`;
+}
+/** Neutral node; optional yellow highlight + GxRy tag (G = column, R = row). */
+function treeNode(x, y, letter, opts = {}) {
+  const r = opts.r || 14;
+  const hi = !!opts.hi;
+  const fill = hi ? "#f5e6a3" : "#e8e4dc";
+  const stroke = hi ? "#8a7010" : "#1c2333";
+  const gxry = opts.gxry || "";
+  const brown = "#6b3a1f";
+  const tag = gxry
+    ? `<text x="${x - r - 3}" y="${y + 3}" text-anchor="end" font-size="8" font-weight="700" fill="${brown}">${gxry}</text>`
+    : "";
+  return `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>
+    <text x="${x}" y="${y + 5}" text-anchor="middle" font-size="${opts.fs || 15}" font-weight="800">${letter}</text>
+    ${tag}`;
+}
+function treeLabel(x, y, t, fs = 13) {
+  return `<text x="${x}" y="${y}" text-anchor="middle" font-size="${fs}" font-weight="700" fill="#5a6272">${t}</text>`;
+}
+function treeOut(x, y, t, hi = false) {
+  return `<text x="${x}" y="${y + 5}" text-anchor="start" font-size="15" font-weight="800" fill="${hi ? "#6b3a1f" : "#1c2333"}">${t}</text>`;
+}
+
+/**
+ * Two fair coins. opts.labelGxRy, opts.hi = ["G2R1", ...]
+ * Columns: G1 Start, G2 1st, G3 2nd; outcomes sit beside G3.
+ */
+function treeTwoCoins(opts = {}) {
+  const lab = !!opts.labelGxRy;
+  const hi = new Set(opts.hi || []);
+  const is = (g) => hi.has(g);
+  // Header band clear of nodes: first node at y≈48, headers at y=14
+  const x0 = 70, x1 = 170, x2 = 300, x3 = 410;
+  const yS = 130;
+  const yH = 70, yT = 190;
+  const yHH = 48, yHT = 100, yTH = 160, yTT = 212;
+  return `<svg class="tree" viewBox="0 0 520 250" role="img" aria-label="Counting tree for two coin tosses">
+    ${treeLabel(x0, 14, "Start")}${treeLabel(x1, 14, "1st")}${treeLabel(x2, 14, "2nd")}${treeLabel(x3 + 28, 14, "Outcome")}
+    ${treeLine(x0, yS, x1, yH)}${treeLine(x0, yS, x1, yT)}
+    ${treeLine(x1, yH, x2, yHH)}${treeLine(x1, yH, x2, yHT)}
+    ${treeLine(x1, yT, x2, yTH)}${treeLine(x1, yT, x2, yTT)}
+    ${treeLine(x2, yHH, x3 - 8, yHH)}${treeLine(x2, yHT, x3 - 8, yHT)}
+    ${treeLine(x2, yTH, x3 - 8, yTH)}${treeLine(x2, yTT, x3 - 8, yTT)}
+    ${treeNode(x0, yS, "·", { fs: 18, gxry: lab ? "G1R1" : "", hi: is("G1R1") })}
+    ${treeNode(x1, yH, "H", { gxry: lab ? "G2R1" : "", hi: is("G2R1") })}
+    ${treeNode(x1, yT, "T", { gxry: lab ? "G2R2" : "", hi: is("G2R2") })}
+    ${treeNode(x2, yHH, "H", { gxry: lab ? "G3R1" : "", hi: is("G3R1") })}
+    ${treeNode(x2, yHT, "T", { gxry: lab ? "G3R2" : "", hi: is("G3R2") })}
+    ${treeNode(x2, yTH, "H", { gxry: lab ? "G3R3" : "", hi: is("G3R3") })}
+    ${treeNode(x2, yTT, "T", { gxry: lab ? "G3R4" : "", hi: is("G3R4") })}
+    ${treeOut(x3, yHH, "HH", is("G3R1"))}${treeOut(x3, yHT, "HT", is("G3R2"))}
+    ${treeOut(x3, yTH, "TH", is("G3R3"))}${treeOut(x3, yTT, "TT", is("G3R4"))}
+  </svg>`;
+}
+
+/** Coin then die — H/T then 1–6 (12 outcomes). */
+function treeCoinDie() {
+  const gap = 22, yH0 = 36, yT0 = 36 + 6 * gap;
+  let body = "";
+  for (let d = 1; d <= 6; d++) {
+    const yH = yH0 + (d - 1) * gap, yT = yT0 + (d - 1) * gap;
+    body += `${treeLine(100, 100, 180, yH)}${treeLine(100, 220, 180, yT)}
+      ${treeOut(200, yH, "H" + d)}${treeOut(200, yT, "T" + d)}`;
+  }
+  return `<svg class="tree" viewBox="0 0 320 320" role="img" aria-label="Counting tree for a coin and a die">
+    ${treeLabel(40, 14, "Start")}${treeLabel(100, 14, "Coin")}${treeLabel(180, 14, "Die")}${treeLabel(250, 14, "Outcome")}
+    ${treeLine(40, 160, 100, 100)}${treeLine(40, 160, 100, 220)}
+    ${body}
+    ${treeNode(40, 160, "·", { fs: 18 })}
+    ${treeNode(100, 100, "H")}${treeNode(100, 220, "T")}
+  </svg>`;
+}
+
+/**
+ * Three fair coins. opts.labelGxRy, opts.hi = ["G4R1", ...]
+ * G1 Start · G2 1st · G3 2nd · G4 3rd
+ */
+function treeThreeCoins(opts = {}) {
+  const lab = !!opts.labelGxRy;
+  const hi = new Set(opts.hi || []);
+  const is = (g) => hi.has(g);
+  const outs = ["HHH","HHT","HTH","HTT","THH","THT","TTH","TTT"];
+  // More vertical room so G4 circles do not touch; headers clear of top node
+  const gap = 36;
+  const yOut = outs.map((_, i) => 52 + i * gap);
+  const y3 = [52 + 0.5 * gap, 52 + 2.5 * gap, 52 + 4.5 * gap, 52 + 6.5 * gap];
+  const y2H = (y3[0] + y3[1]) / 2, y2T = (y3[2] + y3[3]) / 2;
+  const yS = (y2H + y2T) / 2;
+  const x0 = 70, x1 = 150, x2 = 250, x3 = 360, x4 = 450;
+  let edges = "";
+  edges += treeLine(x0, yS, x1, y2H) + treeLine(x0, yS, x1, y2T);
+  edges += treeLine(x1, y2H, x2, y3[0]) + treeLine(x1, y2H, x2, y3[1]);
+  edges += treeLine(x1, y2T, x2, y3[2]) + treeLine(x1, y2T, x2, y3[3]);
+  for (let i = 0; i < 4; i++) {
+    edges += treeLine(x2, y3[i], x3, yOut[2 * i]) + treeLine(x2, y3[i], x3, yOut[2 * i + 1]);
+  }
+  const h = 52 + 7 * gap + 40;
+  return `<svg class="tree" viewBox="0 0 580 ${h}" role="img" aria-label="Counting tree for three coin tosses">
+    ${treeLabel(x0, 14, "Start")}${treeLabel(x1, 14, "1st")}${treeLabel(x2, 14, "2nd")}${treeLabel(x3, 14, "3rd")}${treeLabel(x4 + 20, 14, "Outcome")}
+    ${edges}
+    ${treeNode(x0, yS, "·", { fs: 18, gxry: lab ? "G1R1" : "", hi: is("G1R1") })}
+    ${treeNode(x1, y2H, "H", { gxry: lab ? "G2R1" : "", hi: is("G2R1") })}
+    ${treeNode(x1, y2T, "T", { gxry: lab ? "G2R2" : "", hi: is("G2R2") })}
+    ${y3.map((y, i) => treeNode(x2, y, i % 2 === 0 ? "H" : "T", { gxry: lab ? `G3R${i + 1}` : "", hi: is(`G3R${i + 1}`) })).join("")}
+    ${yOut.map((y, i) => treeNode(x3, y, i % 2 === 0 ? "H" : "T", { gxry: lab ? `G4R${i + 1}` : "", hi: is(`G4R${i + 1}`) }) + treeOut(x4, y, outs[i], is(`G4R${i + 1}`))).join("")}
+  </svg>`;
+}
+
+/** Digits 2,5,7,8 without repetition — show first digit 2 fully, then ×4 pattern. */
+function treeDigits2578() {
+  const second = ["5","7","8"];
+  const thirds = [["7","8"],["5","8"],["5","7"]];
+  const outs = ["257","258","275","278","285","287"];
+  let body = "", oi = 0;
+  second.forEach((s, si) => {
+    const y2 = 48 + si * 76 + 28;
+    body += treeLine(120, 160, 200, y2) + treeNode(200, y2, s);
+    thirds[si].forEach((t, ti) => {
+      const y3 = y2 + (ti === 0 ? -18 : 18);
+      body += treeLine(200, y2, 280, y3) + treeNode(280, y3, t) + treeOut(320, y3, outs[oi++]);
+    });
+  });
+  return `<svg class="tree" viewBox="0 0 460 300" role="img" aria-label="Part of the counting tree for digits 2, 5, 7, 8">
+    ${treeLabel(40, 14, "Start")}${treeLabel(120, 14, "1st")}${treeLabel(200, 14, "2nd")}${treeLabel(280, 14, "3rd")}${treeLabel(360, 14, "Outcome")}
+    ${treeLine(40, 160, 120, 160)}${treeNode(40, 160, "·", { fs: 18 })}${treeNode(120, 160, "2")}
+    ${body}
+    <text x="40" y="288" font-size="14" font-weight="700" fill="#5a6272">Same pattern for first digit 5, 7, and 8 → 4 × 6 = 24 outcomes.</text>
+  </svg>`;
+}
+
+/**
+ * Two-dice graph. Gx = green face, Ry = red face.
+ * Neutral dots; highlighted outcomes are yellow. GxRy labels: small brown, clear of dots.
+ */
+function diceDotGraph(highlight) {
+  const brown = "#6b3a1f";
+  const raw = [...(highlight instanceof Set ? highlight : (highlight || []))].map(String);
+  const toKey = (s) => {
+    if (/^G\d+R\d+$/i.test(s)) return s.toUpperCase();
+    const m = /^(\d+)\s*,\s*(\d+)$/.exec(s);
+    return m ? "G" + m[1] + "R" + m[2] : s;
+  };
+  const hiKeys = raw.map(toKey);
+  const hi = new Set(hiKeys);
+  const on = (g, r) => hi.has("G" + g + "R" + r);
+  const ox = 78, oy = 268, gap = 38;
+  let dots = "", tags = "";
+  const labelOnGraph = hiKeys.length > 0 && hiKeys.length <= 9;
+  for (let g = 1; g <= 6; g++) {
+    for (let r = 1; r <= 6; r++) {
+      const x = ox + (g - 1) * gap, y = oy - (r - 1) * gap;
+      const marked = on(g, r);
+      dots += `<circle cx="${x}" cy="${y}" r="${marked ? 7 : 5}" fill="${marked ? "#f5e6a3" : "#5a6272"}" stroke="#1c2333" stroke-width="${marked ? 1.5 : 1}"/>`;
+      if (marked && labelOnGraph) {
+        const topRow = r === 6;
+        const ly = topRow ? y + 16 : y - 10;
+        tags += `<text x="${x}" y="${ly}" text-anchor="middle" font-size="8" font-weight="700" fill="${brown}">G${g}R${r}</text>`;
+      }
+    }
+  }
+  if (hiKeys.length === 0) {
+    const x = ox + 3 * gap, y = oy - 1 * gap;
+    tags += `<circle cx="${x}" cy="${y}" r="7" fill="none" stroke="${brown}" stroke-width="2"/>`;
+    tags += `<text x="${x}" y="${y - 12}" text-anchor="middle" font-size="8" font-weight="700" fill="${brown}">e.g. G4R2</text>`;
+  }
+  const legend = hiKeys.length > 9
+    ? `<text x="12" y="14" font-size="8" font-weight="700" fill="${brown}">Yellow = ${hiKeys.join(", ")}</text>`
+    : `<text x="12" y="14" font-size="8" font-weight="700" fill="${brown}">GxRy = green x, red y · yellow = favourable</text>`;
+  const axis = [];
+  for (let k = 1; k <= 6; k++) {
+    axis.push(`<text x="${ox + (k - 1) * gap}" y="${oy + 22}" text-anchor="middle" font-size="12" font-weight="700">${k}</text>`);
+    axis.push(`<text x="${ox - 22}" y="${oy - (k - 1) * gap + 4}" text-anchor="middle" font-size="12" font-weight="700">${k}</text>`);
+  }
+  return `<svg class="dots" viewBox="0 0 360 330" role="img" aria-label="Two-dice sample space graph">
+    <line x1="${ox - 14}" y1="${oy}" x2="${ox + 5 * gap + 24}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox}" y1="${oy + 14}" x2="${ox}" y2="${oy - 5 * gap - 24}" stroke="#1c2333" stroke-width="2"/>
+    <text x="${ox + 2.5 * gap}" y="318" text-anchor="middle" font-size="13" font-weight="800">Green die → (Gx)</text>
+    <text x="18" y="155" text-anchor="middle" font-size="13" font-weight="800" transform="rotate(-90 18 155)">Red die ↑ (Ry)</text>
+    ${legend}${axis.join("")}${dots}${tags}
+  </svg>`;
+}
 const LESSONS = {};
 const ORDER = ["12A","12B","12C","12D","12E","12F","12G","REV"];
 const META = {
@@ -1334,7 +1519,7 @@ slides.push({
   kicker: "12C · 45 minutes",
   title: "Sample space graphs and tree diagrams",
   html: `<p>Today’s three words: <b>list</b>, <b>count</b>, <b>divide</b>.</p>
-    <div class="say">Draw the sample space first. Then circle the event. Then P = circled ÷ all.</div>`
+    <div class="say">Draw the sample space first (tree or graph). Then circle the event. Then P = circled ÷ all.</div>`
 });
 slides.push({
   used: "",
@@ -1352,10 +1537,11 @@ slides.push({
   title: "If we are running late",
   html: `<table class="mini">
       <tr><th>Mins</th><th>Move</th></tr>
-      <tr><td>0–8</td><td>Dot graph + counting tree</td></tr>
-      <tr><td>8–22</td><td>Foundation Q1 then Q2</td></tr>
-      <tr><td>22–34</td><td>Development Q7 (three coins)</td></tr>
-      <tr><td>34–42</td><td>Challenge Q12a (how many numbers)</td></tr>
+      <tr><td>0–6</td><td>Dot graph + counting tree ideas</td></tr>
+      <tr><td>6–14</td><td>Foundation Q1 then Q2</td></tr>
+      <tr><td>14–24</td><td>Development Q7 (three coins, full)</td></tr>
+      <tr><td>24–34</td><td>Development Q8 (two dice graph)</td></tr>
+      <tr><td>34–42</td><td>Challenge Q12 then Q13</td></tr>
       <tr><td>42–45</td><td>Independent list</td></tr>
     </table>`
 });
@@ -1363,22 +1549,24 @@ slides.push({
   used: "dot-graph,basic-p",
   kicker: "Idea",
   title: "Two dice = 36 dots",
-  html: `<p>First throw across. Second throw up. 6 × 6 = 36 equally likely pairs.</p>
-    <div class="box"><p>Double six is one dot. P = 1/36.</p>
-    <p>Sum of 7 is six dots. P = 6/36 = 1/6.</p></div>`
+  html: `<p>Green die across. Red die up. 6 × 6 = 36 equally likely pairs. Yellow = favourable. <b>GxRy</b> = green x, red y.</p>
+    ${diceDotGraph(["6,6","1,6","2,5","3,4","4,3","5,2","6,1"])}
+    <div class="box"><p>Yellow: double six <b>G6R6</b> and total 7 (<b>G1R6 … G6R1</b>).</p>
+    <p>P(double six) = 1/36. &nbsp; P(sum 7) = 6/36 = 1/6.</p></div>`
 });
 slides.push({
   used: "count-tree,basic-p",
   kicker: "Idea",
   title: "Two coins are not “three outcomes”",
   html: `<p>Wrong: HH, TT, “one of each” so P(one of each) = 1/3.</p>
+    ${treeTwoCoins()}
     <p>Right tree: HH, HT, TH, TT. Two of those are mixed.</p>
     <p class="ans">P(one of each) = 2/4 = 1/2.</p>
     <div class="warn">HT and TH are different outcomes.</div>`
 });
 slides.push({
   used: "count-tree,basic-p",
-  kicker: "8–16 min · Foundation",
+  kicker: "Foundation",
   title: "Exercise 12C Question 1",
   html: `
     <div class="cite">FOUNDATION · Exercise 12C Q1a–b · printed p. 443</div>
@@ -1386,16 +1574,29 @@ slides.push({
     <div class="stack">
       <div class="box"><p><b>a</b> Use a tree diagram to list the four possible outcomes.</p>
         <button class="reveal" type="button" data-w="c1a">Show working</button>
-        <div class="working" id="c1a"><p class="ans">Answer: HH, HT, TH, TT</p></div></div>
+        <div class="working" id="c1a"><div class="wplain">
+          ${treeTwoCoins()}
+          <p>Start → 1st coin (H or T) → 2nd coin (H or T) → Outcome.</p>
+          <p class="ans">Answer: HH, HT, TH, TT</p>
+        </div></div></div>
       <div class="box"><p><b>b i</b> two heads</p>
         <button class="reveal" type="button" data-w="c1bi">Show working</button>
-        <div class="working" id="c1bi"><p class="ans">Answer: 1/4</p></div></div>
+        <div class="working" id="c1bi"><div class="wplain">
+          <p>Favourable: HH only (1 of the 4 outcomes on the tree).</p>
+          <p class="ans">Answer: 1/4</p>
+        </div></div></div>
       <div class="box"><p><b>b ii</b> a head and a tail</p>
         <button class="reveal" type="button" data-w="c1bii">Show working</button>
-        <div class="working" id="c1bii"><ol class="steps"><li>HT and TH.</li><li class="ans">Answer: 2/4 = 1/2</li></ol></div></div>
+        <div class="working" id="c1bii"><div class="wplain">
+          <p>Favourable on the tree: HT and TH.</p>
+          <p class="ans">Answer: 2/4 = 1/2</p>
+        </div></div></div>
       <div class="box"><p><b>b iii</b> a head on the first toss and a tail on the second</p>
         <button class="reveal" type="button" data-w="c1biii">Show working</button>
-        <div class="working" id="c1biii"><p class="ans">Answer: 1/4</p></div></div>
+        <div class="working" id="c1biii"><div class="wplain">
+          <p>Favourable: HT only (order matters on the tree).</p>
+          <p class="ans">Answer: 1/4</p>
+        </div></div></div>
     </div>`
 });
 slides.push({
@@ -1408,67 +1609,272 @@ slides.push({
     <div class="stack">
       <div class="box"><p><b>a</b> Use a tree diagram to list all 12 possible outcomes.</p>
         <button class="reveal" type="button" data-w="c2a">Show working</button>
-        <div class="working" id="c2a"><p class="ans">Answer: H1, H2, H3, H4, H5, H6, T1, T2, T3, T4, T5, T6</p></div></div>
+        <div class="working" id="c2a"><div class="wplain">
+          ${treeCoinDie()}
+          <p>Coin branch first (H or T), then die 1–6 on each branch. 2 × 6 = 12 outcomes.</p>
+          <p class="ans">Answer: H1, H2, H3, H4, H5, H6, T1, T2, T3, T4, T5, T6</p>
+        </div></div></div>
       <div class="box"><p><b>b i</b> a head and an even number</p>
         <button class="reveal" type="button" data-w="c2bi">Show working</button>
-        <div class="working" id="c2bi"><ol class="steps"><li>H2, H4, H6 → 3 out of 12.</li><li class="ans">Answer: 3/12 = 1/4</li></ol></div></div>
+        <div class="working" id="c2bi"><div class="wplain">
+          <p>Favourable: H2, H4, H6 → 3 out of 12.</p>
+          <p class="ans">Answer: 3/12 = 1/4</p>
+        </div></div></div>
       <div class="box"><p><b>b ii</b> a tail and a number greater than 4</p>
         <button class="reveal" type="button" data-w="c2bii">Show working</button>
-        <div class="working" id="c2bii"><ol class="steps"><li>T5, T6.</li><li class="ans">Answer: 2/12 = 1/6</li></ol></div></div>
+        <div class="working" id="c2bii"><div class="wplain">
+          <p>Favourable: T5, T6.</p>
+          <p class="ans">Answer: 2/12 = 1/6</p>
+        </div></div></div>
       <div class="box"><p><b>b iii</b> a tail and a number less than 4</p>
         <button class="reveal" type="button" data-w="c2biii">Show working</button>
-        <div class="working" id="c2biii"><ol class="steps"><li>T1, T2, T3.</li><li class="ans">Answer: 3/12 = 1/4</li></ol></div></div>
+        <div class="working" id="c2biii"><div class="wplain">
+          <p>Favourable: T1, T2, T3.</p>
+          <p class="ans">Answer: 3/12 = 1/4</p>
+        </div></div></div>
       <div class="box"><p><b>b iv</b> a head and a prime number</p>
         <button class="reveal" type="button" data-w="c2biv">Show working</button>
-        <div class="working" id="c2biv"><ol class="steps"><li>Primes on a die: 2, 3, 5. So H2, H3, H5.</li><li class="ans">Answer: 3/12 = 1/4</li></ol></div></div>
+        <div class="working" id="c2biv"><div class="wplain">
+          <p>Primes on a die: 2, 3, 5. Favourable: H2, H3, H5.</p>
+          <p class="ans">Answer: 3/12 = 1/4</p>
+        </div></div></div>
     </div>`
 });
 slides.push({
   used: "count-tree,basic-p",
-  kicker: "22–34 min · Development",
+  kicker: "Development",
   title: "Exercise 12C Question 7",
   html: `
-    <div class="cite">DEVELOPMENT · Exercise 12C Q7a–c · printed p. 444</div>
-    <p>A coin is tossed three times. Draw a tree. Then find the probability of:</p>
+    <div class="cite">DEVELOPMENT · Exercise 12C Q7a–f · printed p. 444</div>
+    <p>A coin is tossed three times. Draw a tree diagram to illustrate the possible outcomes. Then find the probability of:</p>
     <div class="stack">
-      <div class="box"><p>List first (8 outcomes).</p>
+      <div class="box"><p>Counting tree and full list</p>
         <button class="reveal" type="button" data-w="c7list">Show working</button>
-        <div class="working" id="c7list"><p class="ans">HHH, HHT, HTH, HTT, THH, THT, TTH, TTT</p></div></div>
+        <div class="working" id="c7list"><div class="wplain">
+          ${treeThreeCoins()}
+          <p>Three stages → 2 × 2 × 2 = 8 equally likely outcomes.</p>
+          <p class="ans">HHH, HHT, HTH, HTT, THH, THT, TTH, TTT</p>
+        </div></div></div>
       <div class="box"><p><b>a</b> three heads</p>
         <button class="reveal" type="button" data-w="c7a">Show working</button>
-        <div class="working" id="c7a"><p class="ans">Answer: 1/8</p></div></div>
+        <div class="working" id="c7a"><div class="wplain">
+          ${treeThreeCoins({ hi: ["G4R1"] })}
+          <p>Favourable (yellow): HHH only.</p>
+          <p class="ans">Answer: 1/8</p>
+        </div></div></div>
       <div class="box"><p><b>b</b> a head and two tails</p>
         <button class="reveal" type="button" data-w="c7b">Show working</button>
-        <div class="working" id="c7b"><ol class="steps"><li>HTT, THT, TTH.</li><li class="ans">Answer: 3/8</li></ol></div></div>
+        <div class="working" id="c7b"><div class="wplain">
+          ${treeThreeCoins({ hi: ["G4R4","G4R6","G4R7"] })}
+          <p>Favourable (yellow, exactly one H): HTT, THT, TTH.</p>
+          <p class="ans">Answer: 3/8</p>
+        </div></div></div>
       <div class="box"><p><b>c</b> at least two tails</p>
         <button class="reveal" type="button" data-w="c7c">Show working</button>
-        <div class="working" id="c7c"><ol class="steps"><li>Two tails or three tails: HTT, THT, TTH, TTT.</li><li class="ans">Answer: 4/8 = 1/2</li></ol></div></div>
-    </div>
-    <div class="say">Finish Q7d–f independently.</div>`
+        <div class="working" id="c7c"><div class="wplain">
+          ${treeThreeCoins({ hi: ["G4R4","G4R6","G4R7","G4R8"] })}
+          <p>Favourable (yellow): HTT, THT, TTH, TTT.</p>
+          <p class="ans">Answer: 4/8 = 1/2</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> at most one head</p>
+        <button class="reveal" type="button" data-w="c7d">Show working</button>
+        <div class="working" id="c7d"><div class="wplain">
+          ${treeThreeCoins({ hi: ["G4R4","G4R6","G4R7","G4R8"] })}
+          <p>“At most one head” = 0 or 1 head → same yellow outcomes as (c).</p>
+          <p class="ans">Answer: 4/8 = 1/2</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> more heads than tails</p>
+        <button class="reveal" type="button" data-w="c7e">Show working</button>
+        <div class="working" id="c7e"><div class="wplain">
+          ${treeThreeCoins({ hi: ["G4R1","G4R2","G4R3","G4R5"] })}
+          <p>Favourable (yellow): HHH, HHT, HTH, THH.</p>
+          <p class="ans">Answer: 4/8 = 1/2</p>
+        </div></div></div>
+      <div class="box"><p><b>f</b> a head on the second toss</p>
+        <button class="reveal" type="button" data-w="c7f">Show working</button>
+        <div class="working" id="c7f"><div class="wplain">
+          ${treeThreeCoins({ hi: ["G4R1","G4R2","G4R5","G4R6"] })}
+          <p>Middle letter H → yellow: HHH, HHT, THH, THT.</p>
+          <p class="ans">Answer: 4/8 = 1/2</p>
+        </div></div></div>
+    </div>`
 });
 slides.push({
-  used: "count-tree,product-count",
-  kicker: "34–42 min · Challenge method",
-  title: "Exercise 12C Question 12a",
+  used: "dot-graph,basic-p",
+  kicker: "Development",
+  title: "Exercise 12C Question 8 (a–e)",
   html: `
-    <div class="cite">CHALLENGE · Exercise 12C Q12a · printed p. 444</div>
+    <div class="cite">DEVELOPMENT · Exercise 12C Q8a–e · printed p. 444</div>
+    <p>A green die and a red die are thrown simultaneously. List the set of 36 possible outcomes on a two-dimensional graph and hence find the probability of:</p>
+    <div class="stack">
+      <div class="box"><p>Sample space graph (36 dots)</p>
+        <button class="reveal" type="button" data-w="c8graph">Show working</button>
+        <div class="working" id="c8graph"><div class="wplain">
+          ${diceDotGraph()}
+          <p>Each point is one outcome <b>GxRy</b> (green face x, red face y). |S| = 36. Example marked: G4R2.</p>
+          <p class="ans">Answer: 36 equally likely points</p>
+        </div></div></div>
+      <div class="box"><p><b>a</b> obtaining a three on the green die</p>
+        <button class="reveal" type="button" data-w="c8a">Show working</button>
+        <div class="working" id="c8a"><div class="wplain">
+          ${diceDotGraph(["3,1","3,2","3,3","3,4","3,5","3,6"])}
+          <p>Green = 3 → yellow column <b>G3R1 … G3R6</b> (6 points).</p>
+          <p class="ans">Answer: 6/36 = 1/6</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> obtaining a four on the red die</p>
+        <button class="reveal" type="button" data-w="c8b">Show working</button>
+        <div class="working" id="c8b"><div class="wplain">
+          ${diceDotGraph(["1,4","2,4","3,4","4,4","5,4","6,4"])}
+          <p>Red = 4 → yellow row <b>G1R4 … G6R4</b> (6 points).</p>
+          <p class="ans">Answer: 6/36 = 1/6</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> a double five</p>
+        <button class="reveal" type="button" data-w="c8c">Show working</button>
+        <div class="working" id="c8c"><div class="wplain">
+          ${diceDotGraph(["5,5"])}
+          <p>Only yellow point <b>G5R5</b>.</p>
+          <p class="ans">Answer: 1/36</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> a total score of seven</p>
+        <button class="reveal" type="button" data-w="c8d">Show working</button>
+        <div class="working" id="c8d"><div class="wplain">
+          ${diceDotGraph(["1,6","2,5","3,4","4,3","5,2","6,1"])}
+          <p>Yellow: <b>G1R6, G2R5, G3R4, G4R3, G5R2, G6R1</b>.</p>
+          <p class="ans">Answer: 6/36 = 1/6</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> a total score greater than nine</p>
+        <button class="reveal" type="button" data-w="c8e">Show working</button>
+        <div class="working" id="c8e"><div class="wplain">
+          ${diceDotGraph(["4,6","5,5","5,6","6,4","6,5","6,6"])}
+          <p>Yellow: <b>G4R6, G5R5, G5R6, G6R4, G6R5, G6R6</b>.</p>
+          <p class="ans">Answer: 6/36 = 1/6</p>
+        </div></div></div>
+    </div>`
+});
+slides.push({
+  used: "dot-graph,basic-p,complement-p",
+  kicker: "Development",
+  title: "Exercise 12C Question 8 (f–j)",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 12C Q8f–j · printed p. 444</div>
+    <p>Same green/red dice graph (|S| = 36).</p>
+    <div class="stack">
+      <div class="box"><p><b>f</b> an even number on both dice</p>
+        <button class="reveal" type="button" data-w="c8f">Show working</button>
+        <div class="working" id="c8f"><div class="wplain">
+          ${diceDotGraph(["2,2","2,4","2,6","4,2","4,4","4,6","6,2","6,4","6,6"])}
+          <p>Even × even → 9 yellow points (listed on the graph).</p>
+          <p class="ans">Answer: 9/36 = 1/4</p>
+        </div></div></div>
+      <div class="box"><p><b>g</b> at least one two</p>
+        <button class="reveal" type="button" data-w="c8g">Show working</button>
+        <div class="working" id="c8g"><div class="wplain">
+          ${diceDotGraph(["2,1","2,2","2,3","2,4","2,5","2,6","1,2","3,2","4,2","5,2","6,2"])}
+          <p>Complement: neither shows 2 → 5 × 5 = 25. So 36 − 25 = 11 yellow points.</p>
+          <p class="ans">Answer: 11/36</p>
+        </div></div></div>
+      <div class="box"><p><b>h</b> neither a one nor a four appearing</p>
+        <button class="reveal" type="button" data-w="c8h">Show working</button>
+        <div class="working" id="c8h"><div class="wplain">
+          ${diceDotGraph(["2,2","2,3","2,5","2,6","3,2","3,3","3,5","3,6","5,2","5,3","5,5","5,6","6,2","6,3","6,5","6,6"])}
+          <p>Faces {2,3,5,6} only → 4 × 4 = 16 yellow points (listed above the graph).</p>
+          <p class="ans">Answer: 16/36 = 4/9</p>
+        </div></div></div>
+      <div class="box"><p><b>i</b> a five and a number greater than three</p>
+        <button class="reveal" type="button" data-w="c8i">Show working</button>
+        <div class="working" id="c8i"><div class="wplain">
+          ${diceDotGraph(["5,4","5,5","5,6","4,5","6,5"])}
+          <p>Yellow: <b>G5R4, G5R5, G5R6, G4R5, G6R5</b>.</p>
+          <p class="ans">Answer: 5/36</p>
+        </div></div></div>
+      <div class="box"><p><b>j</b> the same number on both dice</p>
+        <button class="reveal" type="button" data-w="c8j">Show working</button>
+        <div class="working" id="c8j"><div class="wplain">
+          ${diceDotGraph(["1,1","2,2","3,3","4,4","5,5","6,6"])}
+          <p>Yellow diagonal: <b>G1R1 … G6R6</b>.</p>
+          <p class="ans">Answer: 6/36 = 1/6</p>
+        </div></div></div>
+    </div>`
+});
+slides.push({
+  used: "count-tree,product-count,basic-p",
+  kicker: "Challenge",
+  title: "Exercise 12C Question 12",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12C Q12a–b · printed p. 444</div>
     <p>Three-digit numbers are formed from the digits 2, 5, 7 and 8, without repetition.</p>
-    <p><b>a</b> Use a tree diagram to list all the possible outcomes. How many are there?</p>
-    <button class="reveal" type="button" data-w="c12a">Show working</button>
-    <div class="working" id="c12a">
-      <ol class="steps">
-        <li>First digit: 4 choices. Second: 3 left. Third: 2 left.</li>
-        <li>4 × 3 × 2 = 24.</li>
-        <li class="ans">Answer: 24 outcomes</li>
-      </ol>
-    </div>
-    <div class="say">Q12b i–iv: list, then count. Do independently.</div>`
+    <div class="stack">
+      <div class="box"><p><b>a</b> Use a tree diagram to list all the possible outcomes. How many are there?</p>
+        <button class="reveal" type="button" data-w="c12a">Show working</button>
+        <div class="working" id="c12a"><div class="wplain">
+          ${treeDigits2578()}
+          <p>First digit: 4 choices. Then 3 left. Then 2 left. 4 × 3 × 2 = 24.</p>
+          <p>Full list: 257, 258, 275, 278, 285, 287, 527, 528, 572, 578, 582, 587, 725, 728, 752, 758, 782, 785, 825, 827, 852, 857, 872, 875.</p>
+          <p class="ans">Answer: 24 outcomes</p>
+        </div></div></div>
+      <div class="box"><p><b>b i</b> greater than 528</p>
+        <button class="reveal" type="button" data-w="c12bi">Show working</button>
+        <div class="working" id="c12bi"><div class="wplain">
+          <p>From the tree list: all 2×× are below 528 (6 numbers).</p>
+          <p>From 5××: 572, 578, 582, 587 (not 527, 528) → 4.</p>
+          <p>All 7×× and 8×× → 6 + 6 = 12.</p>
+          <p>Total favourable: 4 + 12 = 16.</p>
+          <p class="ans">Answer: 16/24 = 2/3</p>
+        </div></div></div>
+      <div class="box"><p><b>b ii</b> divisible by 3</p>
+        <button class="reveal" type="button" data-w="c12bii">Show working</button>
+        <div class="working" id="c12bii"><div class="wplain">
+          <p>A number is divisible by 3 iff the digit sum is divisible by 3.</p>
+          <p>Digit sum of three chosen digits = 22 − (left-out digit).</p>
+          <p>Leave out 7 → digits 2,5,8 sum to 15 (multiple of 3). Permutations: 6 numbers.</p>
+          <p>Leaving out 2, 5 or 8 does not give a multiple of 3.</p>
+          <p class="ans">Answer: 6/24 = 1/4</p>
+        </div></div></div>
+      <div class="box"><p><b>b iii</b> divisible by 13</p>
+        <button class="reveal" type="button" data-w="c12biii">Show working</button>
+        <div class="working" id="c12biii"><div class="wplain">
+          <p>Check the 24 numbers: 572 = 13 × 44 and 728 = 13 × 56.</p>
+          <p class="ans">Answer: 2/24 = 1/12</p>
+        </div></div></div>
+      <div class="box"><p><b>b iv</b> prime</p>
+        <button class="reveal" type="button" data-w="c12biv">Show working</button>
+        <div class="working" id="c12biv"><div class="wplain">
+          <p>Even endings and 5-endings are not prime. Remaining candidates include 257, 587, 827, 857 (all prime).</p>
+          <p class="ans">Answer: 4/24 = 1/6</p>
+        </div></div></div>
+    </div>`
+});
+slides.push({
+  used: "count-tree,product-count,basic-p,complement-p",
+  kicker: "Challenge",
+  title: "Exercise 12C Question 13",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 12C Q13a–b · printed p. 444</div>
+    <p>If a coin is tossed <b>n</b> times, where <b>n &gt; 1</b>, find the probability of obtaining:</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> n heads</p>
+        <button class="reveal" type="button" data-w="c13a">Show working</button>
+        <div class="working" id="c13a"><div class="wplain">
+          ${treeThreeCoins()}
+          <p>Pattern from the counting tree: each toss doubles the outcomes. After n tosses, |S| = 2<sup>n</sup>.</p>
+          <p>Only one path is all heads (HHHH…).</p>
+          <p class="ans">Answer: 1/2<sup>n</sup></p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> at least one head and at least one tail</p>
+        <button class="reveal" type="button" data-w="c13b">Show working</button>
+        <div class="working" id="c13b"><div class="wplain">
+          <p>Complement: all heads or all tails → 2 outcomes out of 2<sup>n</sup>.</p>
+          <p>P(all H or all T) = 2 / 2<sup>n</sup> = 2<sup>1−n</sup>.</p>
+          <p>So P(at least one of each) = 1 − 2<sup>1−n</sup>.</p>
+          <p class="ans">Answer: 1 − 2<sup>1−n</sup></p>
+        </div></div></div>
+    </div>`
 });
 slides.push({
   used: "",
   kicker: "Tonight",
   title: "Independent work",
-  html: leftover("Q7d–f, Q8–11", "Q12b, Q13", `<p class="small">Foundation leftover: Q3–6.</p>`)
+  html: leftover("Q9–11", "none tonight (Q12–Q13 done in class)", `<p class="small">Foundation leftover: Q3–6.</p>`)
 });
 pack("12C");
 
