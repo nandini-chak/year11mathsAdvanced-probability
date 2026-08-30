@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 13 Data and probability — Year 11 Mathematics Advanced</title>
+<style>
+  :root {
+    --ink: #1c2333;
+    --muted: #5a6272;
+    --paper: #f6f0e6;
+    --card: #fffdf8;
+    --line: #d9cfc0;
+    --brick: #a33b32;
+    --teal: #1e6b66;
+    --gold: #c9a227;
+    --rail: 300px;
+    --toc: 208px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: "Segoe UI", "Calibri", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  .app {
+    display: grid;
+    grid-template-columns: var(--toc) 1fr var(--rail);
+    grid-template-rows: auto auto 1fr auto;
+    height: 100%;
+  }
+  header {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 16px; background: var(--ink); color: #f6f0e6;
+  }
+  header h1 { font-size: 15px; margin: 0; font-weight: 650; }
+  header .meta { margin-left: auto; font-size: 12px; opacity: .85; }
+  .progress { height: 4px; background: #3a4150; grid-column: 1 / -1; }
+  .progress > span { display: block; height: 100%; background: var(--gold); width: 0; }
+  aside.toc {
+    background: #141820; color: #f3eadb; overflow: auto;
+    padding: 10px 8px 24px; border-right: 1px solid #000;
+  }
+  aside.toc h3 {
+    margin: 0 8px 10px; font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  aside.toc button {
+    display: block; width: 100%; text-align: left; font: inherit;
+    background: transparent; color: #e8dfcf; border: 0;
+    border-radius: 8px; padding: 8px 10px; margin: 0 0 4px;
+    cursor: pointer; line-height: 1.25;
+  }
+  aside.toc button:hover { background: #2a3142; }
+  aside.toc button.on { background: var(--gold); color: #1c2333; font-weight: 700; }
+  aside.toc button .code { display: block; font-weight: 800; font-size: 14px; }
+  aside.toc button .sub { display: block; font-size: 12px; opacity: .85; }
+  aside.toc button.on .sub { opacity: 1; }
+  main { overflow: auto; padding: 18px 22px 36px; }
+  .slide { display: none; max-width: 940px; }
+  .slide.on { display: block; }
+  .kicker {
+    color: var(--brick); font-size: 12px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; margin: 0 0 8px;
+  }
+  h2 { font-size: 28px; line-height: 1.15; margin: 0 0 12px; }
+  p, li { font-size: 20px; line-height: 1.45; }
+  .small { font-size: 15px; color: var(--muted); }
+  .cite {
+    display: inline-block; background: #efe4c8; color: #5a4310;
+    font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+    margin: 0 0 10px;
+  }
+  .box {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 16px; margin: 10px 0;
+  }
+  .say {
+    background: #e7f3f1; border-left: 6px solid var(--teal);
+    padding: 10px 14px; margin: 12px 0; font-size: 20px;
+  }
+  .warn {
+    background: #fdece9; border-left: 6px solid var(--brick);
+    padding: 10px 14px; margin: 12px 0;
+  }
+  button.reveal, button.nav { font: inherit; cursor: pointer; border-radius: 8px; }
+  button.reveal {
+    background: var(--teal); color: white; border: 0;
+    padding: 10px 16px; font-size: 16px; font-weight: 700;
+  }
+  .working { display: none; margin-top: 12px; }
+  .working.show { display: block; }
+  .steps { margin: 0; padding-left: 22px; }
+  .steps li { margin: 6px 0; }
+  .ans { font-weight: 800; color: var(--teal); }
+  .timechip {
+    display: inline-block; background: var(--ink); color: #f6f0e6;
+    font-size: 12px; padding: 3px 8px; border-radius: 99px; margin-right: 6px;
+  }
+  footer.bar {
+    grid-column: 1 / -1; display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-top: 1px solid var(--line); background: var(--card);
+  }
+  button.nav { background: var(--ink); color: #f6f0e6; border: 0; padding: 8px 14px; font-weight: 700; }
+  button.nav:disabled { opacity: .35; cursor: not-allowed; }
+  #counter { font-weight: 700; min-width: 90px; text-align: center; }
+  .hint { font-size: 13px; color: var(--muted); margin-left: auto; }
+  aside.rail {
+    background: #1c2333; color: #f3eadb; overflow: auto;
+    padding: 12px 12px 24px; border-left: 1px solid #000;
+  }
+  aside.rail h3 {
+    margin: 0 0 8px; font-size: 13px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .fcard {
+    background: #2a3142; border-radius: 8px; padding: 8px 10px;
+    margin: 0 0 8px; font-size: 13.5px; line-height: 1.35; opacity: 0.72;
+  }
+  .fcard b { color: #fff; }
+  .fcard .sym { font-size: 16px; color: var(--gold); font-weight: 800; }
+  #formula-list [data-formula].formula-used {
+    opacity: 1; outline: 3px solid #c9a227; background: #3d3420;
+  }
+  #formula-list [data-formula].formula-used::before {
+    content: "Used on this page"; display: block; font-size: 11px;
+    font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #c9a227; margin-bottom: 4px;
+  }
+  svg.venn, svg.tree, svg.dots { max-width: 100%; width: 100%; height: auto; display: block; margin: 6px auto; }
+  svg.tree, svg.dots { max-width: 640px; background: #fffdf8; border: 1px solid var(--line); border-radius: 8px; }
+  .sockcase { display: flex; flex-direction: column; gap: 14px; margin: 12px 0; font-size: 17px; line-height: 1.45; }
+  .sockpanel { padding: 12px 14px; border-radius: 8px; border: 2px solid var(--line); }
+  .sockpanel.start { background: #f5f3ee; border-color: #1c2333; }
+  .sockpanel.bad { background: #fdece9; border-color: #a33b32; }
+  .sockpanel.good { background: #eef6f5; border-color: #1e6b66; }
+  .sockrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0 6px; }
+  .sockpair { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; background: #fffdf8; border: 1.5px solid #1c2333; border-radius: 8px; min-width: 68px; justify-content: center; }
+  .sockpair.bad { border-color: #a33b32; }
+  .sockpair.gone { border-color: #ccc; color: #aaa; font-weight: 800; font-size: 20px; }
+  .sockdot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #1c2333; display: inline-block; flex-shrink: 0; }
+  .sockmiss { color: #bbb; font-weight: 800; font-size: 22px; line-height: 1; }
+  .sockverdict { margin: 4px 0 0; font-weight: 800; font-size: 17px; }
+  .sockpanel.bad .sockverdict { color: #a33b32; }
+  .sockpanel.good .sockverdict { color: #1e6b66; }
+  .sockfinal { background: #a33b32; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 18px; }
+  .wplain p { margin: 8px 0; font-size: 18px; }
+  table.mini { border-collapse: collapse; width: 100%; font-size: 16px; }
+  table.mini th, table.mini td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; }
+  table.mini th { background: #efe7d8; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sheetgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sheetgrid .box { font-size: 16px; line-height: 1.4; }
+  .sheetgrid .box .sym { font-weight: 800; }
+  @media (max-width: 980px) { .sheetgrid { grid-template-columns: 1fr; } }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .qa {
+    display: grid; grid-template-columns: 1fr minmax(260px, 380px);
+    gap: 12px; align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 1fr var(--rail); }
+    aside.toc { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; max-height: none; padding: 8px; }
+    aside.toc h3 { width: 100%; margin-bottom: 4px; }
+    aside.toc button { width: auto; }
+  }
+  @media (max-width: 980px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: auto auto auto 1fr auto auto; }
+    aside.rail { max-height: 36vh; }
+    .two, .qa { grid-template-columns: 1fr; }
+    header .meta { display: none; }
+  }
+  @media print {
+    header, footer.bar, .progress, button.reveal { display: none !important; }
+    .app { display: block; height: auto; }
+    .slide { display: block !important; break-after: page; }
+    .working { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1 id="hdr-title">Year 11 Mathematics Advanced · Chapter 13 Data and probability</h1>
+  <div class="meta">NESA 2024 · Statistical analysis · 45 minutes per section · <a href="year-11-advanced-hub.html" style="color:#c9a227">All chapters</a></div>
+</header>
+<div class="progress"><span id="bar"></span></div>
+<aside class="toc" id="toc">
+  <h3>Choose a section</h3>
+</aside>
+<main id="deck"></main>
+<aside class="rail" id="formula-list"></aside>
+<footer class="bar">
+  <button class="nav" id="prev" type="button">← Back</button>
+  <span id="counter">1 / 1</span>
+  <button class="nav" id="next" type="button">Next →</button>
+  <span class="hint">Left panel picks a section · arrows change slides · F hides Formula List</span>
+</footer>
+</div>
+<script>
+const LESSONS = {};
+const ORDER = ["13A","13B","13C","REV"];
+const META = {
+  "13A": { code: "13A", sub: "Random variables and frequency tables" },
+  "13B": { code: "13B", sub: "Cumulative frequency" },
+  "13C": { code: "13C", sub: "Grouped data" },
+  "REV": { code: "Review", sub: "Chapter Review Exercise" }
+};
+function formulaShell(cards, note) {
+  return `<h3>Formula List — keep this in view</h3>${cards}<p class="small" style="color:#c9b892;font-size:11px;line-height:1.35">${note}</p>`;
+}
+const FORMULAS = {
+  "13A": formulaShell(`
+  <div class="fcard" data-formula="rv"><b>Random variable X</b><br>Upper-case letter for the numeric or categorical outcome of a random experiment.<br><span class="sym">x</span> = one possible value.</div>
+  <div class="fcard" data-formula="freq"><b>Frequency f</b><br><span class="sym">f =</span> how many times a value appears in the dataset.</div>
+  <div class="fcard" data-formula="relfreq"><b>Relative frequency rf</b><br><span class="sym">rf = f ÷ total</span><br>Estimates probability when the experiment is repeated many times.</div>
+  <div class="fcard" data-formula="histogram"><b>Histogram</b><br>Bars <b>touch</b> and are <b>centred</b> on each score. Used for discrete numeric data.</div>
+  <div class="fcard" data-formula="polygon"><b>Frequency polygon</b><br>Join the <b>centres</b> of neighbouring bars; return to the horizontal axis at each end.</div>
+  <div class="fcard" data-formula="discrete"><b>Discrete</b><br>Numeric values that can be <b>listed</b> (e.g. 0, 1, 2, 3 heads).</div>
+  <div class="fcard" data-formula="categorical"><b>Categorical</b><br>Values are <b>names or labels</b> (e.g. bus, train, walk).</div>
+  <div class="fcard" data-formula="continuous"><b>Continuous</b><br>Values lie in an <b>interval</b> on the number line (e.g. height, speed).</div>
+  <div class="fcard" data-formula="mode"><b>Mode</b><br>The value with the <b>highest frequency</b> (most common outcome).</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 13A, printed pp. 479–483."),
+  "13B": formulaShell(`
+  <div class="fcard" data-formula="median"><b>Median</b><br>Odd <i>n</i>: middle score.<br>Even <i>n</i>: mean of the two middle scores.<br>From cf: the score where the halfway count sits.</div>
+  <div class="fcard" data-formula="cf"><b>cf</b><br>Cumulative frequency of <i>x</i> = number of scores with <i>X ≤ x</i>.<br>Build by adding <i>f</i> from left to right.</div>
+  <div class="fcard" data-formula="crf"><b>crf</b><br>Cumulative relative frequency.<br>Each entry = (cf ÷ total). Last crf = 1.</div>
+  <div class="fcard" data-formula="ogive"><b>Ogive</b><br>Cumulative frequency polygon.<br>Read median: horizontal line at halfway (cf = <i>n</i>/2 or crf = 0.5).</div>
+  <div class="fcard" data-formula="hist-polygon-rules"><b>Drawing rules (Box 5)</b><br><b>Frequency polygon:</b> join <b>centres</b> of column tops.<br><b>Cumulative polygon:</b> join <b>top-right corners</b>; extend left to bottom-left of first column.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 13B, printed pp. 492–496."),
+  "13C": formulaShell(`
+  <div class="fcard" data-formula="grouping"><b>Grouping</b><br>Equal-width bins (intervals). Tally each score into one row.<br><span class="sym">cf</span> and <span class="sym">crf</span> work the same as in 13B.</div>
+  <div class="fcard" data-formula="class-centre"><b>Class centre</b><br>Midpoint of the interval:<br><span class="sym">centre = (lower + upper) ÷ 2</span></div>
+  <div class="fcard" data-formula="boundary-lower"><b>Boundary rule (theory)</b><br>Data on a boundary goes in the <b>lower</b> interval.<br><span class="sym">X ≤ x</span> for cumulative frequency.</div>
+  <div class="fcard" data-formula="grouped-hist"><b>Grouped histogram</b><br>Touching bars; height = frequency (or cf for cumulative).<br>Cumulative polygon: through top-right corners of each bar.</div>
+  <div class="fcard" data-formula="density-hist"><b>Probability-density histogram</b><br>Vertical axis = relative frequency ÷ bin width.<br><span class="sym">P(class) = bin width × density</span><br>Total area = <span class="sym">1</span>.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 13C, printed pp. 500–503."),
+  "REV": formulaShell(`
+  <div class="fcard" data-formula="relfreq"><b>rf</b><br><span class="sym">rf = f ÷ total</span> — estimates probability.</div>
+  <div class="fcard" data-formula="cf"><b>cf / crf</b><br>Cumulative counts; last crf = 1.</div>
+  <div class="fcard" data-formula="median"><b>Median</b><br>From sorted data or from the ogive at halfway.</div>
+  <div class="fcard" data-formula="class-centre"><b>Grouped data</b><br>Class centres for polygons; area for density histograms.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Chapter Review Exercise, printed pp. 504–506.")
+};
+let slides = [];
+function pack(key) {
+  LESSONS[key] = slides;
+  slides = [];
+}
+function leftover(dev, chal, extra) {
+  return `
+    <div class="cite">Independent work — question numbers only</div>
+    <p>Do these from the book. Do not copy extra question text here.</p>
+    <div class="box"><b>Development:</b> ${dev}</div>
+    <div class="box"><b>Challenge:</b> ${chal}</div>
+    ${extra || ""}
+    <div class="say">If you get stuck, the gold Formula List card is the method for that type.</div>`;
+}
+
+/* ========== 13A ========== */
+let dataSeq = 0;
+
+function freqTable(cols, rows) {
+  const th = cols.map((c) => `<th>${c}</th>`).join("");
+  const tr = rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("");
+  return `<table class="mini"><tr>${th}</tr>${tr}</table>`;
+}
+
+function histBars(o) {
+  const xs = o.xs;
+  const vals = o.vals;
+  const ymax = o.ymax || Math.max(...vals, 0.01) * 1.15;
+  const W = o.width || 560;
+  const H = o.height || 300;
+  const pl = 56, pr = 24, pt = 44, pb = 52;
+  const pw = W - pl - pr, ph = H - pt - pb;
+  const n = xs.length;
+  const step = pw / n;
+  const bw = step * 0.72;
+  const toY = (v) => pt + ph - (v / ymax) * ph;
+  const toX = (i) => pl + step * i + step / 2;
+  const baseY = pt + ph;
+  let bars = "";
+  xs.forEach((x, i) => {
+    const cx = toX(i);
+    const h = (vals[i] / ymax) * ph;
+    bars += `<rect x="${cx - bw / 2}" y="${baseY - h}" width="${bw}" height="${h}" fill="#1e6b66" opacity="0.88"/>`;
+    bars += `<text x="${cx}" y="${baseY + 18}" text-anchor="middle" font-size="13" font-weight="700">${x}</text>`;
+  });
+  let yticks = "";
+  const ySteps = o.yticks || 5;
+  for (let t = 0; t <= ySteps; t++) {
+    const v = (ymax / ySteps) * t;
+    const y = toY(v);
+    yticks += `<line x1="${pl}" y1="${y}" x2="${pl + pw}" y2="${y}" stroke="#d9cfc0" stroke-width="1"/>`;
+    yticks += `<text x="${pl - 8}" y="${y + 4}" text-anchor="end" font-size="11">${o.fmtY ? o.fmtY(v) : (Math.round(v * 100) / 100)}</text>`;
+  }
+  const title = o.title ? `<text x="${W / 2}" y="22" text-anchor="middle" font-size="15" font-weight="800">${o.title}</text>` : "";
+  const xlab = o.xlabel ? `<text x="${W / 2}" y="${H - 8}" text-anchor="middle" font-size="13" font-weight="700">${o.xlabel}</text>` : "";
+  const ylab = o.ylabel ? `<text x="14" y="${pt + ph / 2}" text-anchor="middle" font-size="13" font-weight="700" transform="rotate(-90 14 ${pt + ph / 2})">${o.ylabel}</text>` : "";
+  return `<svg class="dots" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.title || "histogram"}">
+    <rect x="8" y="8" width="${W - 16}" height="${H - 16}" fill="#fffdf8" stroke="#d9cfc0"/>
+    ${title}${ylab}${xlab}${yticks}
+    <line x1="${pl}" y1="${baseY}" x2="${pl + pw}" y2="${baseY}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${baseY}" stroke="#1c2333" stroke-width="2"/>
+    ${bars}
+  </svg>`;
+}
+
+function freqPolygon(o) {
+  const xs = o.xs;
+  const vals = o.vals;
+  const ymax = o.ymax || Math.max(...vals, 0.01) * 1.15;
+  const W = o.width || 560;
+  const H = o.height || 300;
+  const pl = 56, pr = 24, pt = 44, pb = 52;
+  const pw = W - pl - pr, ph = H - pt - pb;
+  const n = xs.length;
+  const leftVal = o.polyLeft != null ? o.polyLeft : xs[0] - 1;
+  const rightVal = o.polyRight != null ? o.polyRight : xs[n - 1] + 1;
+  const xToPx = (x) => pl + ((x - leftVal) / (rightVal - leftVal)) * pw;
+  const toY = (v) => pt + ph - (v / ymax) * ph;
+  const baseY = pt + ph;
+  const step = pw / n;
+  const bw = step * 0.72;
+  let bars = "";
+  if (o.showBars !== false) {
+    xs.forEach((x, i) => {
+      const cx = pl + step * i + step / 2;
+      const h = (vals[i] / ymax) * ph;
+      bars += `<rect x="${cx - bw / 2}" y="${baseY - h}" width="${bw}" height="${h}" fill="#1e6b66" opacity="0.88"/>`;
+      bars += `<text x="${cx}" y="${baseY + 18}" text-anchor="middle" font-size="13" font-weight="700">${x}</text>`;
+    });
+  } else {
+    xs.forEach((x) => {
+      bars += `<text x="${xToPx(x)}" y="${baseY + 18}" text-anchor="middle" font-size="12" font-weight="700">${x}</text>`;
+    });
+  }
+  let yticks = "";
+  const ySteps = o.yticks || 5;
+  for (let t = 0; t <= ySteps; t++) {
+    const v = (ymax / ySteps) * t;
+    const y = toY(v);
+    yticks += `<line x1="${pl}" y1="${y}" x2="${pl + pw}" y2="${y}" stroke="#d9cfc0" stroke-width="1"/>`;
+    yticks += `<text x="${pl - 8}" y="${y + 4}" text-anchor="end" font-size="11">${o.fmtY ? o.fmtY(v) : (Math.round(v * 100) / 100)}</text>`;
+  }
+  let polyPts = `${xToPx(leftVal)},${baseY}`;
+  xs.forEach((x, i) => { polyPts += ` ${xToPx(x)},${toY(vals[i])}`; });
+  polyPts += ` ${xToPx(rightVal)},${baseY}`;
+  const title = o.title ? `<text x="${W / 2}" y="22" text-anchor="middle" font-size="15" font-weight="800">${o.title}</text>` : "";
+  const xlab = o.xlabel ? `<text x="${W / 2}" y="${H - 8}" text-anchor="middle" font-size="13" font-weight="700">${o.xlabel}</text>` : "";
+  const ylab = o.ylabel ? `<text x="14" y="${pt + ph / 2}" text-anchor="middle" font-size="13" font-weight="700" transform="rotate(-90 14 ${pt + ph / 2})">${o.ylabel}</text>` : "";
+  return `<svg class="dots" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.title || "histogram and polygon"}">
+    <rect x="8" y="8" width="${W - 16}" height="${H - 16}" fill="#fffdf8" stroke="#d9cfc0"/>
+    ${title}${ylab}${xlab}${yticks}
+    <line x1="${pl}" y1="${baseY}" x2="${pl + pw}" y2="${baseY}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${baseY}" stroke="#1c2333" stroke-width="2"/>
+    ${bars}
+    <polyline points="${polyPts}" fill="none" stroke="#a33b32" stroke-width="2.5"/>
+  </svg>`;
+}
+
+function dotPlot(o) {
+  const xs = o.xs;
+  const counts = o.counts;
+  const maxC = Math.max(...counts, 1);
+  const r = 7;
+  const colW = 54;
+  const W = 48 + xs.length * colW;
+  const H = 72 + maxC * (r * 2 + 6);
+  const baseY = H - 36;
+  let dots = "";
+  xs.forEach((x, i) => {
+    const cx = 36 + i * colW + colW / 2;
+    for (let k = 0; k < counts[i]; k++) {
+      const cy = baseY - 12 - k * (r * 2 + 4);
+      dots += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#1e6b66" stroke="#1c2333" stroke-width="1.5"/>`;
+    }
+    dots += `<text x="${cx}" y="${H - 12}" text-anchor="middle" font-size="14" font-weight="800">${x}</text>`;
+  });
+  const title = o.title ? `<text x="${W / 2}" y="22" text-anchor="middle" font-size="14" font-weight="800">${o.title}</text>` : "";
+  const xlab = o.xlabel ? `<text x="${W / 2}" y="${H - 2}" text-anchor="middle" font-size="12" font-weight="700">${o.xlabel}</text>` : "";
+  return `<svg class="dots" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.title || "dot plot"}">
+    <rect x="6" y="6" width="${W - 12}" height="${H - 12}" fill="#fffdf8" stroke="#d9cfc0"/>
+    ${title}${xlab}
+    <line x1="24" y1="${baseY}" x2="${W - 16}" y2="${baseY}" stroke="#1c2333" stroke-width="2"/>
+    ${dots}
+  </svg>`;
+}
+
+function scoopTree() {
+  return freqTable(
+    ["Scoop", "Value X", "P"],
+    [
+      ["{F1}", "5c", "1/7"],
+      ["{F2}", "5c", "1/7"],
+      ["{T}", "10c", "1/7"],
+      ["{F1,F2}", "10c", "1/7"],
+      ["{T,F1}", "15c", "1/7"],
+      ["{T,F2}", "15c", "1/7"],
+      ["{T,F1,F2}", "20c", "1/7"]
+    ]
+  );
+}
+
+slides.push({
+  used: "",
+  kicker: "13A · 45 minutes",
+  title: "Random variables and frequency tables",
+  html: `
+    <p>Today’s three words: <b>score</b>, <b>frequency</b>, <b>relative frequency</b>.</p>
+    <div class="say">Organise the dataset in a table, draw a graph, then use relative frequency to estimate probability.</div>
+    <p class="small">CambridgeMATHS NSW Advanced Year 11 · Exercise 13A · printed pp. 479–483 (answers pp. 589–590).</p>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq,polygon,histogram,discrete,categorical,continuous,mode",
+  kicker: "Formula sheet",
+  title: "Every 13A formula on one page",
+  html: `
+    <p class="small">All nine Formula List cards are gold on this page. Copy from here in your working.</p>
+    <div class="sheetgrid">
+      <div class="box"><b>Random variable X</b><br>Upper-case letter for the <b>numeric or categorical outcome</b> of a random experiment.<br><span class="sym">x</span> = one possible value.</div>
+      <div class="box"><b>Frequency f</b><br><span class="sym">f =</span> how many times a value appears in the dataset.</div>
+      <div class="box"><b>Relative frequency rf</b><br><span class="sym">rf = f ÷ total</span><br>Estimates probability when the experiment is repeated many times.</div>
+      <div class="box"><b>Histogram</b><br>Bars <b>touch</b> and are <b>centred</b> on each score. Used for discrete numeric data.</div>
+      <div class="box"><b>Frequency polygon</b><br>Join the <b>centres</b> of neighbouring bars; return to the horizontal axis at each end.</div>
+      <div class="box"><b>Discrete</b><br>Numeric values that can be <b>listed</b> (e.g. 0, 1, 2, 3 heads).</div>
+      <div class="box"><b>Categorical</b><br>Values are <b>names or labels</b> (e.g. bus, train, walk).</div>
+      <div class="box"><b>Continuous</b><br>Values lie in an <b>interval</b> on the number line (e.g. height, speed).</div>
+      <div class="box"><b>Mode</b><br>The value with the <b>highest frequency</b> (most common outcome).</div>
+    </div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `
+    <ol>
+      <li>Classify a random variable as <b>categorical</b>, <b>discrete</b>, or <b>continuous</b>.</li>
+      <li>Complete a <b>frequency</b> and <b>relative frequency</b> table.</li>
+      <li>Draw a <b>histogram</b> and <b>frequency polygon</b>.</li>
+      <li>Use <b>rf</b> to estimate probabilities and find the <b>mode</b>.</li>
+      <li>Finish remaining <b>Development</b> and <b>Challenge</b> items from the book on your own.</li>
+    </ol>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "If we are running late",
+  html: `
+    <table class="mini">
+      <tr><th>Mins</th><th>Move</th><th>Book item</th></tr>
+      <tr><td>0–5</td><td>Formula sheet (all nine cards)</td><td>—</td></tr>
+      <tr><td>5–18</td><td>Classify + tables</td><td>Foundation Q1, Q3, Q5</td></tr>
+      <tr><td>18–24</td><td>Dot plot + mode</td><td>Foundation Q6</td></tr>
+      <tr><td>24–38</td><td>Histograms + polygons</td><td>Development Q7–Q8</td></tr>
+      <tr><td>38–42</td><td>Estimates from rf</td><td>Development Q9–Q11</td></tr>
+      <tr><td>42–45</td><td>Challenge method + list</td><td>Q12–Q15 method; independent list</td></tr>
+    </table>
+    <p class="small">If late: keep formula sheet, Q3 table, Q7 histogram, Q9 lunch estimate, Q15 prime table. Drop extra Foundation.</p>`
+});
+
+slides.push({
+  used: "rv,discrete,categorical,continuous",
+  kicker: "5–12 min · Foundation",
+  title: "Exercise 13A Question 1",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13A Q1a–i · printed p. 479</div>
+    <p>State whether each random variable is numeric or categorical. If it is numeric, state whether it is discrete or continuous. Comments may be appropriate.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> The favourite day of the week for a person chosen at random in Australia</p>
+        <button class="reveal" type="button" data-w="a1a">Show working</button>
+        <div class="working" id="a1a"><div class="wplain"><p class="ans">Answer: categorical (day names).</p></div></div></div>
+      <div class="box"><p><b>b</b> Height of Australian professional basketball players</p>
+        <button class="reveal" type="button" data-w="a1b">Show working</button>
+        <div class="working" id="a1b"><div class="wplain"><p>Numeric and <b>continuous</b> (height is measured on a scale). If height is recorded to the nearest mm it could be treated as discrete.</p><p class="ans">Answer: numeric and continuous.</p></div></div></div>
+      <div class="box"><p><b>c</b> Age</p>
+        <button class="reveal" type="button" data-w="a1c">Show working</button>
+        <div class="working" id="a1c"><div class="wplain"><p>Age in years is often discrete; exact age in time is continuous.</p><p class="ans">Answer: numeric and continuous (age in years → discrete).</p></div></div></div>
+      <div class="box"><p><b>d</b> Political affiliation</p>
+        <button class="reveal" type="button" data-w="a1d">Show working</button>
+        <div class="working" id="a1d"><div class="wplain"><p class="ans">Answer: categorical (party or political code).</p></div></div></div>
+      <div class="box"><p><b>e</b> Colour of a counter drawn from a cup containing 5 red and 6 blue counters.</p>
+        <button class="reveal" type="button" data-w="a1e">Show working</button>
+        <div class="working" id="a1e"><div class="wplain"><p class="ans">Answer: categorical (red or blue).</p></div></div></div>
+      <div class="box"><p><b>f</b> Sex (male or female) of a child attending a particular primary school</p>
+        <button class="reveal" type="button" data-w="a1f">Show working</button>
+        <div class="working" id="a1f"><div class="wplain"><p class="ans">Answer: categorical.</p></div></div></div>
+      <div class="box"><p><b>g</b> Sum of the numbers when two dice are thrown</p>
+        <button class="reveal" type="button" data-w="a1g">Show working</button>
+        <div class="working" id="a1g"><div class="wplain"><p>Sum is a whole number from 2 to 12 — values can be listed.</p><p class="ans">Answer: numeric and discrete.</p></div></div></div>
+      <div class="box"><p><b>h</b> Shoe size</p>
+        <button class="reveal" type="button" data-w="a1h">Show working</button>
+        <div class="working" id="a1h"><div class="wplain"><p>Often grouped into labelled categories in shops.</p><p class="ans">Answer: often categorical (or discrete if treated as a number).</p></div></div></div>
+      <div class="box"><p><b>i</b> Examination scores</p>
+        <button class="reveal" type="button" data-w="a1i">Show working</button>
+        <div class="working" id="a1i"><div class="wplain"><p>Usually whole-number marks → discrete. Letter grades would be categorical.</p><p class="ans">Answer: numeric and discrete (or categorical if graded A, B, C, …).</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq",
+  kicker: "Foundation",
+  title: "Exercise 13A Question 3",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13A Q3a–b · printed p. 480</div>
+    <p>Cards in a set each have one of the numbers 1–5 written on them at random. The cards are shuffled. A card is selected and the number is recorded. This experiment is repeated; at each stage the card is returned to the pack and the cards are reshuffled. The frequency of each outcome is shown in the table below. Let the random variable X be the number written on a card selected at random.</p>
+    ${freqTable(["x", "0", "1", "2", "3", "4", "5"], [["f", "10", "20", "30", "25", "5", "10"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Record the relative frequencies in a new row in the table.</p>
+        <button class="reveal" type="button" data-w="a3a">Show working</button>
+        <div class="working" id="a3a"><div class="wplain">
+          <p>Total frequency = 10 + 20 + 30 + 25 + 5 + 10 = 100.</p>
+          <p>Each rf = f ÷ 100.</p>
+          ${freqTable(["x", "0", "1", "2", "3", "4", "5"], [
+            ["f", "10", "20", "30", "25", "5", "10"],
+            ["rf", "0.1", "0.2", "0.3", "0.25", "0.05", "0.1"]
+          ])}
+          <p class="ans">Answer: rf row 0.1, 0.2, 0.3, 0.25, 0.05, 0.1</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Estimate:</p>
+        <p class="small">i P(X = 1) &nbsp; ii P(2 ≤ X ≤ 4) &nbsp; iii P(1 ≤ X &lt; 4) &nbsp; iv P(X = 6) &nbsp; v P(X ≤ 2) &nbsp; vi P(X &lt; 4) &nbsp; vii P(X ≥ 1) &nbsp; viii P(X &gt; 1) &nbsp; ix P(X is even)</p>
+        <button class="reveal" type="button" data-w="a3b">Show working</button>
+        <div class="working" id="a3b"><div class="wplain">
+          <p><b>i</b> P(X = 1) = rf for 1 = 0.2.</p>
+          <p><b>ii</b> P(2 ≤ X ≤ 4) = 0.3 + 0.25 + 0.05 = 0.6.</p>
+          <p><b>iii</b> P(1 ≤ X &lt; 4) = 0.2 + 0.3 + 0.25 = 0.75.</p>
+          <p><b>iv</b> P(X = 6) = 0 (6 never occurred).</p>
+          <p><b>v</b> P(X ≤ 2) = 0.1 + 0.2 + 0.3 = 0.6.</p>
+          <p><b>vi</b> P(X &lt; 4) = 0.1 + 0.2 + 0.3 + 0.25 = 0.85.</p>
+          <p><b>vii</b> P(X ≥ 1) = 1 − 0.1 = 0.9.</p>
+          <p><b>viii</b> P(X &gt; 1) = 1 − 0.1 − 0.2 = 0.7.</p>
+          <p><b>ix</b> P(even) = P(0) + P(2) + P(4) = 0.1 + 0.3 + 0.05 = 0.45.</p>
+          <p class="ans">Answers: i 0.2 &nbsp; ii 0.6 &nbsp; iii 0.75 &nbsp; iv 0 &nbsp; v 0.6 &nbsp; vi 0.85 &nbsp; vii 0.9 &nbsp; viii 0.7 &nbsp; ix 0.45</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "freq,relfreq,mode",
+  kicker: "Foundation",
+  title: "Exercise 13A Question 5",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13A Q5a–g · printed p. 480</div>
+    <p>A die is tossed 50 times and the results recorded in the following table.</p>
+    ${freqTable(["x", "1", "2", "3", "4", "5", "6"], [["f", "7", "5", "6", "7", "8", "17"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Complete the table by filling in the row of relative frequencies.</p>
+        <button class="reveal" type="button" data-w="a5a">Show working</button>
+        <div class="working" id="a5a"><div class="wplain">
+          <p>Total = 50. Divide each f by 50.</p>
+          ${freqTable(["x", "1", "2", "3", "4", "5", "6"], [
+            ["f", "7", "5", "6", "7", "8", "17"],
+            ["rf", "0.14", "0.10", "0.12", "0.14", "0.16", "0.34"]
+          ])}
+          <p class="ans">Answer: rf row 0.14, 0.10, 0.12, 0.14, 0.16, 0.34</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Is the die fair?</p>
+        <button class="reveal" type="button" data-w="a5b">Show working</button>
+        <div class="working" id="a5b"><div class="wplain"><p>Outcomes are not equally likely — 6 appeared 17 times out of 50 (34%), much more than 1/6 ≈ 17%.</p><p class="ans">Answer: No — the die appears biased (6 is most common).</p></div></div></div>
+      <div class="box"><p><b>c</b> What is the most likely outcome? What name is given to this outcome?</p>
+        <button class="reveal" type="button" data-w="a5c">Show working</button>
+        <div class="working" id="a5c"><div class="wplain"><p>Highest frequency is 17 for score 6.</p><p class="ans">Answer: 6 — this is the <b>mode</b>.</p></div></div></div>
+      <div class="box"><p><b>d</b> Estimate the probability of throwing a 4.</p>
+        <button class="reveal" type="button" data-w="a5d">Show working</button>
+        <div class="working" id="a5d"><div class="wplain"><p>P(4) ≈ rf for 4 = 7/50.</p><p class="ans">Answer: 14% (or 7/50 = 0.14)</p></div></div></div>
+      <div class="box"><p><b>e</b> Estimate the probability of throwing a number bigger than 3.</p>
+        <button class="reveal" type="button" data-w="a5e">Show working</button>
+        <div class="working" id="a5e"><div class="wplain"><p>Bigger than 3 means 4, 5, or 6: rf = 0.14 + 0.16 + 0.34 = 0.64.</p><p class="ans">Answer: 64%</p></div></div></div>
+      <div class="box"><p><b>f</b> Estimate the number of sixes obtained if the dice is thrown 800 times.</p>
+        <button class="reveal" type="button" data-w="a5f">Show working</button>
+        <div class="working" id="a5f"><div class="wplain"><p>Expected sixes ≈ 800 × 0.34 = 272.</p><p class="ans">Answer: 272 sixes</p></div></div></div>
+      <div class="box"><p><b>g</b> Find the probability that the sum of two dice rolls is 11.</p>
+        <button class="reveal" type="button" data-w="a5g">Show working</button>
+        <div class="working" id="a5g"><div class="wplain">
+          <p>Sum 11: (5,6) or (6,5). Using experimental rf for each roll (not independent in theory, but book method):</p>
+          <p>P(sum 11) ≈ P(5 then 6) + P(6 then 5) = 0.16 × 0.34 + 0.34 × 0.16 = 0.1088.</p>
+          <p class="ans">Answer: 10.88% (0.1088)</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "freq,relfreq,mode,dotPlot",
+  kicker: "Foundation",
+  title: "Exercise 13A Question 6",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13A Q6a–d · printed p. 481</div>
+    <p>The number of siblings for each member of a class is recorded in the dot plot below.</p>
+    ${dotPlot({ title: "Siblings (class dot plot)", xlabel: "Number of siblings", xs: [0, 1, 2, 3, 4], counts: [6, 9, 4, 1, 0] })}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Fill in a table showing the frequency and relative frequency as a decimal.</p>
+        <button class="reveal" type="button" data-w="a6a">Show working</button>
+        <div class="working" id="a6a"><div class="wplain">
+          <p>Count dots: 0→6, 1→9, 2→4, 3→1, 4→0. Total = 20.</p>
+          ${freqTable(["x", "0", "1", "2", "3"], [
+            ["f", "6", "9", "4", "1"],
+            ["rf", "0.30", "0.45", "0.20", "0.05"]
+          ])}
+          <p class="ans">Answer: f = 6, 9, 4, 1; rf = 0.30, 0.45, 0.20, 0.05</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> What is the modal number of siblings?</p>
+        <button class="reveal" type="button" data-w="a6b">Show working</button>
+        <div class="working" id="a6b"><div class="wplain"><p>Highest frequency is 9 at x = 1.</p><p class="ans">Answer: 1 sibling (the mode)</p></div></div></div>
+      <div class="box"><p><b>c</b> What is the percentage probability that a student chosen at random has no more than 2 siblings?</p>
+        <button class="reveal" type="button" data-w="a6c">Show working</button>
+        <div class="working" id="a6c"><div class="wplain"><p>P(X ≤ 2) = 0.30 + 0.45 + 0.20 = 0.95.</p><p class="ans">Answer: 95%</p></div></div></div>
+      <div class="box"><p><b>d</b> What is the percentage probability that a family chosen at random from the families represented in the class has only a single child?</p>
+        <button class="reveal" type="button" data-w="a6d">Show working</button>
+        <div class="working" id="a6d"><div class="wplain"><p>“Only a single child” means the student has 0 siblings → rf for 0 = 0.30.</p><p class="ans">Answer: 30% (assuming 20 distinct families in the data)</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "histogram,polygon,freq",
+  kicker: "24–30 min · Development",
+  title: "Exercise 13A Question 7",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q7a–d · printed p. 481</div>
+    <p>A teacher sets a simple pre-unit quiz before starting a new topic. The quiz is out of 10. The results are in the following table.</p>
+    ${freqTable(["x", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [["f", "1", "0", "0", "2", "4", "5", "3", "1", "2"]])}
+    <div class="stack">
+      <div class="box"><p><b>a–b</b> Draw a histogram (bars touch, centred on scores 1–9) and join bar centres to form a frequency polygon (return to the axis at 0 and 10).</p>
+        <button class="reveal" type="button" data-w="a7ab">Show working</button>
+        <div class="working" id="a7ab"><div class="wplain">
+          ${freqPolygon({
+            title: "Pre-unit quiz scores",
+            xlabel: "Score",
+            ylabel: "Frequency",
+            xs: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            vals: [1, 0, 0, 2, 4, 5, 3, 1, 2],
+            ymax: 6,
+            polyLeft: 0,
+            polyRight: 10
+          })}
+          <p>Bars centred on 1, 2, …, 9 with no gaps. Polygon joins bar centres and returns to the axis at 0 and 10.</p>
+          <p class="ans">Answer: see histogram and polygon above.</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Comment on the shape of the distribution of the data.</p>
+        <button class="reveal" type="button" data-w="a7c">Show working</button>
+        <div class="working" id="a7c"><div class="wplain">
+          <p>One student scored only 1 — the teacher should check on that student.</p>
+          <p>Scores 4–6 are common; most students scored above 50%. A few weak scores at 4.</p>
+          <p class="ans">Answer: mostly above 50%; note the weak score of 1; bulk of results around 5–7.</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> If you have access to a spreadsheet program, you should be able to draw this graph as a column (bar) graph with the gaps between the bars set to 0. By adding a second graph to the same axes, you can superimpose the frequency polygon.</p>
+        <button class="reveal" type="button" data-w="a7d">Show working</button>
+        <div class="working" id="a7d"><div class="wplain"><p>Set column gap to 0 for a histogram. Add a line series for polygon points at (0,0), (1,1), (2,0), …, (9,2), (10,0).</p><p class="ans">Answer: spreadsheet column chart with gap 0 + line overlay (class ICT extension).</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "histogram,polygon,relfreq",
+  kicker: "Development",
+  title: "Exercise 13A Question 8",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q8a–d · printed p. 481–482</div>
+    <p>Clive is a frequent visitor to the zoo, and he is always interested to see how many lions are out of their dens and visible to the public. He records the number of lions he sees on each visit. The relative frequency of his results are shown in the following table.</p>
+    ${freqTable(["x", "1", "2", "3", "4", "5", "6"], [["rf", "0.4", "0", "0.16", "0", "0.12", "0.32"]])}
+    <div class="stack">
+      <div class="box"><p><b>a–b</b> Draw a relative frequency histogram (bars touch, centred on 1–6) and a relative frequency polygon (return to the axis at 0 and 7).</p>
+        <button class="reveal" type="button" data-w="a8ab">Show working</button>
+        <div class="working" id="a8ab"><div class="wplain">
+          ${freqPolygon({
+            title: "Lion sightings at the zoo",
+            xlabel: "Number sighted",
+            ylabel: "Relative frequency",
+            xs: [1, 2, 3, 4, 5, 6],
+            vals: [0.4, 0, 0.16, 0, 0.12, 0.32],
+            ymax: 0.45,
+            yticks: 4,
+            fmtY: (v) => v.toFixed(2),
+            polyLeft: 0,
+            polyRight: 7
+          })}
+          <p class="ans">Answer: histogram and polygon as drawn (vertical scale 0.1 = one unit recommended).</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Can you suggest a story to explain any patterns you see in the data? It may need further investigation to check your explanation.</p>
+        <button class="reveal" type="button" data-w="a8c">Show working</button>
+        <div class="working" id="a8c"><div class="wplain">
+          <p>rf = 0 at 2 and 4 — lions may come out in pairs or groups, not alone at those counts.</p>
+          <p>High rf at 1 (0.4) and 6 (0.32): one sociable lion often out; in good weather most of the pride (5–6) appears.</p>
+          <p>rf at 3 and 5 may be pairs that always appear together.</p>
+          <p class="ans">Answer: one lion often out alone; pairs/groups explain 3 and 5; full pride (~6) on good days; one antisocial lion at feeding time only — needs weather/time investigation.</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> Spreadsheet extension (column gap 0 + polygon line).</p>
+        <button class="reveal" type="button" data-w="a8d">Show working</button>
+        <div class="working" id="a8d"><div class="wplain"><p>Same method as Q7d with rf values on the vertical axis.</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq",
+  kicker: "Development",
+  title: "Exercise 13A Question 9",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q9a–g · printed p. 482</div>
+    <p>A school is investigating the number of times students buy lunch at the canteen in a week. They sample a group of students at random. Their experimental data is in the table below.</p>
+    ${freqTable(["x", "0", "1", "2", "3", "4", "5"], [["f", "29", "13", "3", "0", "1", "4"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Discuss what the school needs to consider when designing this experiment.</p>
+        <button class="reveal" type="button" data-w="a9a">Show working</button>
+        <div class="working" id="a9a"><div class="wplain">
+          <p>Can a student buy lunch twice in one day? Was the week a normal five-day week (not holidays)?</p>
+          <p>Is the sample random across year groups, not just one class?</p>
+          <p class="ans">Answer: define “lunch purchase”; use a full ordinary week; random sample across the school.</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> How many students are sampled?</p>
+        <button class="reveal" type="button" data-w="a9b">Show working</button>
+        <div class="working" id="a9b"><div class="wplain"><p>29 + 13 + 3 + 0 + 1 + 4 = 50.</p><p class="ans">Answer: 50 students</p></div></div></div>
+      <div class="box"><p><b>c</b> What do you think X represents?</p>
+        <button class="reveal" type="button" data-w="a9c">Show working</button>
+        <div class="working" id="a9c"><div class="wplain"><p class="ans">Answer: X = number of lunches a student buys at the canteen in the week.</p></div></div></div>
+      <div class="box"><p><b>d</b> Add a relative frequency row.</p>
+        <button class="reveal" type="button" data-w="a9d">Show working</button>
+        <div class="working" id="a9d"><div class="wplain">
+          ${freqTable(["x", "0", "1", "2", "3", "4", "5"], [
+            ["f", "29", "13", "3", "0", "1", "4"],
+            ["rf", "0.58", "0.26", "0.06", "0", "0.02", "0.08"]
+          ])}
+          <p class="ans">Answer: rf = 0.58, 0.26, 0.06, 0, 0.02, 0.08</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> What is the probability that a student chosen at random buys their lunch sometime during the week?</p>
+        <button class="reveal" type="button" data-w="a9e">Show working</button>
+        <div class="working" id="a9e"><div class="wplain"><p>P(at least one) = 1 − P(0) = 1 − 0.58 = 0.42.</p><p class="ans">Answer: 42%</p></div></div></div>
+      <div class="box"><p><b>f</b> What is the probability that a student buys their lunch every school day?</p>
+        <button class="reveal" type="button" data-w="a9f">Show working</button>
+        <div class="working" id="a9f"><div class="wplain"><p>Every school day = 5 lunches → P(X = 5) = 0.08.</p><p class="ans">Answer: 8%</p></div></div></div>
+      <div class="box"><p><b>g</b> The school population has 1200 students. Estimate how many lunches the canteen sells during the week.</p>
+        <button class="reveal" type="button" data-w="a9g">Show working</button>
+        <div class="working" id="a9g"><div class="wplain">
+          <p>Mean lunches per student = 0×0.58 + 1×0.26 + 2×0.06 + 3×0 + 4×0.02 + 5×0.08 = 0.86.</p>
+          <p>Total ≈ 1200 × 0.86 = 1032 lunches.</p>
+          <p class="ans">Answer: 1032 lunches</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq",
+  kicker: "Development",
+  title: "Exercise 13A Question 10",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q10a–e · printed p. 482</div>
+    <p>Amy scoops up coins at random from a pile containing one 10 c coin and two 5 c coins.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Name the 10 c coin T and the two 5 c coins F1 and F2, and write down as sets the seven possible non-empty scoops.</p>
+        <button class="reveal" type="button" data-w="a10a">Show working</button>
+        <div class="working" id="a10a"><div class="wplain">
+          <p>{T}, {F1}, {F2}, {T,F1}, {T,F2}, {F1,F2}, {T,F1,F2}</p>
+          <p class="ans">Answer: the seven sets listed above.</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Let the random variable X be the value of the money that she picks up. What values can X take?</p>
+        <button class="reveal" type="button" data-w="a10b">Show working</button>
+        <div class="working" id="a10b"><div class="wplain"><p class="ans">Answer: 5 c, 10 c, 15 c, or 20 c</p></div></div></div>
+      <div class="box"><p><b>c</b> Amy repeats the experiment 20 times, replacing the coins after each selection. Complete the following table of her results, including the relative frequency.</p>
+        ${freqTable(["x", "5", "10", "15", "20"], [["f", "4", "8", "6", "2"]])}
+        <button class="reveal" type="button" data-w="a10c">Show working</button>
+        <div class="working" id="a10c"><div class="wplain">
+          ${freqTable(["x", "5", "10", "15", "20"], [
+            ["f", "4", "8", "6", "2"],
+            ["rf", "0.20", "0.40", "0.30", "0.10"]
+          ])}
+          <p class="ans">Answer: rf = 0.20, 0.40, 0.30, 0.10</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> Assuming that she is equally likely to pick up any of these seven non-empty scoops, draw up a probability tree diagram for X and calculate the theoretical probability of each outcome, adding your calculations to the table in a row marked p.</p>
+        <button class="reveal" type="button" data-w="a10d">Show working</button>
+        <div class="working" id="a10d"><div class="wplain">
+          ${scoopTree()}
+          ${freqTable(["x", "5", "10", "15", "20"], [
+            ["p (fraction)", "2/7", "2/7", "2/7", "1/7"],
+            ["p (decimal)", "0.29", "0.29", "0.29", "0.14"]
+          ])}
+          <p>Group scoops by value: two scoops worth 5c, two worth 10c, two worth 15c, one worth 20c — each scoop has probability 1/7.</p>
+          <p class="ans">Answer: P(5) = P(10) = P(15) = 2/7; P(20) = 1/7</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> Compare the theoretical probabilities with Amy’s experimental outcomes.</p>
+        <button class="reveal" type="button" data-w="a10e">Show working</button>
+        <div class="working" id="a10e"><div class="wplain">
+          <p>Experimental rf: 0.20, 0.40, 0.30, 0.10 vs theoretical ≈ 0.29, 0.29, 0.29, 0.14.</p>
+          <p>Only 20 trials — close agreement is unlikely. Amy should improve random scooping.</p>
+          <p class="ans">Answer: not in close agreement; small sample size; improve random selection method.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq,discrete",
+  kicker: "Development",
+  title: "Exercise 13A Question 11",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q11a–c · printed p. 482–483</div>
+    <p>An experiment with two possible outcomes is called a Bernoulli experiment. The outcome might be Yes, No; True, False; In, Out; Success, Fail; Correct, Incorrect, to give a few examples. If we take these two outcomes as 0 or 1, then a Bernoulli experiment generates a discrete random variable.</p>
+    <p>A dart player records 1 if he hits the bulls eye, and 0 otherwise. His results are recorded in the following table.</p>
+    ${freqTable(["x", "0", "1"], [["f", "40", "7"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Add a relative frequency column.</p>
+        <button class="reveal" type="button" data-w="a11a">Show working</button>
+        <div class="working" id="a11a"><div class="wplain">
+          <p>Total = 47 throws.</p>
+          ${freqTable(["x", "0", "1"], [["f", "40", "7"], ["rf", "0.85", "0.15"]])}
+          <p class="ans">Answer: rf = 0.85, 0.15</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Explain what the frequency and relative frequency mean in this case.</p>
+        <button class="reveal" type="button" data-w="a11b">Show working</button>
+        <div class="working" id="a11b"><div class="wplain">
+          <p>f = actual count of misses (40) and bull’s eyes (7).</p>
+          <p>rf = fraction of throws that were bull’s eyes — an estimate of P(hit).</p>
+          <p class="ans">Answer: f counts outcomes; rf estimates how often he hits the bull’s eye.</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> How many bull’s eyes would he expect in 20 throws?</p>
+        <button class="reveal" type="button" data-w="a11c">Show working</button>
+        <div class="working" id="a11c"><div class="wplain"><p>Expected ≈ 20 × 0.15 = 3.</p><p class="ans">Answer: about 3 bull’s eyes</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq",
+  kicker: "Development",
+  title: "Exercise 13A Question 12",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q12a–c · printed p. 483</div>
+    <p>A teacher tells their class that the probabilty a pair of numbers chosen at random have no factors in common is 6/π². A member of the computing and informatics club uses the GCD (Greatest Common Divisor) function in Excel to check if randomly selected pairs of numbers less than 100 have factors in common. Their results are displayed below.</p>
+    ${freqTable(["x", "0", "1"], [["f", "31", "19"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Discuss the design of their experiment.</p>
+        <button class="reveal" type="button" data-w="a12a">Show working</button>
+        <div class="working" id="a12a"><div class="wplain">
+          <p>Obviously most numbers are not two-digit, so the experiment assumes two-digit numbers are representative of all numbers for this result.</p>
+          <p class="ans">Answer: the restriction to numbers less than 100 may not represent all pairs — discuss whether two-digit pairs are still a useful check.</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Estimate the probability that a pair of numbers will have no factors in common. Does the experiment agree with the teacher’s claimed theoretical probability?</p>
+        <button class="reveal" type="button" data-w="a12b">Show working</button>
+        <div class="working" id="a12b"><div class="wplain">
+          <p>Total trials = 31 + 19 = 50.</p>
+          <p>The table uses x = 0 when GCD(a, b) = 1 (no factors in common apart from 1) and x = 1 when the pair shares a common factor. The frequency for x = 0 is 31.</p>
+          <p>P(no factors in common) ≈ 31/50 = 0.62 = 62%.</p>
+          <p>The teacher’s theoretical probability is 6/π² ≈ 0.608 ≈ 61%.</p>
+          <p>The experimental estimate and the theory are close — the agreement is quite good.</p>
+          <p class="ans">Answer: 31/50 ≈ 62%; theoretical 6/π² ≈ 61% — good agreement.</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Write your own spreadsheet to test this.</p>
+        <button class="reveal" type="button" data-w="a12c">Show working</button>
+        <div class="working" id="a12c"><div class="wplain">
+          <p>Generate random pairs of integers less than 100. Use GCD(a, b): record 0 when GCD = 1 (coprime), 1 when GCD &gt; 1.</p>
+          <p>Tally frequencies for x = 0 and x = 1, then form rf = f ÷ total. Compare with 6/π².</p>
+          <p class="ans">Answer: spreadsheet with RAND, GCD, tally column, rf row (class ICT extension).</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,relfreq,discrete",
+  kicker: "Development",
+  title: "Exercise 13A Question 13",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13A Q13a–e · printed p. 483</div>
+    <p>Most scientific calculators have a button to generate a random number. Your calculator may accept a function like RandInt#(1,6) or RandBetween(1,6), generating a number between 1 and 6 inclusive. Your calculator may have a function like Ran# generating a decimal between 0 and 1. Typing Ran#×6+1 will generate a random dice roll; just discard any decimal portion remaining.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Use your calculator to simulate rolling a dice 50 times. Record your results in a table with a tally column.</p>
+        <button class="reveal" type="button" data-w="a13a">Show working</button>
+        <div class="working" id="a13a"><div class="wplain">
+          <p>Set calculator to RandInt(1,6) or Ran#×6+1 truncated. Run 50 times; tally | for each face 1–6.</p>
+          <p class="ans">Answer: tally table (your 50 rolls will differ — class demo).</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Calculate the frequency and relative frequency of each outcome.</p>
+        <button class="reveal" type="button" data-w="a13b">Show working</button>
+        <div class="working" id="a13b"><div class="wplain">
+          <p>Count tallies → f row. Divide each f by 50 → rf row. Total rf = 1.</p>
+          <p class="ans">Answer: f and rf rows from your tallies (each rf = f ÷ 50).</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Is the dice simulated by the calculator weighted towards any particular result?</p>
+        <button class="reveal" type="button" data-w="a13c">Show working</button>
+        <div class="working" id="a13c"><div class="wplain">
+          <p>Compare your rf values. If one face is much above 1/6 ≈ 0.167, the simulation may look weighted (or the sample is small).</p>
+          <p class="ans">Answer: comment on whether any face stands out in your data.</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> If each outcome is equally likely, we call the distribution of probabilities uniform. Is the distribution you obtained uniform?</p>
+        <button class="reveal" type="button" data-w="a13d">Show working</button>
+        <div class="working" id="a13d"><div class="wplain">
+          <p>Uniform means all six rf ≈ 1/6. With only 50 rolls, some variation is normal.</p>
+          <p class="ans">Answer: compare your rf to 0.167 — roughly uniform if all close; otherwise not.</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> This simulation exercise can also be carried out in a spreadsheet.</p>
+        <button class="reveal" type="button" data-w="a13e">Show working</button>
+        <div class="working" id="a13e"><div class="wplain"><p>Use =RANDBETWEEN(1,6) in 50 cells; COUNTIF for frequencies; rf = f/50.</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,dotPlot,discrete",
+  kicker: "Challenge",
+  title: "Exercise 13A Question 14",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 13A Q14a–b · printed p. 483</div>
+    <p><b>14 a</b> Simulate the sum of the outcomes when a pair of dice is rolled on your calculator. As you roll the dice, record your results in a dot plot. Roll a pair of die 50 times.</p>
+    <p><b>b</b> Compare the results obtained by simulation in a spreadsheet. You can easily toss the pair of dice 500 times, for a more accurate simulation.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Calculator simulation + dot plot (50 rolls)</p>
+        <button class="reveal" type="button" data-w="a14a">Show working</button>
+        <div class="working" id="a14a"><div class="wplain">
+          <p>Roll die 1 and die 2 (each 1–6); add. Repeat 50 times. Plot a dot for each sum (2–12).</p>
+          <p>Typical shape: peak near 7 (most ways to make 7).</p>
+          ${dotPlot({ title: "Example shape (your counts will differ)", xlabel: "Sum of two dice", xs: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], counts: [1, 2, 3, 4, 5, 8, 6, 5, 3, 2, 1] })}
+          <p class="ans">Answer: dot plot from your 50 simulated sums (example shape above).</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Spreadsheet: 500 rolls</p>
+        <button class="reveal" type="button" data-w="a14b">Show working</button>
+        <div class="working" id="a14b"><div class="wplain">
+          <p>Two columns RANDBETWEEN(1,6); sum column; COUNTIF for each sum 2–12; draw dot plot or histogram.</p>
+          <p>500 rolls give rf closer to the theoretical triangular distribution (peak at 7).</p>
+          <p class="ans">Answer: larger sample → smoother distribution centred on 7.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "rv,freq,polygon,discrete",
+  kicker: "Challenge",
+  title: "Exercise 13A Question 15",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 13A Q15a–d · printed p. 483</div>
+    <p>Take f as 1 if x is prime, otherwise its value is 0. Thus, f records the frequency of primes for x. The cumulative function π(x) returns the number of primes less than or equal to x.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Fill in the values in the table below.</p>
+        ${freqTable(["x", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], [
+          ["f", "0", "1", "1", "0", "", "0", "", "", "", ""],
+          ["π(x)", "0", "1", "", "", "", "", "", "", "", ""]
+        ])}
+        <button class="reveal" type="button" data-w="a15a">Show working</button>
+        <div class="working" id="a15a"><div class="wplain">
+          <p>Primes ≤ 10: 2, 3, 5, 7. f = 1 on primes, 0 otherwise. π(x) counts primes up to x.</p>
+          ${freqTable(["x", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], [
+            ["f", "0", "1", "1", "0", "1", "0", "1", "0", "0", "0"],
+            ["π(x)", "0", "1", "2", "2", "3", "3", "4", "4", "4", "4"]
+          ])}
+          <p class="ans">Answer: f row 0,1,1,0,1,0,1,0,0,0; π(x) row 0,1,2,2,3,3,4,4,4,4</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> A computer is used to calculate π(n) for small values of x.</p>
+        ${freqTable(["x", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"], [["π(x)", "4", "8", "10", "12", "15", "17", "19", "22", "24", "25"]])}
+        <p>Draw a polygon for π(x).</p>
+        <button class="reveal" type="button" data-w="a15b">Show working</button>
+        <div class="working" id="a15b"><div class="wplain">
+          ${freqPolygon({
+            title: "π(x) — primes up to x",
+            xlabel: "x",
+            ylabel: "π(x)",
+            xs: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            vals: [4, 8, 10, 12, 15, 17, 19, 22, 24, 25],
+            ymax: 28,
+            polyLeft: 0,
+            polyRight: 110,
+            showBars: false
+          })}
+          <p>Join points (10,4), (20,8), …, (100,25); return to the axis at the ends.</p>
+          <p class="ans">Answer: polygon as drawn (increasing step shape).</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> How many primes are there between 40 and 80? Check this result directly by writing down the primes.</p>
+        <button class="reveal" type="button" data-w="a15c">Show working</button>
+        <div class="working" id="a15c"><div class="wplain">
+          <p>From the table: π(80) − π(40) = 22 − 12 = 10.</p>
+          <p>Primes from 41 to 79: 41, 43, 47, 53, 59, 61, 67, 71, 73, 79 — ten primes.</p>
+          <p class="ans">Answer: 10 primes</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> It is possible to write a spreadsheet in Excel to test for primes and to implement the results above. Excel does not have a prime testing function, and you will likely have to use Excel’s array feature to test the divisibility of x by all numbers less than √x. Use an internet search to investigate how to do this.</p>
+        <button class="reveal" type="button" data-w="a15d">Show working</button>
+        <div class="working" id="a15d"><div class="wplain"><p>Test divisors 2 to INT(SQRT(x)); if none divide x, x is prime. Build f and running sum for π(x).</p><p class="ans">Answer: spreadsheet prime test + cumulative count (ICT extension).</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("none — all Development done in these slides", "none — all Challenge done in these slides", `<p class="small"><b>Foundation leftover:</b> Q2, Q4.</p>`)
+});
+
+pack("13A");
+
+/* ========== 13B ========== */
+let cfSeq = 0;
+
+/** Frequency / cumulative table (class mini). */
+function cfTable(headers, rows, caption) {
+  const head = headers.map((h) => `<th>${h}</th>`).join("");
+  const body = rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("");
+  return `<table class="mini">${caption ? `<caption style="caption-side:top;text-align:left;font-weight:700;margin-bottom:6px">${caption}</caption>` : ""}<tr>${head}</tr>${body}</table>`;
+}
+
+/**
+ * Cumulative histogram (bars touch; centred on xs).
+ * o: { xs, ys, yLabel, title, rel, yMax, medianAt }
+ */
+function cumHist(o = {}) {
+  ++cfSeq;
+  const xs = o.xs || [];
+  const ys = o.ys || [];
+  const rel = !!o.rel;
+  const yMax = o.yMax != null ? o.yMax : (rel ? 1 : Math.max(...ys, 1));
+  const ox = 56, oy = 220, gw = 300, gh = 170;
+  const xmin = xs.length ? Math.min(...xs) : 0;
+  const xmax = xs.length ? Math.max(...xs) : 1;
+  const xScale = (x) => ox + ((x - xmin) / (xmax - xmin || 1)) * gw;
+  const yScale = (y) => oy - (y / yMax) * gh;
+  const bw = gw / (xs.length || 1) * 0.82;
+  let bars = "";
+  xs.forEach((x, i) => {
+    const h = ys[i];
+    const cx = xScale(x);
+    const y0 = yScale(0);
+    const y1 = yScale(h);
+    bars += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${(y0 - y1).toFixed(1)}" fill="#7eb6e8" stroke="#1c2333" stroke-width="1.2"/>`;
+    bars += `<text x="${cx.toFixed(1)}" y="${oy + 16}" text-anchor="middle" font-size="11" font-weight="700">${x}</text>`;
+  });
+  let med = "";
+  if (o.medianAt != null) {
+    const my = rel ? 0.5 : o.medianAt.n / 2;
+    const yM = yScale(my);
+    med += `<line x1="${ox}" y1="${yM.toFixed(1)}" x2="${(ox + gw).toFixed(1)}" y2="${yM.toFixed(1)}" stroke="#a33b32" stroke-width="1.5" stroke-dasharray="6 4"/>`;
+    med += `<text x="${(ox + gw + 4).toFixed(1)}" y="${(yM + 4).toFixed(1)}" font-size="10" fill="#a33b32">${rel ? "crf = 0.5" : "halfway"}</text>`;
+    if (o.medianAt.x != null) {
+      med += `<line x1="${xScale(o.medianAt.x).toFixed(1)}" y1="${yM.toFixed(1)}" x2="${xScale(o.medianAt.x).toFixed(1)}" y2="${oy}" stroke="#1e6b66" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+      med += `<text x="${xScale(o.medianAt.x).toFixed(1)}" y="${(oy + 32).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#1e6b66">median ≈ ${o.medianAt.label || o.medianAt.x}</text>`;
+    }
+  }
+  const yTicks = rel ? [0, 0.2, 0.4, 0.6, 0.8, 1] : [];
+  let yLab = "";
+  if (rel) {
+    yTicks.forEach((t) => {
+      yLab += `<text x="${ox - 6}" y="${(yScale(t) + 4).toFixed(1)}" text-anchor="end" font-size="10">${t}</text>`;
+    });
+  }
+  return `<svg class="tree" viewBox="0 0 400 280" role="img" aria-label="${o.title || "Cumulative histogram"}">
+    <rect x="8" y="8" width="384" height="264" fill="#fffdf8" stroke="#d9cfc0"/>
+    ${o.title ? `<text x="200" y="26" text-anchor="middle" font-size="13" font-weight="800">${o.title}</text>` : ""}
+    <line x1="${ox}" y1="${oy}" x2="${ox + gw}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox}" y1="${oy - gh}" x2="${ox}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <text x="${(ox + gw / 2).toFixed(1)}" y="272" text-anchor="middle" font-size="12" font-weight="700">${o.xLabel || "score"}</text>
+    <text x="18" y="120" text-anchor="middle" font-size="12" font-weight="700" transform="rotate(-90 18 120)">${o.yLabel || (rel ? "cumulative relative frequency" : "cumulative frequency")}</text>
+    ${yLab}${bars}${med}
+  </svg>`;
+}
+
+/**
+ * Cumulative polygon (ogive): joins top-right corners; drops to axis at first bar.
+ * o: { xs, ys, rel, title, xLabel, yLabel, medianAt }
+ */
+function ogivePolygon(o = {}) {
+  ++cfSeq;
+  const xs = o.xs || [];
+  const ys = o.ys || [];
+  const rel = !!o.rel;
+  const yMax = o.yMax != null ? o.yMax : (rel ? 1 : Math.max(...ys, 1));
+  const ox = 56, oy = 220, gw = 300, gh = 170;
+  const xmin = xs.length ? Math.min(...xs) : 0;
+  const xmax = xs.length ? Math.max(...xs) : 1;
+  const xScale = (x) => ox + ((x - xmin) / (xmax - xmin || 1)) * gw;
+  const yScale = (y) => oy - (y / yMax) * gh;
+  const bw = gw / (xs.length || 1) * 0.82;
+  let bars = "", pts = [];
+  xs.forEach((x, i) => {
+    const h = ys[i];
+    const cx = xScale(x);
+    const tr = cx + bw / 2;
+    const y0 = yScale(0);
+    const y1 = yScale(h);
+    bars += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${(y0 - y1).toFixed(1)}" fill="#d7dde6" stroke="#1c2333" stroke-width="1"/>`;
+    pts.push([tr, y1]);
+    bars += `<text x="${cx.toFixed(1)}" y="${oy + 16}" text-anchor="middle" font-size="11" font-weight="700">${x}</text>`;
+  });
+  let poly = "";
+  if (pts.length) {
+    const x0 = xScale(xs[0]) - bw / 2;
+    const path = [`M ${x0.toFixed(1)} ${oy.toFixed(1)}`]
+      .concat(pts.map((p) => `L ${p[0].toFixed(1)} ${p[1].toFixed(1)}`))
+      .join(" ");
+    poly = `<path d="${path}" fill="none" stroke="#1e6b66" stroke-width="2.5"/>`;
+  }
+  let med = "";
+  if (o.medianAt != null) {
+    const my = rel ? 0.5 : o.medianAt.n / 2;
+    const yM = yScale(my);
+    med += `<line x1="${ox}" y1="${yM.toFixed(1)}" x2="${(ox + gw).toFixed(1)}" y2="${yM.toFixed(1)}" stroke="#a33b32" stroke-width="1.5" stroke-dasharray="6 4"/>`;
+    if (o.medianAt.x != null) {
+      med += `<circle cx="${xScale(o.medianAt.x).toFixed(1)}" cy="${yM.toFixed(1)}" r="5" fill="#c9a227" stroke="#1c2333"/>`;
+      med += `<text x="${xScale(o.medianAt.x).toFixed(1)}" y="${(oy + 32).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#1e6b66">median ≈ ${o.medianAt.label || o.medianAt.x}</text>`;
+    }
+  }
+  return `<svg class="tree" viewBox="0 0 400 280" role="img" aria-label="${o.title || "Cumulative polygon (ogive)"}">
+    <rect x="8" y="8" width="384" height="264" fill="#fffdf8" stroke="#d9cfc0"/>
+    ${o.title ? `<text x="200" y="26" text-anchor="middle" font-size="13" font-weight="800">${o.title}</text>` : ""}
+    <line x1="${ox}" y1="${oy}" x2="${ox + gw}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox}" y1="${oy - gh}" x2="${ox}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <text x="${(ox + gw / 2).toFixed(1)}" y="272" text-anchor="middle" font-size="12" font-weight="700">${o.xLabel || "score"}</text>
+    <text x="18" y="120" text-anchor="middle" font-size="12" font-weight="700" transform="rotate(-90 18 120)">${o.yLabel || (rel ? "cumulative relative frequency" : "cumulative frequency")}</text>
+    ${bars}${poly}${med}
+  </svg>`;
+}
+
+/** Dot plot for discrete counts (Q10 cupcakes). */
+function dotPlot(counts, xMin, xMax) {
+  const ox = 50, oy = 200, gap = 32;
+  let dots = "", labels = "";
+  for (let x = xMin; x <= xMax; x++) {
+    const n = counts[x - xMin] || 0;
+    const cx = ox + (x - xMin) * gap;
+    labels += `<text x="${cx}" y="${oy + 18}" text-anchor="middle" font-size="12" font-weight="700">${x}</text>`;
+    for (let k = 0; k < n; k++) {
+      dots += `<circle cx="${cx}" cy="${(oy - 12 - k * 14).toFixed(1)}" r="5" fill="#7eb6e8" stroke="#1c2333"/>`;
+    }
+  }
+  return `<svg class="tree" viewBox="0 0 380 230" role="img" aria-label="Dot plot">
+    <line x1="${ox - 10}" y1="${oy}" x2="${ox + (xMax - xMin) * gap + 10}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <text x="${(ox + (xMax - xMin) * gap / 2).toFixed(1)}" y="222" text-anchor="middle" font-size="12" font-weight="700">cupcakes per customer</text>
+    ${labels}${dots}
+  </svg>`;
+}
+
+slides.push({
+  used: "",
+  kicker: "13B · 45 minutes",
+  title: "Cumulative frequency",
+  html: `
+    <p>Today’s three words: <b>median</b>, <b>cumulative (cf)</b>, <b>ogive</b>.</p>
+    <div class="say">Cumulative frequency counts how many scores are <b>≤ x</b>. The ogive lets you read the median from a graph.</div>
+    <p class="small">CambridgeMATHS NSW Advanced Year 11 · Exercise 13B · printed pp. 492–496.</p>`
+});
+
+slides.push({
+  used: "median,cf,crf,ogive,hist-polygon-rules",
+  kicker: "Formula sheet",
+  title: "Keep these visible (Section 13B)",
+  html: `
+    <div class="sheetgrid">
+      <div class="box" data-formula-ref="median"><span class="sym">Median</span><br>Odd <i>n</i>: middle score.<br>Even <i>n</i>: mean of the two middle scores.<br>From cf: the score where the halfway count sits.</div>
+      <div class="box" data-formula-ref="cf"><span class="sym">cf</span><br>Cumulative frequency of <i>x</i> = number of scores with <i>X ≤ x</i>.<br>Build by adding <i>f</i> from left to right.</div>
+      <div class="box" data-formula-ref="crf"><span class="sym">crf</span><br>Cumulative relative frequency.<br>Each entry = (cf ÷ total). Last crf = 1.</div>
+      <div class="box" data-formula-ref="ogive"><span class="sym">Ogive</span><br>Cumulative frequency polygon.<br>Read median: draw a horizontal line at halfway (cf = <i>n</i>/2 or crf = 0.5).</div>
+      <div class="box" data-formula-ref="hist-polygon-rules" style="grid-column:1/-1"><span class="sym">Box 5 — drawing rules</span><br>
+        <b>Frequency / relative frequency polygon:</b> join the <b>centres</b> of the column tops; extend to the next class centre.<br>
+        <b>Cumulative polygons:</b> join the <b>top-right corners</b> of the columns; extend left only to the bottom-left corner of the first column.</div>
+    </div>
+    <p class="small">Abbreviations in this chapter: <b>f</b>, <b>rf</b>, <b>cf</b>, <b>crf</b>.</p>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `
+    <ul>
+      <li>Build a <b>cf</b> and <b>crf</b> row from a frequency table.</li>
+      <li>Find the <b>median</b> from sorted data or from cf.</li>
+      <li>Draw a cumulative histogram and <b>ogive</b> (top-right corners).</li>
+      <li>Estimate the median from a cumulative graph.</li>
+    </ul>
+    <div class="say">After this lesson you should finish any leftover <b>Foundation</b> items on your own. All <b>Development</b> and <b>Challenge</b> methods are modelled here.</div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "The 45-minute map",
+  html: `
+    <table class="mini">
+      <tr><th>Mins</th><th>Move</th><th>Book item</th></tr>
+      <tr><td>0–5</td><td>Formula sheet + median idea</td><td>Box 4, Box 5, Box 6</td></tr>
+      <tr><td>5–12</td><td>cf table pattern</td><td>Foundation Q1a–c, Q2a</td></tr>
+      <tr><td>12–18</td><td>Probabilities from crf</td><td>Foundation Q3</td></tr>
+      <tr><td>18–24</td><td>Read median from ogive</td><td>Foundation Q6a</td></tr>
+      <tr><td>24–38</td><td>Development full set</td><td>Q7–Q13</td></tr>
+      <tr><td>38–44</td><td>Challenge mode from crf</td><td>Q14</td></tr>
+      <tr><td>44–45</td><td>Foundation leftover list</td><td>numbers only</td></tr>
+    </table>
+    <p class="small">If late, skip Q5 and Q6b–d; keep Q7, Q8, Q12, Q14.</p>`
+});
+
+slides.push({
+  used: "median,cf",
+  kicker: "0–5 min · Idea",
+  title: "The median splits the data in half",
+  html: `
+    <div class="box">
+      <p>9 scores (odd): middle = 5th score → median is that score.</p>
+      <p>10 scores (even): average the 5th and 6th scores.</p>
+    </div>
+    <div class="say">Arrange in order first. The median is <b>not</b> always a score that appears in the list (e.g. 10½).</div>`
+});
+
+slides.push({
+  used: "cf,crf",
+  kicker: "Idea",
+  title: "Cumulative frequency means X ≤ x",
+  html: `
+    <p><b>cf</b> at score 5 = how many students scored 5 or less.</p>
+    <p><b>crf</b> = cf ÷ (total number of scores). Last crf is always 1.</p>
+    <div class="warn">Counting uses <b>≤</b> (less than or equal), not strictly less than.</div>`
+});
+
+slides.push({
+  used: "ogive,hist-polygon-rules",
+  kicker: "Idea",
+  title: "Two different polygon rules (Box 5)",
+  html: `
+    <div class="two">
+      <div class="box"><b>Frequency polygon</b><br>Join <b>centres</b> of column tops.</div>
+      <div class="box"><b>Cumulative polygon (ogive)</b><br>Join <b>top-right corners</b>. Drop to the axis on the left only.</div>
+    </div>
+    ${ogivePolygon({
+      title: "Ogive sketch",
+      xs: [1, 2, 3, 4, 5, 6],
+      ys: [2, 6, 9, 15, 23, 40],
+      xLabel: "mark",
+      medianAt: { n: 40, x: 6, label: "6" }
+    })}
+    <p class="small">Even count (40): horizontal lines at cf = 20 and 21 both meet the column for 6 → median 6.</p>`
+});
+
+slides.push({
+  used: "median",
+  kicker: "5–12 min · Foundation",
+  title: "Exercise 13B Question 1a–c",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13B Q1a–c · printed p. 492</div>
+    <p>Find the median, mode and range of each dataset.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> 10, 13, 14, 14, 15, 17, 18</p>
+        <button class="reveal" type="button" data-w="b1a">Show working</button>
+        <div class="working" id="b1a"><div class="wplain">
+          <p>Already in order. Seven scores → median = 4th = 14. Mode = 14. Range = 18 − 10 = 8.</p>
+          <p class="ans">Answer: median 14, mode 14, range 8</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> 5, 7, 8, 9, 10, 12, 13, 15, 17</p>
+        <button class="reveal" type="button" data-w="b1b">Show working</button>
+        <div class="working" id="b1b"><div class="wplain">
+          <p>Nine scores → median = 5th = 10. Every value appears once → all are modes. Range = 17 − 5 = 12.</p>
+          <p class="ans">Answer: median 10, every score is trivially a mode, range 12</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> 3, 3, 4, 5, 7, 9, 10, 12, 13, 15</p>
+        <button class="reveal" type="button" data-w="b1c">Show working</button>
+        <div class="working" id="b1c"><div class="wplain">
+          <p>Ten scores → median = ½(5th + 6th) = ½(7 + 9) = 8. Mode = 3. Range = 15 − 3 = 12.</p>
+          <p class="ans">Answer: median 8, mode 3, range 12</p>
+        </div></div></div>
+    </div>
+    <div class="say">Parts d–f are independent tonight (see last slide).</div>`
+});
+
+slides.push({
+  used: "cf,median",
+  kicker: "Foundation",
+  title: "Exercise 13B Question 2a",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13B Q2a · printed p. 492</div>
+    <p>Construct a table of frequencies and cumulative frequencies for the following data. Find the number of scores, the mode(s) and the median.</p>
+    <p><b>a</b> 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 8, 8, 9</p>
+    <button class="reveal" type="button" data-w="b2a">Show working</button>
+    <div class="working" id="b2a"><div class="wplain">
+      ${cfTable(["x", "2", "3", "4", "5", "6", "7", "8", "9"], [
+        ["f", "3", "2", "4", "2", "2", "0", "2", "1"],
+        ["cf", "3", "5", "9", "11", "13", "13", "15", "16"]
+      ])}
+      <p>16 scores; mode 4 (highest f). Even count → median = ½(8th + 9th) = ½(4 + 4) = 4.</p>
+      <p class="ans">Answer: 16 scores; mode 4; median (4 + 4)/2 = 4</p>
+    </div></div>`
+});
+
+slides.push({
+  used: "cf,crf",
+  kicker: "12–18 min · Foundation",
+  title: "Exercise 13B Question 3",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13B Q3a–c · printed p. 492</div>
+    <p>The results of an experiment to investigate the value of a random variable X are listed in the following table.</p>
+    ${cfTable(["x", "0", "1", "2", "3", "4", "5", "6"], [["f", "3", "2", "4", "2", "5", "3", "2"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Copy the table and add cumulative frequencies and cumulative relative frequencies (to 3 decimal places).</p>
+        <button class="reveal" type="button" data-w="b3a">Show working</button>
+        <div class="working" id="b3a"><div class="wplain">
+          ${cfTable(["x", "0", "1", "2", "3", "4", "5", "6"], [
+            ["f", "3", "2", "4", "2", "5", "3", "2"],
+            ["cf", "3", "5", "9", "11", "16", "19", "21"],
+            ["crf", "0.143", "0.238", "0.429", "0.524", "0.762", "0.905", "1"]
+          ])}
+        </div></div></div>
+      <div class="box"><p><b>b</b> Estimate P(X ≤ 2), P(X ≤ 5), P(2 &lt; X ≤ 5).</p>
+        <button class="reveal" type="button" data-w="b3b">Show working</button>
+        <div class="working" id="b3b"><div class="wplain">
+          <p>P(X ≤ 2) = crf at 2 = 0.429.</p>
+          <p>P(X ≤ 5) = 0.905.</p>
+          <p>P(2 &lt; X ≤ 5) = P(X ≤ 5) − P(X ≤ 2) = 0.905 − 0.429 = 0.476.</p>
+          <p class="ans">Answer: i 0.429 &nbsp; ii 0.905 &nbsp; iii 0.476</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Estimate the median by finding x such that P(X ≤ x) = 0.5.</p>
+        <button class="reveal" type="button" data-w="b3c">Show working</button>
+        <div class="working" id="b3c"><div class="wplain">
+          <p>crf jumps from 0.429 at x = 2 to 0.524 at x = 3, so 0.5 occurs in the column x = 3.</p>
+          <p class="ans">Answer: median x = 3 (discrete data)</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "cf,median",
+  kicker: "18–24 min · Foundation",
+  title: "Exercise 13B Question 6a",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13B Q6a · printed p. 493</div>
+    <p>Use the cumulative frequency polygon and cumulative frequency histogram to find the number of scores and the median for each experiment.</p>
+    <p><b>a</b> (graph in textbook)</p>
+    ${ogivePolygon({
+      title: "Experiment (a) — read from book graph",
+      xs: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      ys: [2, 5, 9, 16, 22, 26, 29, 31, 31],
+      medianAt: { n: 31, x: 4, label: "4" }
+    })}
+    <button class="reveal" type="button" data-w="b6a">Show working</button>
+    <div class="working" id="b6a"><div class="wplain">
+      <p>Top cf on the graph = 31 → 31 scores.</p>
+      <p>Halfway counts: 15th and 16th scores. cf at x = 3 is below 16; cf at x = 4 is 16 → both middle scores are 4.</p>
+      <p class="ans">Answer: 31 scores; the median is the 16th score, viz 4</p>
+    </div></div>
+    <div class="say">Parts b–d use the same method on the other graphs in the book.</div>`
+});
+
+slides.push({
+  used: "ogive,crf",
+  kicker: "24–30 min · Development",
+  title: "Exercise 13B Question 7",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q7a–d · printed p. 494</div>
+    <p>Use the cumulative relative frequency polygon and cumulative relative frequency histogram to estimate the median for each experiment.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b></p>
+        ${ogivePolygon({ title: "Q7a", xs: [0,1,2,3,4,5,6,7,8], ys: [0.06,0.16,0.32,0.52,0.68,0.82,0.92,0.97,1], rel: true, medianAt: { x: 3, label: "3" } })}
+        <button class="reveal" type="button" data-w="b7a">Show working</button>
+        <div class="working" id="b7a"><div class="wplain"><p>Horizontal line at crf = 0.5 meets the ogive at score 3.</p><p class="ans">Answer: 3</p></div></div></div>
+      <div class="box"><p><b>b</b></p>
+        ${ogivePolygon({ title: "Q7b", xs: [0,1,2,3,4,5,6,7,8], ys: [0.04,0.12,0.28,0.48,0.64,0.78,0.9,0.96,1], rel: true, medianAt: { x: 4, label: "4" } })}
+        <button class="reveal" type="button" data-w="b7b">Show working</button>
+        <div class="working" id="b7b"><div class="wplain"><p>crf = 0.5 occurs at score 4.</p><p class="ans">Answer: 4</p></div></div></div>
+      <div class="box"><p><b>c</b></p>
+        ${ogivePolygon({ title: "Q7c", xs: [0,1,2,3,4,5,6], ys: [0.05,0.18,0.42,0.58,0.78,0.92,1], rel: true, medianAt: { x: 2.5, label: "2.5" } })}
+        <button class="reveal" type="button" data-w="b7c">Show working</button>
+        <div class="working" id="b7c"><div class="wplain"><p>Between x = 2 and x = 3 the ogive crosses 0.5 → interpolate ≈ 2.5.</p><p class="ans">Answer: 2.5</p></div></div></div>
+      <div class="box"><p><b>d</b></p>
+        ${ogivePolygon({ title: "Q7d", xs: [0,1,2,3,4,5,6,7,8,9,10,11,12,13], ys: [0.02,0.05,0.1,0.18,0.28,0.4,0.52,0.64,0.74,0.84,0.91,0.96,1,1], rel: true, medianAt: { x: 8, label: "8" } })}
+        <button class="reveal" type="button" data-w="b7d">Show working</button>
+        <div class="working" id="b7d"><div class="wplain"><p>crf = 0.5 meets the ogive at score 8.</p><p class="ans">Answer: 8</p></div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "cf,ogive,hist-polygon-rules",
+  kicker: "Development",
+  title: "Exercise 13B Question 8",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q8a–f · printed p. 494–495</div>
+    <p>A teacher set a simple pre-unit quiz out of 10. The results are repeated again in the following table.</p>
+    ${cfTable(["x", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [["f", "1", "0", "0", "2", "4", "5", "3", "1", "2"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Copy the table and add a cumulative frequency row.</p>
+        <button class="reveal" type="button" data-w="b8a">Show working</button>
+        <div class="working" id="b8a"><div class="wplain">
+          ${cfTable(["x", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [
+            ["f", "1", "0", "0", "2", "4", "5", "3", "1", "2"],
+            ["cf", "1", "1", "1", "3", "7", "12", "15", "16", "18"]
+          ])}
+        </div></div></div>
+      <div class="box"><p><b>b–c</b> Draw cumulative histogram and ogive (top-right corners).</p>
+        <button class="reveal" type="button" data-w="b8bc">Show working</button>
+        <div class="working" id="b8bc"><div class="wplain">
+          ${ogivePolygon({
+            title: "Quiz Scores — cumulative frequency",
+            xs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            ys: [1, 1, 1, 3, 7, 12, 15, 16, 18, 18],
+            xLabel: "score"
+          })}
+          <p>Bars centre on scores 1–9; no gaps. Polygon joins top-right corners and returns to the axis at the start of the first bar.</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> How many students got no more than 50%?</p>
+        <button class="reveal" type="button" data-w="b8d">Show working</button>
+        <div class="working" id="b8d"><div class="wplain">
+          <p>50% of 10 marks = 5. “No more than 50%” means score ≤ 5.</p>
+          <p>cf at 5 = 7 students.</p>
+          <p class="ans">Answer: 7</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> How many students got less than 50%?</p>
+        <button class="reveal" type="button" data-w="b8e">Show working</button>
+        <div class="working" id="b8e"><div class="wplain">
+          <p>Less than 50% means score &lt; 5 → cf at 4 = 3.</p>
+          <p class="ans">Answer: 3</p>
+        </div></div></div>
+      <div class="box"><p><b>f</b> What score did 75% of the students fail to attain?</p>
+        <button class="reveal" type="button" data-w="b8f">Show working</button>
+        <div class="working" id="b8f"><div class="wplain">
+          <p>75% of 18 students = 13.5. Find the score where cf is just below 13.5.</p>
+          <p>12 students (67%) scored ≤ 6; 15 students (83%) scored ≤ 7 → threshold between 6 and 7.</p>
+          <p class="ans">Answer: the score that three-quarters of the students lie below — 12 got at most 6, 15 got at most 7 (score 7 is the first not attained by 75%).</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "crf,ogive,hist-polygon-rules",
+  kicker: "Development",
+  title: "Exercise 13B Question 9",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q9a–c · printed p. 495</div>
+    <p>Clive’s lion sightings — relative frequencies:</p>
+    ${cfTable(["x", "1", "2", "3", "4", "5", "6"], [["rf", "0.4", "0", "0.16", "0", "0.12", "0.32"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Add a cumulative relative frequency row.</p>
+        <button class="reveal" type="button" data-w="b9a">Show working</button>
+        <div class="working" id="b9a"><div class="wplain">
+          ${cfTable(["x", "1", "2", "3", "4", "5", "6"], [
+            ["rf", "0.4", "0", "0.16", "0", "0.12", "0.32"],
+            ["crf", "0.4", "0.4", "0.56", "0.56", "0.68", "1"]
+          ])}
+        </div></div></div>
+      <div class="box"><p><b>b–c</b> Cumulative relative frequency histogram and polygon.</p>
+        <button class="reveal" type="button" data-w="b9bc">Show working</button>
+        <div class="working" id="b9bc"><div class="wplain">
+          ${ogivePolygon({
+            title: "Lion Sightings at the Zoo",
+            xs: [1, 2, 3, 4, 5, 6, 7],
+            ys: [0.4, 0.4, 0.56, 0.56, 0.68, 1, 1],
+            rel: true,
+            xLabel: "number sighted"
+          })}
+          <p>Bars centre on 1–6; vertical scale 0.1 = 1 cm recommended in the book.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "cf,crf,median",
+  kicker: "Development",
+  title: "Exercise 13B Question 10",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q10a–d · printed p. 495</div>
+    <p>A shop records how many cupcakes each customer purchases (dot plot in textbook).</p>
+    ${dotPlot([6, 3, 5, 2, 1, 1, 1, 6, 0, 0], 1, 10)}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Construct a table showing cumulative frequency and cumulative relative frequency.</p>
+        <button class="reveal" type="button" data-w="b10a">Show working</button>
+        <div class="working" id="b10a"><div class="wplain">
+          ${cfTable(["x", "1", "2", "3", "4", "5", "6", "7", "8"], [
+            ["f", "6", "3", "5", "2", "1", "1", "1", "6"],
+            ["cf", "6", "9", "14", "16", "17", "18", "19", "22"],
+            ["crf", "0.18", "0.32", "0.5", "0.59", "0.64", "0.68", "0.73", "1"]
+          ])}
+          <p>Total customers = 22 (from the dot plot in the textbook).</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Find the median sales of cupcakes.</p>
+        <button class="reveal" type="button" data-w="b10b">Show working</button>
+        <div class="working" id="b10b"><div class="wplain">
+          <p>22 customers → median = average of 11th and 12th scores. cf reaches 11 at x = 3, so both middle scores are 3.</p>
+          <p class="ans">Answer: 3.5</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Find the mode of the data.</p>
+        <button class="reveal" type="button" data-w="b10c">Show working</button>
+        <div class="working" id="b10c"><div class="wplain">
+          <p>The tallest stack on the dot plot is at 8 cupcakes (six customers).</p>
+          <p class="ans">Answer: 8</p>
+        </div></div></div>
+      <div class="box"><p><b>d i–iii</b> Discuss packaging in 3, 4, or 8 cupcakes.</p>
+        <button class="reveal" type="button" data-w="b10d">Show working</button>
+        <div class="working" id="b10d"><div class="wplain">
+          <p><b>3:</b> near the median — convenient but mode may differ.</p>
+          <p><b>4:</b> common pack size; may encourage buying two boxes.</p>
+          <p><b>8:</b> matches a peak in sales but customers might buy two boxes of four instead.</p>
+          <p class="ans">Discuss: median vs mode for choosing pack size; marketing larger boxes.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "cf,crf",
+  kicker: "Development",
+  title: "Exercise 13B Question 11",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q11a–f · printed p. 495–496</div>
+    <p>Last year’s Mathematics Advanced band results:</p>
+    ${cfTable(["x", "1", "2", "3", "4", "5", "6"], [["f", "0", "0", "2", "4", "10", "6"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Add cumulative frequency and cumulative relative frequency rows.</p>
+        <button class="reveal" type="button" data-w="b11a">Show working</button>
+        <div class="working" id="b11a"><div class="wplain">
+          ${cfTable(["x", "1", "2", "3", "4", "5", "6"], [
+            ["f", "0", "0", "2", "4", "10", "6"],
+            ["cf", "0", "0", "2", "6", "16", "22"],
+            ["crf", "0", "0", "0.09", "0.27", "0.73", "1"]
+          ])}
+          <p>Total cohort last year: 22 students.</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> What fraction obtained band 6?</p>
+        <button class="reveal" type="button" data-w="b11b">Show working</button>
+        <div class="working" id="b11b"><div class="wplain"><p>6 out of 22.</p><p class="ans">Answer: 6/22</p></div></div></div>
+      <div class="box"><p><b>c</b> Probability a random student gets band 6 this year?</p>
+        <button class="reveal" type="button" data-w="b11c">Show working</button>
+        <div class="working" id="b11c"><div class="wplain"><p>Estimate using last year: 6/22.</p><p class="ans">Answer: 6/22</p></div></div></div>
+      <div class="box"><p><b>d</b> Mike is 10th of 30 after one assessment — estimate his band.</p>
+        <button class="reveal" type="button" data-w="b11d">Show working</button>
+        <div class="working" id="b11d"><div class="wplain">
+          <p>20 students rank below him → about 67% from the bottom → crf ≈ 0.67 between bands 5 and 6.</p>
+          <p class="ans">Answer: band 5</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> How many places to improve for band 6?</p>
+        <button class="reveal" type="button" data-w="b11e">Show working</button>
+        <div class="working" id="b11e"><div class="wplain">
+          <p>About 27% of 30 ≈ 8 students get band 6 → need to be in top 8. From 10th place, move up about 2.</p>
+          <p class="ans">Answer: about 2 places</p>
+        </div></div></div>
+      <div class="box"><p><b>f</b> Discuss issues with this estimation.</p>
+        <button class="reveal" type="button" data-w="b11f">Show working</button>
+        <div class="working" id="b11f"><div class="wplain">
+          <p>Cohorts differ year to year; tied ranks; one assessment is not the full HSC; small changes in rank may not change band.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "cf,median",
+  kicker: "Development",
+  title: "Exercise 13B Question 12",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q12a–e · printed p. 496</div>
+    <p>Basketball hoops in 21 sessions:</p>
+    <p class="small">4, 3, 5, 4, 5, 4, 6, 7, 5, 6, 8, 6, 6, 8, 9, 10, 7, 8, 9, 7, 9</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Construct a dot plot.</p>
+        <button class="reveal" type="button" data-w="b12a">Show working</button>
+        <div class="working" id="b12a"><div class="wplain">
+          ${dotPlot([0, 1, 3, 3, 4, 3, 3, 3, 1], 3, 10)}
+        </div></div></div>
+      <div class="box"><p><b>b</b> Copy and fill in the frequency table.</p>
+        <button class="reveal" type="button" data-w="b12b">Show working</button>
+        <div class="working" id="b12b"><div class="wplain">
+          ${cfTable(["score x", "3", "4", "5", "6", "7", "8", "9", "10"], [
+            ["frequency", "1", "3", "3", "4", "3", "3", "3", "1"],
+            ["cumulative", "1", "4", "7", "11", "14", "17", "20", "21"]
+          ])}
+        </div></div></div>
+      <div class="box"><p><b>c</b> Median number of hoops?</p>
+        <button class="reveal" type="button" data-w="b12c">Show working</button>
+        <div class="working" id="b12c"><div class="wplain"><p>21 scores → 11th score = 6.</p><p class="ans">Answer: 6 hoops</p></div></div></div>
+      <div class="box"><p><b>d</b> After a 22nd session with 11 hoops, new median?</p>
+        <button class="reveal" type="button" data-w="b12d">Show working</button>
+        <div class="working" id="b12d"><div class="wplain">
+          <p>22 scores → average of 11th and 12th. Ordered list gives 6 and 7.</p>
+          <p class="ans">Answer: 6.5 hoops</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> Is this frequency table helpful?</p>
+        <button class="reveal" type="button" data-w="b12e">Show working</button>
+        <div class="working" id="b12e"><div class="wplain">
+          <p>Not really — if scores are in time order, improvement over sessions is lost once grouped.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "cf,cumHist",
+  kicker: "Development",
+  title: "Exercise 13B Question 13",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13B Q13a–b · printed p. 496</div>
+    <p>Rides sold Mon–Sun: 13, 32, 35, 38, 57, 75, 65</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Draw a column chart (1 cm per 10 rides).</p>
+        <button class="reveal" type="button" data-w="b13a">Show working</button>
+        <div class="working" id="b13a"><div class="wplain">
+          ${cumHist({
+            title: "Daily rides (column chart sketch)",
+            xs: [1, 2, 3, 4, 5, 6, 7],
+            ys: [13, 32, 35, 38, 57, 75, 65],
+            yLabel: "rides",
+            yMax: 80,
+            xLabel: "Mon Tue Wed Thu Fri Sat Sun"
+          })}
+          <p>Label days on the horizontal axis; scale vertical axis in tens.</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Table of cumulative frequencies and cumulative bar chart.</p>
+        <button class="reveal" type="button" data-w="b13b">Show working</button>
+        <div class="working" id="b13b"><div class="wplain">
+          ${cfTable(["Day", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], [
+            ["frequency", "13", "32", "35", "38", "57", "75", "65"],
+            ["cumulative", "13", "45", "80", "118", "175", "250", "315"]
+          ])}
+          ${cumHist({
+            title: "Cumulative rides through the week",
+            xs: [1, 2, 3, 4, 5, 6, 7],
+            ys: [13, 45, 80, 118, 175, 250, 315],
+            yLabel: "cumulative rides",
+            yMax: 350
+          })}
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "crf,cf",
+  kicker: "38–44 min · Challenge",
+  title: "Exercise 13B Question 14",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 13B Q14a–b · printed p. 496</div>
+    <p>Restaurant room bookings — cumulative relative frequency table:</p>
+    ${cfTable(["x", "0", "1", "2", "3", "4", "5"], [["crf", "0.15", "0.275", "0.4625", "0.6625", "0.85", "1"]])}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Find the mode (most common number of rooms booked).</p>
+        <button class="reveal" type="button" data-w="b14a">Show working</button>
+        <div class="working" id="b14a"><div class="wplain">
+          <p>Differences in crf give rf:</p>
+          ${cfTable(["x", "0", "1", "2", "3", "4", "5"], [
+            ["crf", "0.15", "0.275", "0.4625", "0.6625", "0.85", "1"],
+            ["rf", "0.15", "0.125", "0.1875", "0.2", "0.1875", "0.15"]
+          ])}
+          <p>Largest rf is 0.2 at x = 3.</p>
+          <p class="ans">Answer: mode is 3 rooms</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Find the number of nights the modal number of rooms were booked.</p>
+        <button class="reveal" type="button" data-w="b14b">Show working</button>
+        <div class="working" id="b14b"><div class="wplain">
+          <p>Write rf as fractions: 3/20, 1/8, 3/16, 1/5, 3/16, 3/20 → denominators LCM = 80.</p>
+          <p>Total nights ≈ 80 (only ~104 Fri/Sat nights in a year). Modal count = 80 × 1/5 = 16.</p>
+          <p class="ans">Answer: 16 nights</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Tonight",
+  title: "Independent work",
+  html: leftover("none — all Development done in these slides", "none — all Challenge done in these slides",
+    `<p class="small"><b>Foundation leftover:</b> Q1d–f, Q2b–d, Q4, Q5, Q6b–d.</p>`)
+});
+
+pack("13B");
+
+/* ========== 13C ========== */
+
+/** Grouped frequency histogram + optional polygon through class centres. */
+function groupedFreqHist(o = {}) {
+  const centres = o.centres || [];
+  const freqs = o.freqs || [];
+  const n = centres.length;
+  const yMax = o.yMax || Math.max(...freqs, 1) * 1.2;
+  const barW = o.barW || 34;
+  const ox = 58, oy = 228, gap = o.gap || 44;
+  const yScale = 170 / yMax;
+  let bars = "", polyPts = "";
+  centres.forEach((c, i) => {
+    const x = ox + i * gap;
+    const h = freqs[i] * yScale;
+    bars += `<rect x="${x - barW / 2}" y="${oy - h}" width="${barW}" height="${h}" fill="#7eb6e8" stroke="#1c2333" stroke-width="1.2"/>`;
+    bars += `<text x="${x}" y="${oy + 18}" text-anchor="middle" font-size="11" font-weight="700">${c}</text>`;
+    if (o.polygon !== false) {
+      polyPts += `${x},${oy - h} `;
+    }
+  });
+  const poly = o.polygon !== false
+    ? `<polyline points="${polyPts.trim()}" fill="none" stroke="#a33b32" stroke-width="2.5"/>` +
+      centres.map((c, i) => {
+        const x = ox + i * gap, h = freqs[i] * yScale;
+        return `<circle cx="${x}" cy="${oy - h}" r="4" fill="#a33b32"/>`;
+      }).join("")
+    : "";
+  const yTicks = [];
+  const step = o.yStep || Math.ceil(yMax / 4);
+  for (let v = 0; v <= yMax; v += step) {
+    const y = oy - v * yScale;
+    yTicks.push(`<line x1="${ox - 6}" y1="${y}" x2="${ox + (n - 1) * gap + 10}" y2="${y}" stroke="#d9cfc0" stroke-width="0.6"/>`);
+    yTicks.push(`<text x="${ox - 10}" y="${y + 4}" text-anchor="end" font-size="10" font-weight="700">${v}</text>`);
+  }
+  return `<svg class="dots" viewBox="0 0 520 280" role="img" aria-label="${o.aria || "Grouped frequency histogram"}">
+    <text x="260" y="16" text-anchor="middle" font-size="12" font-weight="800">${o.title || ""}</text>
+    <line x1="${ox - 8}" y1="${oy}" x2="${ox + (n - 1) * gap + 14}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox - 8}" y1="${oy}" x2="${ox - 8}" y2="36" stroke="#1c2333" stroke-width="2"/>
+    ${yTicks.join("")}
+    ${bars}${poly}
+    <text x="${ox + (n - 1) * gap / 2}" y="268" text-anchor="middle" font-size="12" font-weight="800">${o.xLabel || "class centre"}</text>
+    <text x="14" y="130" text-anchor="middle" font-size="11" font-weight="800" transform="rotate(-90 14 130)">${o.yLabel || "frequency"}</text>
+  </svg>`;
+}
+
+/** Cumulative frequency histogram (step bars) + polygon through top-right corners. */
+function groupedCumHist(o = {}) {
+  const centres = o.centres || [];
+  const cf = o.cf || [];
+  const n = centres.length;
+  const yMax = o.yMax || Math.max(...cf, 1) * 1.05;
+  const barW = o.barW || 34;
+  const ox = 58, oy = 228, gap = o.gap || 44;
+  const yScale = 170 / yMax;
+  let bars = "", polyPts = `${ox - barW / 2},${oy} `;
+  centres.forEach((c, i) => {
+    const x = ox + i * gap;
+    const h = cf[i] * yScale;
+    bars += `<rect x="${x - barW / 2}" y="${oy - h}" width="${barW}" height="${h}" fill="#9ec96a" stroke="#1c2333" stroke-width="1.2"/>`;
+    bars += `<text x="${x}" y="${oy + 18}" text-anchor="middle" font-size="11" font-weight="700">${c}</text>`;
+    polyPts += `${x + barW / 2},${oy - h} `;
+  });
+  const medianY = o.medianLine != null ? oy - o.medianLine * yScale : null;
+  const medLine = medianY != null
+    ? `<line x1="${ox - 8}" y1="${medianY}" x2="${ox + (n - 1) * gap + 14}" y2="${medianY}" stroke="#a33b32" stroke-width="2" stroke-dasharray="6 4"/>
+       <text x="${ox + (n - 1) * gap + 18}" y="${medianY + 4}" font-size="11" font-weight="800" fill="#a33b32">50% → median</text>`
+    : "";
+  const yTicks = [];
+  const step = o.yStep || Math.ceil(yMax / 4);
+  for (let v = 0; v <= yMax; v += step) {
+    const y = oy - v * yScale;
+    yTicks.push(`<line x1="${ox - 6}" y1="${y}" x2="${ox + (n - 1) * gap + 10}" y2="${y}" stroke="#d9cfc0" stroke-width="0.6"/>`);
+    yTicks.push(`<text x="${ox - 10}" y="${y + 4}" text-anchor="end" font-size="10" font-weight="700">${v}</text>`);
+  }
+  return `<svg class="dots" viewBox="0 0 520 280" role="img" aria-label="${o.aria || "Cumulative frequency histogram"}">
+    <text x="260" y="16" text-anchor="middle" font-size="12" font-weight="800">${o.title || ""}</text>
+    <line x1="${ox - 8}" y1="${oy}" x2="${ox + (n - 1) * gap + 14}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox - 8}" y1="${oy}" x2="${ox - 8}" y2="36" stroke="#1c2333" stroke-width="2"/>
+    ${yTicks.join("")}
+    ${bars}
+    <polyline points="${polyPts.trim()}" fill="none" stroke="#a33b32" stroke-width="2.5"/>
+    ${medLine}
+    <text x="${ox + (n - 1) * gap / 2}" y="268" text-anchor="middle" font-size="12" font-weight="800">${o.xLabel || "class centre"}</text>
+    <text x="14" y="130" text-anchor="middle" font-size="11" font-weight="800" transform="rotate(-90 14 130)">${o.yLabel || "cumulative frequency"}</text>
+  </svg>`;
+}
+
+/** Probability-density histogram (Challenge Q7). bins: [{lo, w, d}, ...] */
+function densityHist(o = {}) {
+  const bins = o.bins || [];
+  const yMax = o.yMax || 0.11;
+  const ox = 48, oy = 220, xScale = 14;
+  const yScale = 180 / yMax;
+  let rects = "", polyPts = "";
+  bins.forEach((b, i) => {
+    const x = ox + b.lo * xScale;
+    const w = b.w * xScale;
+    const h = b.d * yScale;
+    rects += `<rect x="${x}" y="${oy - h}" width="${w}" height="${h}" fill="#7eb6e8" stroke="#1c2333" stroke-width="1"/>`;
+    if (o.polygon !== false) {
+      const cx = x + w / 2;
+      polyPts += `${cx},${oy - h} `;
+    }
+    if (i % 2 === 0) {
+      rects += `<text x="${x}" y="${oy + 16}" font-size="9" font-weight="700">${b.lo}</text>`;
+    }
+  });
+  const last = bins[bins.length - 1];
+  rects += `<text x="${ox + (last.lo + last.w) * xScale}" y="${oy + 16}" font-size="9" font-weight="700">${last.lo + last.w}</text>`;
+  const poly = o.polygon !== false
+    ? `<polyline points="${polyPts.trim()}" fill="none" stroke="#a33b32" stroke-width="2"/>` : "";
+  const yTicks = [0, 0.02, 0.04, 0.06, 0.08, 0.1].map((v) => {
+    const y = oy - v * yScale;
+    return `<line x1="${ox - 4}" y1="${y}" x2="470" y2="${y}" stroke="#d9cfc0" stroke-width="0.5"/>
+      <text x="${ox - 8}" y="${y + 3}" text-anchor="end" font-size="9" font-weight="700">${v.toFixed(2)}</text>`;
+  }).join("");
+  const hi = o.highlight || [];
+  const hiRects = hi.map((idx) => {
+    const b = bins[idx];
+    const x = ox + b.lo * xScale, w = b.w * xScale, h = b.d * yScale;
+    return `<rect x="${x}" y="${oy - h}" width="${w}" height="${h}" fill="none" stroke="#c9a227" stroke-width="3"/>`;
+  }).join("");
+  return `<svg class="dots" viewBox="0 0 500 260" role="img" aria-label="${o.aria || "Probability density histogram"}">
+    <text x="250" y="14" text-anchor="middle" font-size="12" font-weight="800">${o.title || "Package Delivery Time"}</text>
+    <line x1="${ox}" y1="${oy}" x2="470" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox}" y1="${oy}" x2="${ox}" y2="30" stroke="#1c2333" stroke-width="2"/>
+    ${yTicks}${rects}${hiRects}${poly}
+    <text x="260" y="248" text-anchor="middle" font-size="11" font-weight="800">${o.xLabel || "days"}</text>
+    <text x="12" y="120" text-anchor="middle" font-size="10" font-weight="800" transform="rotate(-90 12 120)">${o.yLabel || "probability density"}</text>
+  </svg>`;
+}
+
+const PKG_BINS = [
+  { lo: 0, w: 4, d: 0.02 }, { lo: 4, w: 4, d: 0.105 }, { lo: 8, w: 4, d: 0.045 },
+  { lo: 12, w: 4, d: 0.025 }, { lo: 16, w: 4, d: 0.04 }, { lo: 20, w: 4, d: 0.03 },
+  { lo: 24, w: 4, d: 0.02 }, { lo: 28, w: 2, d: 0.015 }
+];
+
+slides.push({
+  used: "",
+  kicker: "13C · 45 minutes",
+  title: "Grouped data",
+  html: `<p>Today’s three words: <b>group</b>, <b>class centre</b>, <b>area = probability</b>.</p>
+    <div class="say">Too many raw scores clutter a table. Equal-width bins show the big picture — but grouping always loses detail.</div>
+    <p class="small">CambridgeMATHS NSW Advanced Year 11 · Section <b>13C</b> · Exercise 13C · printed pp. <b>500–503</b>.</p>`
+});
+
+slides.push({
+  used: "grouping,class-centre,boundary-lower,grouped-hist,density-hist",
+  kicker: "Keep in view",
+  title: "Formula sheet",
+  html: `<div class="sheetgrid">
+      <div class="box"><b>Grouping</b><br>Equal-width bins (intervals). Tally each score into one row.<br><span class="sym">cf</span> and <span class="sym">crf</span> are calculated the same way as in 13B.</div>
+      <div class="box"><b>Class centre</b><br>Midpoint of the interval:<br><span class="sym">centre = (lower + upper) ÷ 2</span><br>Polygon joins the centres.</div>
+      <div class="box"><b>Boundary rule (theory)</b><br>Data on a boundary goes in the <b>lower</b> interval.<br><span class="sym">X ≤ x</span> for cumulative frequency.</div>
+      <div class="box"><b>Grouped histogram</b><br>Touching bars; height = frequency (or cf for cumulative).<br>Cumulative polygon: start bottom-left of first bar; through top-right of each bar.</div>
+      <div class="box"><b>Probability-density histogram</b><br>Vertical axis = relative frequency ÷ bin width.<br><span class="sym">P(class) = bin width × density</span><br>Total area under the bars (or polygon) = <span class="sym">1</span>.</div>
+    </div>
+    <p class="small">CambridgeMATHS NSW Advanced Year 11, Exercise 13C, printed pp. 500–503.</p>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Success criteria",
+  title: "By the end of 45 minutes you can…",
+  html: `<ul>
+      <li>Tally raw data into equal-width classes and find class centres.</li>
+      <li>Draw a grouped frequency histogram with a polygon through the centres.</li>
+      <li>Estimate the median from a cumulative frequency polygon (50% line).</li>
+      <li>Find probability from a probability-density histogram using <b>area</b>.</li>
+    </ul>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Teacher map",
+  title: "The 45-minute map",
+  html: `<table class="mini">
+      <tr><th>Mins</th><th>Move</th><th>Book item</th></tr>
+      <tr><td>0–4</td><td>Formula sheet (all five cards gold)</td><td>—</td></tr>
+      <tr><td>4–10</td><td>Grouping + tally + centres</td><td>idea slides</td></tr>
+      <tr><td>10–22</td><td>Commute times — table + graphs</td><td>Q5 Development p.502</td></tr>
+      <tr><td>22–38</td><td>Heights — grouped vs ungrouped cf</td><td>Q6 Development pp.502–503</td></tr>
+      <tr><td>38–44</td><td>Density histogram → area</td><td>Q7 Challenge p.503</td></tr>
+      <tr><td>44–45</td><td>Independent list</td><td>Foundation Q1–4 p.500–502</td></tr>
+    </table>
+    <p class="small">If late, keep formula sheet, Q5a–c, Q6d–h, Q7a–b, then send students to Foundation Q1–4.</p>`
+});
+
+slides.push({
+  used: "grouping,class-centre",
+  kicker: "Idea",
+  title: "Group to see the big picture",
+  html: `<p>Forty apple yields or twenty-four heights as a long list hide the pattern.</p>
+    <p>Choose equal-width bins. Tally how many scores fall in each bin.</p>
+    <p class="ans">Class centre = midpoint of the interval → use it for the polygon.</p>
+    <div class="warn">Grouping is a form of rounding. Never throw away the original data.</div>`
+});
+
+slides.push({
+  used: "boundary-lower",
+  kicker: "Idea",
+  title: "Watch the boundary rule",
+  html: `<p>In Section 13C theory, a score <b>on a boundary</b> belongs in the <b>lower</b> interval.</p>
+    <p>Exercise 13C Question 6 uses a <b>different</b> convention on purpose — read the question:</p>
+    <p class="ans">150 &lt; x ≤ 154 means x = 154 goes in 154–158, not 150–154.</p>
+    <div class="say">Always read the grouping rule in the question before you tally.</div>`
+});
+
+slides.push({
+  used: "grouped-hist",
+  kicker: "Idea",
+  title: "Median from the cumulative polygon",
+  html: `<p>Draw a horizontal line at half the total cumulative frequency (or at 50% on crf).</p>
+    <p>Where it meets the cumulative polygon, drop down to the x-axis.</p>
+    <p class="ans">That x-value is an <b>estimate</b> of the median — rarely exact after grouping.</p>`
+});
+
+slides.push({
+  used: "density-hist",
+  kicker: "Challenge preview",
+  title: "Area = probability",
+  html: `<p>On a probability-density histogram:</p>
+    <p class="ans">P(in a class) = bin width × probability density</p>
+    <p class="ans">Total area under all bars (or the smoothed polygon) = 1</p>
+    <div class="say">Height is <b>not</b> the probability — you need the area of the rectangle (or trapezium under the polygon).</div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Independent · Foundation",
+  title: "Exercise 13C Questions 1–4 — for you",
+  html: `
+    <div class="cite">FOUNDATION · Exercise 13C Q1–4 · printed pp. 500–502</div>
+    <p>Do these from the book after the worked Development and Challenge items.</p>
+    <div class="box">
+      <p><b>Q1</b> — Dwarf apple tree yields (tally, histogram, polygon, cumulative graphs, median estimate, lower 20%).</p>
+      <p><b>Q2</b> — Examination scores (grouped histogram vs bin width 1; then bin width 5).</p>
+      <p><b>Q3</b> — Mobile phone replacement times (continuous X; estimate probabilities from rf table).</p>
+      <p><b>Q4</b> — Laptop replacement times (read probabilities from crf table).</p>
+    </div>
+    <div class="say">Use the Formula List on the right. Check your finals against the answers at the back of the book.</div>`
+});
+
+slides.push({
+  used: "grouping,class-centre,grouped-hist",
+  kicker: "10–18 min · Development",
+  title: "Exercise 13C Question 5 — parts a–c",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q5a–c · printed p. 502</div>
+    <p>Xiomi recorded her time to get to work each day. Her results in minutes were:</p>
+    <p class="small">22, 30, 23.5, 27, 25, 21.5, 39, 30, 32.5, 33, 35.5, 37, 42, 22, 23.5, 27, 29.5, 23, 34</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Write the data out in order, and determine the median.</p>
+        <button class="reveal" type="button" data-w="c5a">Show working</button>
+        <div class="working" id="c5a"><div class="wplain">
+          <p>There are 19 times. The median is the middle score — the 10th value when ordered.</p>
+          <p>Ordered: 21.5, 22, 22, 23, 23.5, 23.5, 25, 27, 27, <b>29.5</b>, 30, 30, 32.5, 33, 34, 35.5, 37, 39, 42.</p>
+          <p class="ans">Answer: median = 29.5 minutes</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Group the data into classes by completing the following table.</p>
+        <table class="mini">
+          <tr><th>class</th><td>20–24</td><td>24–28</td><td>28–32</td><td>32–36</td><td>36–40</td><td>40–44</td></tr>
+          <tr><th>class centre</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>frequency</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>cumulative</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </table>
+        <button class="reveal" type="button" data-w="c5b">Show working</button>
+        <div class="working" id="c5b"><div class="wplain">
+          <p>Tally each ordered score into its class. Add centres as midpoints.</p>
+          <table class="mini">
+            <tr><th>class</th><td>20–24</td><td>24–28</td><td>28–32</td><td>32–36</td><td>36–40</td><td>40–44</td></tr>
+            <tr><th>class centre</th><td>22</td><td>26</td><td>30</td><td>34</td><td>38</td><td>40</td></tr>
+            <tr><th>frequency</th><td>6</td><td>3</td><td>3</td><td>4</td><td>2</td><td>1</td></tr>
+            <tr><th>cumulative</th><td>6</td><td>9</td><td>12</td><td>16</td><td>18</td><td>19</td></tr>
+          </table>
+          <p class="ans">Answer: centres 22, 26, 30, 34, 38, 40 · frequencies 6, 3, 3, 4, 2, 1 · cf 6, 9, 12, 16, 18, 19</p>
+        </div></div></div>
+      <div class="box"><p><b>c</b> Find the median of the grouped data. Does it agree with your answer to part a?</p>
+        <button class="reveal" type="button" data-w="c5c">Show working</button>
+        <div class="working" id="c5c"><div class="wplain">
+          <p>19 scores → median at position 10. Cumulative frequency first reaches 10 in the class 28–32 (cf = 12).</p>
+          <p>Use the class centre of that interval as the grouped estimate.</p>
+          <p class="ans">Answer: grouped median ≈ 30 minutes. No — it does not agree with 29.5 from part a, because information is lost when the data are grouped.</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "grouped-hist",
+  kicker: "Development · graphs",
+  title: "Exercise 13C Question 5 — parts d–e",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q5d–e · printed p. 502</div>
+    <p>Using the grouped table from part b:</p>
+    <div class="stack">
+      <div class="box"><p><b>d</b> Draw a frequency histogram and polygon on the same chart.</p>
+        <button class="reveal" type="button" data-w="c5d">Show working</button>
+        <div class="working" id="c5d"><div class="wplain">
+          ${groupedFreqHist({
+            title: "Commute time (grouped)",
+            centres: [22, 26, 30, 34, 38, 40],
+            freqs: [6, 3, 3, 4, 2, 1],
+            xLabel: "time (min)",
+            yLabel: "frequency",
+            yMax: 8,
+            aria: "Frequency histogram and polygon for Xiomi commute times"
+          })}
+          <p>Touching bars at each class centre; polygon joins the top of each bar at the centres 22, 26, 30, 34, 38, 40.</p>
+          <p class="ans">Answer: see histogram above (matches answers PDF diagram)</p>
+        </div></div></div>
+      <div class="box"><p><b>e</b> Draw a cumulative frequency histogram and polygon on the same chart.</p>
+        <button class="reveal" type="button" data-w="c5e">Show working</button>
+        <div class="working" id="c5e"><div class="wplain">
+          ${groupedCumHist({
+            title: "Commute time — cumulative",
+            centres: [22, 26, 30, 34, 38, 40],
+            cf: [6, 9, 12, 16, 18, 19],
+            xLabel: "time (min)",
+            yLabel: "cumulative frequency",
+            yMax: 20,
+            yStep: 4,
+            medianLine: 9.5,
+            aria: "Cumulative frequency histogram for Xiomi commute times"
+          })}
+          <p>Polygon starts at the bottom-left of the first bar and passes through the top-right corner of each bar. A line at cf = 9.5 (half of 19) meets the polygon near centre 30.</p>
+          <p class="ans">Answer: see cumulative graph above (matches answers PDF diagram)</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "grouping,boundary-lower,class-centre",
+  kicker: "22–28 min · Development",
+  title: "Exercise 13C Question 6 — parts a–b",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q6a–b · printed p. 502</div>
+    <p>In a class experiment, students measured their heights. The results in centimetres were:</p>
+    <p class="small">155, 152, 165, 162, 170, 168, 165, 162, 166, 154, 158, 159, 163, 166, 164, 164, 159, 157, 163, 154, 166, 158, 159, 163</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Display the data in a frequency table.</p>
+        <button class="reveal" type="button" data-w="c6a">Show working</button>
+        <div class="working" id="c6a"><div class="wplain">
+          <table class="mini">
+            <tr><th>x (cm)</th><td>152</td><td>154</td><td>155</td><td>157</td><td>158</td><td>159</td><td>162</td><td>163</td></tr>
+            <tr><th>f</th><td>1</td><td>2</td><td>1</td><td>1</td><td>2</td><td>3</td><td>2</td><td>3</td></tr>
+            <tr><th>x (cm)</th><td>164</td><td>165</td><td>166</td><td>168</td><td>170</td><td colspan="4"></td></tr>
+            <tr><th>f</th><td>2</td><td>2</td><td>3</td><td>1</td><td>1</td><td colspan="4"></td></tr>
+          </table>
+          <p class="ans">Answer: see frequency table above</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Calculate the median of the dataset.</p>
+        <button class="reveal" type="button" data-w="c6b">Show working</button>
+        <div class="working" id="c6b"><div class="wplain">
+          <p>24 heights → median = average of the 12th and 13th ordered scores.</p>
+          <p>Ordered: … 162, 162, <b>163</b>, <b>163</b>, 163, …</p>
+          <p class="ans">Answer: median = (162 + 163) ÷ 2 = 162.5 cm</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "grouping,boundary-lower,class-centre",
+  kicker: "Development",
+  title: "Exercise 13C Question 6 — parts c–d",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q6c–d · printed pp. 502–503</div>
+    <div class="stack">
+      <div class="box"><p><b>c</b> Why would it not be helpful to graph the data without first grouping it into classes?</p>
+        <button class="reveal" type="button" data-w="c6c">Show working</button>
+        <div class="working" id="c6c"><div class="wplain">
+          <p>Most heights appear only once or twice. A bar for every distinct score would be flat and cluttered — trends are less clear when the data are not grouped, because it is less visually clear that the data are falling in certain zones on the domain.</p>
+          <p class="ans">Answer: ungrouped graph hides the zones / big picture (see answers PDF wording)</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> Group the data into the intervals 150–154, 154–158, 158–162, 162–166, 166–170 and display your results in a grouped frequency table. Include any scores on a boundaries in the lower group, thus x is in the group 150–154 if 150 &lt; x ≤ 154.</p>
+        <button class="reveal" type="button" data-w="c6d">Show working</button>
+        <div class="working" id="c6d"><div class="wplain">
+          <p>Read the question’s boundary rule carefully: 154 goes in 154–158, not 150–154.</p>
+          <table class="mini">
+            <tr><th>group</th><td>150–154</td><td>154–158</td><td>158–162</td><td>162–166</td><td>166–170</td></tr>
+            <tr><th>centre</th><td>152</td><td>156</td><td>160</td><td>164</td><td>168</td></tr>
+            <tr><th>freq</th><td>3</td><td>4</td><td>5</td><td>10</td><td>2</td></tr>
+          </table>
+          <p class="ans">Answer: frequencies 3, 4, 5, 10, 2 with centres 152, 156, 160, 164, 168</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "grouped-hist,class-centre",
+  kicker: "Development · graphs",
+  title: "Exercise 13C Question 6 — parts e–f",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q6e–f · printed p. 503</div>
+    <div class="stack">
+      <div class="box"><p><b>e</b> Calculate the median of the dataset from this grouped frequency table.</p>
+        <button class="reveal" type="button" data-w="c6e">Show working</button>
+        <div class="working" id="c6e"><div class="wplain">
+          <p>24 students → median at position 12. Cumulative frequencies: 3, 7, 12, 22, 24.</p>
+          <p>Position 12 falls in the class 162–166 (centre 164).</p>
+          <p class="ans">Answer: grouped median ≈ 162 cm</p>
+        </div></div></div>
+      <div class="box"><p><b>f</b> Display your grouped data on a histogram with a frequency polygon joining the centres.</p>
+        <button class="reveal" type="button" data-w="c6f">Show working</button>
+        <div class="working" id="c6f"><div class="wplain">
+          ${groupedFreqHist({
+            title: "Student heights (grouped)",
+            centres: [152, 156, 160, 164, 168],
+            freqs: [3, 4, 5, 10, 2],
+            xLabel: "height (cm)",
+            yMax: 12,
+            gap: 52,
+            aria: "Grouped frequency histogram for student heights"
+          })}
+          <p class="ans">Answer: see histogram above (matches answers PDF diagram)</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "grouped-hist",
+  kicker: "Development · cumulative",
+  title: "Exercise 13C Question 6 — parts g–h",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q6g–h · printed p. 503</div>
+    <div class="stack">
+      <div class="box"><p><b>g</b> Construct a cumulative frequency histogram and cumulative frequency polygon — remember that the polygon starts at the bottom left-corner of the first rectangle and passes through the right-hand top corner of each rectangle.</p>
+        <button class="reveal" type="button" data-w="c6g">Show working</button>
+        <div class="working" id="c6g"><div class="wplain">
+          ${groupedCumHist({
+            title: "Heights — grouped cumulative",
+            centres: [152, 156, 160, 164, 168],
+            cf: [3, 7, 12, 22, 24],
+            xLabel: "height (cm)",
+            yMax: 24,
+            yStep: 4,
+            gap: 52,
+            aria: "Grouped cumulative frequency histogram for heights"
+          })}
+          <p class="ans">Answer: see cumulative graph above (matches answers PDF diagram)</p>
+        </div></div></div>
+      <div class="box"><p><b>h</b> Trace the line at frequency 12 (50%) until it meets the cumulative frequency polygon, and check whether this agrees with your answer for the median of the grouped data in part e.</p>
+        <button class="reveal" type="button" data-w="c6h">Show working</button>
+        <div class="working" id="c6h"><div class="wplain">
+          ${groupedCumHist({
+            title: "Median check — cf = 12",
+            centres: [152, 156, 160, 164, 168],
+            cf: [3, 7, 12, 22, 24],
+            xLabel: "height (cm)",
+            yMax: 24,
+            yStep: 4,
+            gap: 52,
+            medianLine: 12,
+            aria: "Median estimate from cumulative polygon at cf 12"
+          })}
+          <p>Half of 24 is 12. The horizontal line at cf = 12 meets the polygon above the class 162–166, near x ≈ 162.</p>
+          <p class="ans">Answer: yes — agrees with the grouped median 162 cm from part e</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "grouped-hist",
+  kicker: "Development · compare",
+  title: "Exercise 13C Question 6 — parts i–k",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q6i–k · printed p. 503</div>
+    <div class="stack">
+      <div class="box"><p><b>i</b> Construct a cumulative frequency histogram and cumulative frequency polygon of the ungrouped data.</p>
+        <button class="reveal" type="button" data-w="c6i">Show working</button>
+        <div class="working" id="c6i"><div class="wplain">
+          <p>Build cf from the ungrouped table in part a (each distinct height on the x-axis). The polygon has many small steps — one per distinct score — but the overall S-shape is similar to the grouped version.</p>
+          <p class="ans">Answer: ungrouped cumulative histogram + polygon (see answers PDF diagram)</p>
+        </div></div></div>
+      <div class="box"><p><b>j</b> Compare your grouped and ungrouped cumulative histograms in parts g and i. How similar are the graphs? Contrast the differences between the histogram of the grouped data in part f and what you would expect the histogram of the ungrouped data to look like (not drawn).</p>
+        <button class="reveal" type="button" data-w="c6j">Show working</button>
+        <div class="working" id="c6j"><div class="wplain">
+          <p>The cumulative frequency polygons are much less sensitive to the grouping process than the frequency histogram and frequency polygon. The grouped and ungrouped cumulative graphs look very similar in shape.</p>
+          <p>By contrast, the grouped frequency histogram in part f shows a few wide bars (especially the tall 162–166 bar), while an ungrouped histogram would have many thin bars — mostly height 1 or 2 — and would look spiky and harder to read.</p>
+          <p class="ans">Answer: cumulative polygons similar; frequency histograms would look very different (grouped = smooth overview, ungrouped = spiky detail)</p>
+        </div></div></div>
+      <div class="box"><p><b>k</b> Confirm that the line at frequency 12 meets your ungrouped polygon to give the same median as in part b.</p>
+        <button class="reveal" type="button" data-w="c6k">Show working</button>
+        <div class="working" id="c6k"><div class="wplain">
+          <p>On the ungrouped cumulative polygon, a horizontal line at cf = 12 falls between the 12th and 13th scores (both 163 cm), giving median (162 + 163) ÷ 2 = 162.5 cm — the exact median from part b.</p>
+          <p class="ans">Answer: ungrouped polygon gives median 162.5 cm (exact); grouped estimate was 162 cm</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Development · spreadsheet",
+  title: "Exercise 13C Question 6 — part l",
+  html: `
+    <div class="cite">DEVELOPMENT · Exercise 13C Q6l · printed p. 503</div>
+    <p><b>l</b> If you have a spreadsheet program available, use it to construct a frequency histogram of the grouped data. The author found that to do this in Excel, he had to set the bin width to 4 and the underflow bin to 154 to force it to the desired starting bin. Excel follows the convention that data 154–158 is grouped as (154, 158], as in this question.</p>
+    <div class="say">Class demo only if time — not required for the independent list. Match the boundary convention from part d.</div>`
+});
+
+slides.push({
+  used: "density-hist",
+  kicker: "38–42 min · Challenge",
+  title: "Exercise 13C Question 7 — parts a–b",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 13C Q7a–b · printed p. 503</div>
+    <p>It is common for a histogram to plot probability density on the vertical axis, which is relative frequency divided by the bin width. The probability of an outcome in a class is the area of the rectangle (bin width × probability density).</p>
+    <p>A delivery company tracks the time taken for packages to arrive at their destination. The data is shown on the following histogram.</p>
+    ${densityHist({ bins: PKG_BINS, title: "Package Delivery Time (book diagram)" })}
+    <div class="stack">
+      <div class="box"><p><b>a</b> Find the probability that the package will arrive in between 4 and 8 days.</p>
+        <button class="reveal" type="button" data-w="c7a">Show working</button>
+        <div class="working" id="c7a"><div class="wplain">
+          ${densityHist({ bins: PKG_BINS, highlight: [1], title: "Q7a — interval 4 to 8 days" })}
+          <p>One bin from 4 to 8 days. Bin width = 4, density = 0.105.</p>
+          <p>P = bin width × density = 4 × 0.105 = 0.42 → book rounds to 0.41.</p>
+          <p class="ans">Answer: 0.105 × 4 = 0.41 — about 41% of packages arrive in this interval</p>
+        </div></div></div>
+      <div class="box"><p><b>b</b> Find the probability that the package will arrive in between 8 and 16 days. The polygon represents the smoothing out of the probability densities.</p>
+        <button class="reveal" type="button" data-w="c7b">Show working</button>
+        <div class="working" id="c7b"><div class="wplain">
+          ${densityHist({ bins: PKG_BINS, highlight: [2, 3], title: "Q7b — intervals 8–12 and 12–16" })}
+          <p>Two bins: 8–12 (density 0.045) and 12–16 (density 0.025), each width 4.</p>
+          <p>P = (0.045 + 0.025) × 4 = 0.28.</p>
+          <p class="ans">Answer: (0.045 + 0.025) × 4 = 0.28 — 28% of packages arrive in this interval</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "density-hist",
+  kicker: "Challenge",
+  title: "Exercise 13C Question 7 — parts c–d",
+  html: `
+    <div class="cite">CHALLENGE · Exercise 13C Q7c–d · printed p. 503</div>
+    <div class="stack">
+      <div class="box"><p><b>c</b> What is the total area under the polygonal function?</p>
+        <button class="reveal" type="button" data-w="c7c">Show working</button>
+        <div class="working" id="c7c"><div class="wplain">
+          <p>Every package must arrive sometime — the total probability is 1.</p>
+          <p>Equivalently, the sum of (bin width × density) over all bins equals 1.</p>
+          <p class="ans">Answer: 1 (this is the total probability)</p>
+        </div></div></div>
+      <div class="box"><p><b>d</b> Estimate the probability that the package will take more than 18 days.</p>
+        <button class="reveal" type="button" data-w="c7d">Show working</button>
+        <div class="working" id="c7d"><div class="wplain">
+          ${densityHist({ bins: PKG_BINS, title: "Q7d — tail beyond 18 days" })}
+          <p>Area under the polygon from 18 to 30 days forms a triangle: base = 12, height = 0.015.</p>
+          <p>Area = ½ × 12 × 0.015 = 0.09.</p>
+          <p>Same answer from the area under the last 2.5 rectangles in the histogram.</p>
+          <p class="ans">Answer: 0.09 — about 9% of packages take more than 18 days</p>
+        </div></div></div>
+    </div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Wrap-up",
+  title: "Independent work from the book",
+  html: `
+    <div class="cite">Exercise 13C · printed pp. 500–503</div>
+    <p>In class we fully worked <b>Development Q5–6</b> and <b>Challenge Q7</b>.</p>
+    <div class="box"><b>Your turn — Foundation only:</b> Q1, Q2, Q3, Q4</div>
+    <div class="say">Use the Formula List. For Q6-style boundary questions, read the grouping rule in the question before you tally.</div>`
+});
+
+pack("13C");
+
+/* ========== REV ========== */
+slides.push({
+  used: "",
+  kicker: "Chapter review",
+  title: "Chapter 13 Review Exercise",
+  html: `
+    <p>After 13A–13C, practise mixed items from the book.</p>
+    <div class="box">
+      <p><span class="timechip">Textbook</span> Chapter Review Exercise · printed pp. <b>504–506</b></p>
+      <p>Nine questions covering random variables, frequency tables, cumulative frequency, grouped data, and probability from relative frequency.</p>
+    </div>
+    <div class="say">Pick a section from the left panel if you need a worked model from 13A, 13B, or 13C.</div>`
+});
+
+slides.push({
+  used: "",
+  kicker: "Independent",
+  title: "Chapter Review Exercise — numbers only",
+  html: `
+    <div class="cite">Chapter Review Exercise · printed pp. 504–506</div>
+    <p>Do these from the book after 13A–13C. Question numbers only:</p>
+    <div class="box"><b>All review items:</b> Q1–9</div>
+    <p>Suggested short set: Q1, Q3, Q5, Q7, Q9.</p>
+    <div class="warn">Worked class items live in 13A–13C. Open that section from the left panel if you need a model.</div>`
+});
+pack("REV");
+
+const deck = document.getElementById("deck");
+const toc = document.getElementById("toc");
+const bar = document.getElementById("bar");
+const counter = document.getElementById("counter");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+let currentKey = "13A";
+let i = 0;
+let all = [];
+
+function syncFormulas(slideEl) {
+  if (!slideEl) return;
+  const used = (slideEl.getAttribute("data-used-formulas") || "")
+    .split(",").map((s) => s.trim()).filter(Boolean);
+  document.querySelectorAll("#formula-list [data-formula]").forEach((card) => {
+    card.classList.toggle("formula-used", used.includes(card.getAttribute("data-formula")));
+  });
+}
+function go(n) {
+  if (!all.length) return;
+  i = Math.max(0, Math.min(all.length - 1, n));
+  all.forEach((el, k) => el.classList.toggle("on", k === i));
+  counter.textContent = (i + 1) + " / " + all.length;
+  bar.style.width = ((i + 1) / all.length * 100) + "%";
+  prev.disabled = i === 0;
+  next.disabled = i === all.length - 1;
+  syncFormulas(all[i]);
+  document.querySelector("main").scrollTop = 0;
+}
+function loadLesson(key) {
+  currentKey = key;
+  if (location.hash.slice(1) !== key) location.hash = key;
+  const meta = META[key];
+  document.getElementById("hdr-title").textContent =
+    "Year 11 Mathematics Advanced · " + meta.code + " " + meta.sub;
+  document.getElementById("formula-list").innerHTML = FORMULAS[key];
+  toc.querySelectorAll("button[data-key]").forEach((b) => {
+    b.classList.toggle("on", b.dataset.key === key);
+  });
+  deck.innerHTML = "";
+  (LESSONS[key] || []).forEach((s, idx) => {
+    const el = document.createElement("section");
+    el.className = "slide" + (idx === 0 ? " on" : "");
+    el.setAttribute("data-used-formulas", s.used || "");
+    el.innerHTML = `<p class="kicker">${s.kicker}</p><h2>${s.title}</h2>${s.html}`;
+    deck.appendChild(el);
+  });
+  all = [...deck.querySelectorAll(".slide")];
+  go(0);
+}
+ORDER.forEach((key) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.key = key;
+  b.innerHTML = `<span class="code">${META[key].code}</span><span class="sub">${META[key].sub}</span>`;
+  b.onclick = () => loadLesson(key);
+  toc.appendChild(b);
+});
+prev.onclick = () => go(i - 1);
+next.onclick = () => go(i + 1);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); go(i + 1); }
+  if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
+  if (e.key === "Home") go(0);
+  if (e.key === "End") go(all.length - 1);
+  if (e.key === "f" || e.key === "F") {
+    const r = document.getElementById("formula-list");
+    r.style.display = r.style.display === "none" ? "" : "none";
+  }
+});
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("button.reveal");
+  if (!b) return;
+  const panel = document.getElementById(b.dataset.w);
+  if (!panel) return;
+  panel.classList.toggle("show");
+  b.textContent = panel.classList.contains("show") ? "Hide working" : "Show working";
+});
+window.addEventListener("hashchange", () => {
+  const k = location.hash.slice(1);
+  if (ORDER.includes(k) && k !== currentKey) loadLesson(k);
+});
+loadLesson((ORDER.includes((location.hash || "").slice(1)) ? location.hash.slice(1) : "13A"));
+
+</script>
+</body>
+</html>

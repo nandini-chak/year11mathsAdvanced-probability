@@ -1,10 +1,15 @@
-﻿# Year 11 Mathematics Advanced — Probability
+﻿# Year 11 Mathematics Advanced — Probability & Data
 
-Live lesson (GitHub Pages): **https://nandini-chak.github.io/year11mathsAdvanced-probability/**
+Live hub (GitHub Pages): **https://nandini-chak.github.io/year11mathsAdvanced-probability/**
+
+| File | Content |
+|------|---------|
+| `index.html` | Chapter picker (12 & 13) |
+| `ch12.html` | Chapter 12 Probability — 12A–12G + Review |
+| `ch13.html` | Chapter 13 Data and probability — 13A–13C + Review |
 
 - Course: NESA Mathematics Advanced (2024), Year 11
-- Topic: Chapter 12 Probability (12A–12G plus Review)
-- Left panel: choose one section at a time
-- Open `index.html` locally, or use the Pages link above
+- Left panel: choose one section at a time; formula rail on the right
+- Open any HTML file locally, or use the Pages link above
 
-Textbook exercises are cited by number from CambridgeMATHS NSW Advanced Year 11, Chapter 12. The commercial PDF is not included.
+Exercise numbers are from CambridgeMATHS NSW Advanced Year 11. The commercial textbook PDF is not included.
