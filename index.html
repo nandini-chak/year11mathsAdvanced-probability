@@ -2796,39 +2796,47 @@ function treeE12Two(o) {
 }
 /** Five mornings, five pairs — why “every morning but one” is impossible. */
 function treeE16SocksImpossible() {
-  function daySlot(x, label, kind) {
-    const pair = `<rect x="${x + 6}" y="36" width="26" height="24" rx="4" fill="#c9e8e4" stroke="#1e6b66"/>
-      <rect x="${x + 40}" y="36" width="26" height="24" rx="4" fill="#c9e8e4" stroke="#1e6b66"/>
-      <text x="${x + 36}" y="82" text-anchor="middle" font-size="11" fill="#1e6b66">match</text>`;
-    const miss = `<rect x="${x + 6}" y="36" width="26" height="24" rx="4" fill="#f5c4bc" stroke="#a33b32"/>
-      <rect x="${x + 40}" y="36" width="26" height="24" rx="4" fill="#d9cfc0" stroke="#a33b32"/>
-      <text x="${x + 36}" y="82" text-anchor="middle" font-size="11" fill="#a33b32">mismatch</text>`;
-    const forced = `<rect x="${x + 6}" y="36" width="26" height="24" rx="4" fill="#c9e8e4" stroke="#1e6b66"/>
-      <rect x="${x + 40}" y="36" width="26" height="24" rx="4" fill="#c9e8e4" stroke="#1e6b66"/>
-      <text x="${x + 36}" y="82" text-anchor="middle" font-size="11" fill="#1e6b66">forced match</text>`;
-    const boxFill = kind === "miss" ? "#fdece9" : "#e8e4dc";
-    const boxStroke = kind === "miss" ? "#a33b32" : "#1c2333";
-    const inner = kind === "miss" ? miss : kind === "forced" ? forced : pair;
-    return `<text x="${x + 36}" y="22" text-anchor="middle" font-size="12" font-weight="800">${label}</text>
-      <rect x="${x}" y="30" width="72" height="36" rx="6" fill="${boxFill}" stroke="${boxStroke}" stroke-width="2"/>
-      ${inner}`;
+  const cols = [36, 116, 196, 276, 356];
+  const colors = ["#7ec8c4", "#a8d4a0", "#f5d78e", "#f5c4bc", "#c9b8e8"];
+  function pairBox(x, y, c, mode) {
+    const frame = `<rect x="${x}" y="${y}" width="56" height="32" rx="6" fill="#fffdf8" stroke="#1c2333" stroke-width="1.5"/>`;
+    if (mode === "full") {
+      return `${frame}<circle cx="${x + 16}" cy="${y + 16}" r="9" fill="${c}" stroke="#1c2333"/><circle cx="${x + 40}" cy="${y + 16}" r="9" fill="${c}" stroke="#1c2333"/>`;
+    }
+    if (mode === "left") {
+      return `${frame}<circle cx="${x + 16}" cy="${y + 16}" r="9" fill="${c}" stroke="#a33b32" stroke-width="2"/><text x="${x + 40}" y="${y + 20}" font-size="16" fill="#bbb">?</text>`;
+    }
+    if (mode === "right") {
+      return `${frame}<text x="${x + 16}" y="${y + 20}" font-size="16" fill="#bbb">?</text><circle cx="${x + 40}" cy="${y + 16}" r="9" fill="${c}" stroke="#a33b32" stroke-width="2"/>`;
+    }
+    return `${frame}<text x="${x + 28}" y="${y + 21}" text-anchor="middle" font-size="18" fill="#bbb">—</text>`;
   }
-  const labels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  const row1 = labels.map((d, i) => daySlot(24 + i * 118, d, i === 2 ? "miss" : "match")).join("");
-  const row2 = labels.map((d, i) => daySlot(24 + i * 118, d, i === 4 ? "forced" : "match")).join("");
-  return `<svg class="tree" viewBox="0 0 620 268" role="img" aria-label="Two cases: one mismatch breaks two pairs; four matches force a fifth">
-    <text x="16" y="14" font-size="12" font-weight="800" fill="#1e6b66">Case 1 — try for exactly one mismatch</text>
-    ${row1}
-    <line x1="16" y1="92" x2="604" y2="92" stroke="#d4cfc4" stroke-width="1"/>
-    <text x="310" y="108" text-anchor="middle" font-size="12">One mismatch uses socks from two different pairs → two pairs broken → two leftover singles that cannot match.</text>
-    <text x="310" y="126" text-anchor="middle" font-size="12">You cannot finish the week with only one mismatching morning.</text>
-    <text x="16" y="148" font-size="12" font-weight="800" fill="#1e6b66">Case 2 — try for four matching mornings (Mon–Thu)</text>
-    <g transform="translate(0, 138)">
-      ${row2}
-    </g>
-    <text x="310" y="224" text-anchor="middle" font-size="12">After four matches, only one complete pair remains → Friday must match too → five matches, not four.</text>
-    <line x1="16" y1="232" x2="604" y2="232" stroke="#a33b32" stroke-width="2" stroke-dasharray="6 4"/>
-    <text x="310" y="252" text-anchor="middle" font-size="14" font-weight="800" fill="#a33b32">No layout gives exactly four matches · P = 0</text>
+  function row(y, modes, label) {
+    const icons = cols.map((x, i) => pairBox(x, y, colors[i], modes[i])).join("");
+    return `${icons}<text x="430" y="${y + 21}" font-size="13" fill="#1c2333">${label}</text>`;
+  }
+  return `<svg class="tree" viewBox="0 0 580 300" role="img" aria-label="Sock pairs in drawer: one mismatch leaves two singles; four matches leave one pair for day five">
+    <rect x="8" y="6" width="564" height="52" rx="8" fill="#f5f3ee" stroke="#1c2333" stroke-width="1.5"/>
+    <text x="20" y="24" font-size="13" font-weight="800" fill="#1e6b66">Start of the week — 5 complete pairs in the drawer</text>
+    ${row(28, ["full", "full", "full", "full", "full"], "10 socks = 5 pairs")}
+
+    <rect x="8" y="68" width="564" height="108" rx="8" fill="#fdece9" stroke="#a33b32" stroke-width="2"/>
+    <text x="20" y="88" font-size="13" font-weight="800" fill="#a33b32">Try for exactly ONE mismatch morning</text>
+    <text x="20" y="106" font-size="12">One mismatch = one sock from pair 1 + one sock from pair 2 (different pairs)</text>
+    ${row(114, ["left", "right", "full", "full", "full"], "")}
+    <line x1="68" y1="148" x2="148" y2="148" stroke="#a33b32" stroke-width="2"/>
+    <text x="108" y="142" text-anchor="middle" font-size="20" font-weight="800" fill="#a33b32">✗</text>
+    <text x="290" y="148" text-anchor="middle" font-size="12" font-weight="800" fill="#a33b32">Two leftover singles — different pairs — cannot match each other</text>
+    <text x="290" y="166" text-anchor="middle" font-size="12">So another morning must mismatch too → at least 2 mismatches, not 1</text>
+
+    <rect x="8" y="186" width="564" height="88" rx="8" fill="#eef6f5" stroke="#1e6b66" stroke-width="2"/>
+    <text x="20" y="206" font-size="13" font-weight="800" fill="#1e6b66">Try for exactly FOUR match mornings (Mon–Thu)</text>
+    <text x="20" y="224" font-size="12">Four matches use up 4 whole pairs (8 socks gone)</text>
+    ${row(232, ["gone", "gone", "gone", "gone", "full"], "1 pair left")}
+    <text x="290" y="262" text-anchor="middle" font-size="12" font-weight="800" fill="#1e6b66">Friday: only one pair remains → must match → that is 5 matches, not 4</text>
+
+    <rect x="8" y="282" width="564" height="14" rx="4" fill="#a33b32"/>
+    <text x="290" y="293" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">Exactly 4 matching mornings is impossible · Answer: P = 0</text>
   </svg>`;
 }
 slides.push({
@@ -3594,10 +3602,10 @@ slides.push({
         <button class="reveal" type="button" data-w="e16f">Show working</button>
         <div class="working" id="e16f"><div class="wplain">
           ${treeE16SocksImpossible()}
-          <p>“Every morning but one” means exactly four matching mornings and one mismatch among five mornings.</p>
-          <p>If any morning mismatches, the two socks come from two different pairs. That breaks two pairs and leaves two leftover singles that cannot match each other — so the remaining mornings cannot all be matching pairs.</p>
-          <p>If the first four mornings all match, only one complete pair remains for Friday, so Friday matches too. That gives five matching mornings, not four.</p>
-          <p>There is no way to get exactly four matches. The probability is zero.</p>
+          <p><b>“Every morning but one”</b> means exactly <b>four matching mornings</b> and <b>one mismatch</b> among five mornings.</p>
+          <p><b>Red panel:</b> Even one mismatch morning takes one sock from two different pairs. That leaves two single socks that belong to different pairs — they can never match each other. So at least one more morning must mismatch. You cannot get exactly one mismatch.</p>
+          <p><b>Green panel:</b> If the first four mornings all match, four whole pairs are used up. Only one pair is left in the drawer, so Friday must match too. That gives five matches, not four.</p>
+          <p>Neither way works. There is no way to get exactly four matches.</p>
           <p class="ans">Answer: 0</p>
         </div></div></div>
     </div>`
