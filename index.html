@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Year 11 Mathematics Advanced — Chapters 12 &amp; 13</title>
+<title>Year 11 Mathematics Advanced — Sign in</title>
 <style>
   :root {
     --ink: #1c2333;
@@ -14,86 +14,366 @@
     --brick: #a33b32;
     --teal: #1e6b66;
     --gold: #c9a227;
+    --header: #141820;
   }
   * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
   body {
-    margin: 0;
     font-family: "Segoe UI", "Calibri", system-ui, sans-serif;
     color: var(--ink);
     background: var(--paper);
+  }
+
+  /* —— Login —— */
+  #login-view {
     min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .login-brand {
+    background: var(--header);
+    color: #f6f0e6;
+    padding: 48px 40px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+  }
+  .login-brand .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 14px;
+  }
+  .login-brand h1 {
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  .login-brand p {
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0 0 28px;
+    opacity: .88;
+    max-width: 420px;
+  }
+  .brand-path {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #d9cfc0;
+  }
+  .brand-path strong { color: #fffdf8; }
+  .login-panel {
+    display: flex;
     align-items: center;
-    padding: 24px 16px 48px;
+    justify-content: center;
+    padding: 40px 24px;
   }
-  header { text-align: center; max-width: 720px; margin-bottom: 32px; }
-  header h1 { font-size: 26px; margin: 0 0 8px; line-height: 1.2; }
-  header p { font-size: 18px; color: var(--muted); margin: 0; }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    max-width: 760px;
+  .login-card {
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 32px 28px 28px;
     width: 100%;
+    max-width: 380px;
+    box-shadow: 0 8px 28px rgba(28, 35, 51, .08);
   }
-  a.chapter {
+  .login-card h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+  }
+  .login-card .sub {
+    margin: 0 0 22px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  label {
     display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    font: inherit;
+    font-size: 16px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: #fff;
+    color: var(--ink);
+  }
+  input:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+  .btn {
+    display: inline-block;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 18px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-primary {
+    width: 100%;
+    background: var(--teal);
+    color: #fff;
+    margin-top: 4px;
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--line);
+    padding: 7px 12px;
+    font-size: 14px;
+  }
+  .err {
+    display: none;
+    background: #f8e8e6;
+    color: var(--brick);
+    border: 1px solid #e2b4ae;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .err.show { display: block; }
+
+  /* —— Landing —— */
+  #landing-view { display: none; min-height: 100vh; }
+  .top {
+    background: var(--header);
+    color: #f6f0e6;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .top h1 { font-size: 16px; margin: 0; font-weight: 650; }
+  .top .meta { margin-left: auto; font-size: 13px; opacity: .85; display: flex; align-items: center; gap: 12px; }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 28px 20px 48px;
+  }
+  .intro { margin-bottom: 28px; }
+  .intro .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--brick);
+    margin: 0 0 8px;
+  }
+  .intro h2 { font-size: 28px; margin: 0 0 8px; }
+  .intro p { margin: 0; font-size: 17px; color: var(--muted); max-width: 640px; line-height: 1.45; }
+  .chapters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .chapter {
     background: var(--card);
     border: 2px solid var(--line);
     border-radius: 12px;
-    padding: 24px 22px;
-    text-decoration: none;
-    color: var(--ink);
-    transition: border-color .15s, box-shadow .15s;
+    padding: 22px 22px 18px;
+    display: flex;
+    flex-direction: column;
   }
-  a.chapter:hover {
-    border-color: var(--gold);
-    box-shadow: 0 4px 16px rgba(28,35,51,.08);
-  }
-  a.chapter .num {
-    display: block;
-    font-size: 13px;
+  .chapter .num {
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--brick);
-    margin-bottom: 6px;
   }
-  a.chapter .title { display: block; font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-  a.chapter .desc { font-size: 16px; line-height: 1.45; color: var(--muted); margin: 0; }
-  a.chapter .go {
-    display: inline-block;
-    margin-top: 14px;
+  .chapter h3 { font-size: 22px; margin: 4px 0 10px; }
+  .chapter .blurb {
     font-size: 15px;
-    font-weight: 700;
-    color: var(--teal);
+    color: var(--muted);
+    line-height: 1.45;
+    margin: 0 0 12px;
   }
-  footer { margin-top: 40px; font-size: 14px; color: var(--muted); text-align: center; max-width: 560px; }
+  .chapter ol {
+    margin: 0 0 16px;
+    padding-left: 22px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .chapter ol li { margin-bottom: 2px; }
+  .chapter .go { margin-top: auto; }
+  .btn-open {
+    background: var(--teal);
+    color: #fff;
+    text-align: center;
+  }
+  .extras {
+    margin-top: 22px;
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 15px;
+  }
+  .extras h3 { margin: 0 0 8px; font-size: 15px; }
+  .extras a { color: var(--teal); font-weight: 700; }
+  .foot {
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.45;
+  }
+  @media (max-width: 800px) {
+    #login-view, .chapters { grid-template-columns: 1fr; }
+    .login-brand { padding: 32px 24px 24px; }
+    .login-brand h1 { font-size: 26px; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Year 11 Mathematics Advanced</h1>
-  <p>NESA 2024 · Statistical analysis · Portable teaching lessons</p>
-</header>
-<div class="grid">
-  <a class="chapter" href="ch12.html">
-    <span class="num">Chapter 12</span>
-    <span class="title">Probability</span>
-    <p class="desc">Sets, sample spaces, addition and product rules, probability trees, conditional probability. Sections 12A–12G plus review.</p>
-    <span class="go">Open Chapter 12 lesson →</span>
-  </a>
-  <a class="chapter" href="ch13.html">
-    <span class="num">Chapter 13</span>
-    <span class="title">Data and probability</span>
-    <p class="desc">Random variables, frequency tables, histograms and polygons, cumulative frequency, grouped data. Sections 13A–13C plus review.</p>
-    <span class="go">Open Chapter 13 lesson →</span>
-  </a>
+
+<div id="login-view">
+  <div class="login-brand">
+    <p class="kicker">NESA 2024 · Statistical analysis</p>
+    <h1>Year 11 Mathematics Advanced</h1>
+    <p>Portable teaching lessons from CambridgeMATHS NSW Advanced Year 11. Sign in to open the course map.</p>
+    <ul class="brand-path">
+      <li><strong>Chapter 12</strong> — Probability (12A–12G + Review)</li>
+      <li><strong>Chapter 13</strong> — Data and probability (13A–13C + Review)</li>
+    </ul>
+  </div>
+  <div class="login-panel">
+    <form class="login-card" id="login-form" autocomplete="on">
+      <h2>Sign in</h2>
+      <p class="sub">Teacher access for this course pack.</p>
+      <div class="err" id="err" role="alert">That username or password is not right. Try again.</div>
+      <label for="user">Username</label>
+      <input id="user" name="username" type="text" autocomplete="username" required>
+      <label for="pass">Password</label>
+      <input id="pass" name="password" type="password" autocomplete="current-password" required>
+      <button class="btn btn-primary" type="submit">Open course</button>
+    </form>
+  </div>
 </div>
-<footer>
-  CambridgeMATHS NSW Advanced Year 11 — exercise numbers cited from the textbook; commercial PDF not included.
-  Open any lesson offline; use the left panel to pick a section (12A, 12B, … or 13A, 13B, …).
-</footer>
+
+<div id="landing-view">
+  <div class="top">
+    <h1>Year 11 Mathematics Advanced</h1>
+    <div class="meta">
+      <span>Signed in as <strong id="who">nc</strong></span>
+      <button class="btn btn-ghost" type="button" id="signout">Sign out</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="intro">
+      <p class="kicker">Course map · 45-minute lessons</p>
+      <h2>Statistical analysis</h2>
+      <p>Work Chapter 12 first (sets through conditional probability), then Chapter 13 (frequency, ogives, grouped data). Each lesson has a formula list on every slide. Leftover Development and Challenge numbers are listed at the end of a section.</p>
+    </div>
+    <div class="chapters">
+      <article class="chapter">
+        <span class="num">Chapter 12</span>
+        <h3>Probability</h3>
+        <p class="blurb">From set language and Venn diagrams through trees, addition and product rules, to “given that” and two-way tables.</p>
+        <ol>
+          <li>12A Sets and Venn diagrams</li>
+          <li>12B Uniform sample spaces</li>
+          <li>12C Graphs and counting trees</li>
+          <li>12D Addition rule</li>
+          <li>12E Product rule (with / without replacement)</li>
+          <li>12F Probability trees</li>
+          <li>12G Conditional probability and two-way tables</li>
+          <li>Chapter review</li>
+        </ol>
+        <a class="btn btn-open go" href="ch12.html">Open Chapter 12 lesson</a>
+      </article>
+      <article class="chapter">
+        <span class="num">Chapter 13</span>
+        <h3>Data and probability</h3>
+        <p class="blurb">Random variables and relative frequency, then cumulative frequency and grouped data — the statistics half of the same strand.</p>
+        <ol>
+          <li>13A Random variables, frequency, histograms</li>
+          <li>13B Median, cumulative frequency, ogives</li>
+          <li>13C Grouped data and class centres</li>
+          <li>Chapter review</li>
+        </ol>
+        <a class="btn btn-open go" href="ch13.html">Open Chapter 13 lesson</a>
+      </article>
+    </div>
+    <div class="extras">
+      <h3>Also in this pack</h3>
+      <p style="margin:0;">
+        <a href="year-11-advanced-12a-sets-venn-lesson.html">12A standalone lesson</a>
+        ·
+        <a href="year-11-advanced-12c-worked-solutions.html">Exercise 12C worked solutions</a>
+      </p>
+    </div>
+    <p class="foot">
+      CambridgeMATHS NSW Advanced Year 11 — exercise numbers cited from the textbook; commercial PDF not included.<br>
+      Open a lesson, then use the left panel to pick a section (12A, 12B, … or 13A, 13B, …).
+    </p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "y11adv-auth";
+  var loginView = document.getElementById("login-view");
+  var landView = document.getElementById("landing-view");
+  var form = document.getElementById("login-form");
+  var err = document.getElementById("err");
+
+  function showLanding() {
+    loginView.style.display = "none";
+    landView.style.display = "block";
+    document.title = "Year 11 Mathematics Advanced — Course map";
+  }
+  function showLogin() {
+    loginView.style.display = "grid";
+    landView.style.display = "none";
+    document.title = "Year 11 Mathematics Advanced — Sign in";
+    err.classList.remove("show");
+  }
+
+  if (sessionStorage.getItem(KEY) === "ok") showLanding();
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var u = document.getElementById("user").value.trim();
+    var p = document.getElementById("pass").value;
+    if (u === "nc" && p === "23082006") {
+      sessionStorage.setItem(KEY, "ok");
+      err.classList.remove("show");
+      showLanding();
+    } else {
+      err.classList.add("show");
+      document.getElementById("pass").value = "";
+      document.getElementById("pass").focus();
+    }
+  });
+
+  document.getElementById("signout").addEventListener("click", function () {
+    sessionStorage.removeItem(KEY);
+    document.getElementById("user").value = "";
+    document.getElementById("pass").value = "";
+    showLogin();
+  });
+})();
+</script>
 </body>
 </html>

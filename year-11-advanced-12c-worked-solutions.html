@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Exercise 12C — Worked solutions</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 8px 12px 24px;
+    font-family: "Calibri", "Segoe UI", system-ui, sans-serif;
+    color: #1c2333; font-size: 15px; line-height: 1.4;
+  }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 18px 0 8px; color: #a33b32; page-break-after: avoid; }
+  .meta { color: #5a6272; font-size: 13px; margin: 0 0 12px; }
+  .band { display: inline-block; background: #efe4c8; color: #5a4310;
+    font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 4px; }
+  .q { border: 1px solid #d9cfc0; border-radius: 10px; padding: 10px 12px; margin: 10px 0 14px;
+    background: #fffdf8; page-break-inside: avoid; }
+  .q.tall { page-break-inside: auto; }
+  .stem { margin: 6px 0 8px; font-size: 15.5px; }
+  .part { margin: 8px 0 6px; }
+  .work { background: #f6f0e6; border-left: 5px solid #1e6b66; padding: 8px 10px; margin: 6px 0; }
+  .work p { margin: 0 0 6px; }
+  .work p:last-child { margin: 0; }
+  .ans { font-weight: 800; color: #1e6b66; }
+  svg.tree, svg.dots { max-width: 100%; height: auto; display: block; margin: 6px 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
+  ul.out { margin: 4px 0; padding-left: 18px; }
+  .foot { font-size: 11px; color: #5a6272; margin-top: 16px; }
+  @media print {
+    .q { break-inside: avoid; }
+    .q.tall { break-inside: auto; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<h1>Exercise 12C — Worked solutions</h1>
+<p class="meta">Year 11 Mathematics Advanced · Sample space graphs and tree diagrams<br>
+CambridgeMATHS NSW Advanced Year 11 · printed pp. 443–444 · finals checked against the answers booklet</p>
+<p>How to use this sheet: draw the sample space first (tree or graph). Then count. Then write
+<span class="ans">P = (how many you want) / (how many there are)</span>.
+Every outcome on a counting tree is equally likely.</p>
+
+<h2><span class="band">Foundation</span> Question 1 · printed p. 443</h2>
+<div class="q">
+  <p class="stem">A fair coin is tossed twice.</p>
+  <p class="part"><b>a</b> Use a tree diagram to list the four possible outcomes.</p>
+  <div class="work" id="q1a"></div>
+  <p class="part"><b>b i</b> two heads &nbsp; <b>ii</b> a head and a tail &nbsp; <b>iii</b> a head on the first toss and a tail on the second</p>
+  <div class="work">
+    <p>There are 4 equally likely outcomes.</p>
+    <p><b>i</b> Only HH is two heads. <span class="ans">Answer: 1/4</span></p>
+    <p><b>ii</b> A head and a tail means HT or TH (order can swap). That is 2 outcomes. <span class="ans">Answer: 2/4 = 1/2</span></p>
+    <p><b>iii</b> This time the order is fixed: first H, then T. Only HT. <span class="ans">Answer: 1/4</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Foundation</span> Question 2 · printed p. 443</h2>
+<div class="q tall">
+  <p class="stem">A coin is tossed and a die is thrown.</p>
+  <p class="part"><b>a</b> Use a tree diagram to list all 12 possible outcomes.</p>
+  <div class="work" id="q2a"></div>
+  <p class="part"><b>b</b> Find the probability of:</p>
+  <div class="work">
+    <p>|S| = 12.</p>
+    <p><b>i</b> Head and even: H2, H4, H6 — three outcomes. <span class="ans">Answer: 3/12 = 1/4</span></p>
+    <p><b>ii</b> Tail and greater than 4: T5, T6. <span class="ans">Answer: 2/12 = 1/6</span></p>
+    <p><b>iii</b> Tail and less than 4: T1, T2, T3. <span class="ans">Answer: 3/12 = 1/4</span></p>
+    <p><b>iv</b> Head and prime. Primes on a die are 2, 3 and 5 (1 is not prime). So H2, H3, H5. <span class="ans">Answer: 3/12 = 1/4</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Foundation</span> Question 3 · printed p. 443</h2>
+<div class="q">
+  <p class="stem">Two tiles are chosen at random, one after the other, from three Scrabble tiles T, O and E, and placed in order on the table. (No replacement.)</p>
+  <p class="part"><b>a</b> List the six possible outcomes in the sample space.</p>
+  <div class="work">
+    <p>First tile: 3 choices. Second tile: 2 left. So 3 × 2 = 6 ordered pairs.</p>
+    <p class="ans">Answer: TO, OT, OE, EO, ET, TE</p>
+    <div id="q3a"></div>
+  </div>
+  <p class="part"><b>b</b> Find the probability of choosing:</p>
+  <div class="work">
+    <p><b>i</b> Two vowels: OT, OE, EO. (T is the only consonant.) Three outcomes. <span class="ans">Answer: 3/6 = 1/3</span></p>
+    <p><b>ii</b> A consonant then a vowel: T then O, or T then E → TO, TE. <span class="ans">Answer: 2/6 = 1/3</span></p>
+    <p><b>iii</b> A T: T can be first (TO, TE) or second (OT, ET). Four outcomes. <span class="ans">Answer: 4/6 = 2/3</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Foundation</span> Question 4 · printed p. 443</h2>
+<div class="q">
+  <p class="stem">From Anna, Bill, Charlie and David, two are chosen at random, one after the other, for the SRC. Order matters (first then second).</p>
+  <p class="part"><b>a</b> List the 12 possible outcomes.</p>
+  <div class="work">
+    <p>4 choices for first, then 3 left for second. 4 × 3 = 12.</p>
+    <p class="ans">Answer: AB, BA, AC, CA, AD, DA, BC, CB, BD, DB, CD, DC</p>
+  </div>
+  <p class="part"><b>b</b> Find the probability that:</p>
+  <div class="work">
+    <p><b>i</b> Bill and David are chosen: BD and DB. <span class="ans">Answer: 2/12 = 1/6</span></p>
+    <p><b>ii</b> Anna is chosen: she is first (AB, AC, AD) or second (BA, CA, DA). Six outcomes. <span class="ans">Answer: 6/12 = 1/2</span></p>
+    <p><b>iii</b> Charlie is chosen but Bill is not: the pair is from {A, C, D} and must include C. That is CA, AC, CD, DC. (CB and BC include Bill.) <span class="ans">Answer: 4/12 = 1/3</span></p>
+    <p><b>iv</b> Neither Anna nor David: only Bill and Charlie. BC and CB. <span class="ans">Answer: 2/12 = 1/6</span></p>
+    <p><b>v</b> Bill is chosen first: BA, BC, BD. <span class="ans">Answer: 3/12 = 1/4</span></p>
+    <p><b>vi</b> Charlie is not chosen second: Charlie second would be AC, BC, DC (3 outcomes), so not those: 12 − 3 = 9. <span class="ans">Answer: 9/12 = 3/4</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Foundation</span> Question 5 · printed p. 443</h2>
+<div class="q tall">
+  <p class="stem">From the digits 2, 3, 8 and 9, a two-digit number is formed with no digit repeated.</p>
+  <p class="part"><b>a</b> Use a tree diagram to list the possible outcomes.</p>
+  <div class="work" id="q5a"></div>
+  <p class="part"><b>b</b> If the number was formed at random, find the probability that it is:</p>
+  <div class="work">
+    <p>|S| = 12.</p>
+    <p><b>i</b> The number 82: only one outcome. <span class="ans">Answer: 1/12</span></p>
+    <p><b>ii</b> Greater than 39: 82, 83, 89, 92, 93, 98. (32 and 23 are smaller; 38, 39 are not greater than 39.) Six outcomes. <span class="ans">Answer: 6/12 = 1/2</span></p>
+    <p><b>iii</b> Even: the last digit must be 2 or 8. Ending in 2: 32, 82, 92. Ending in 8: 28, 38, 98. Six outcomes. <span class="ans">Answer: 6/12 = 1/2</span></p>
+    <p><b>iv</b> A multiple of 3: a number is a multiple of 3 if its digits add to a multiple of 3. Digit-sum 2+3=5, 2+8=10, 2+9=11, 3+8=11, 3+9=12, 8+9=17. Only 3 and 9 give sum 12. The two numbers are 39 and 93. <span class="ans">Answer: 2/12 = 1/6</span></p>
+    <p><b>v</b> Ending in 2: 32, 82, 92. <span class="ans">Answer: 3/12 = 1/4</span></p>
+    <p><b>vi</b> A perfect square: possible two-digit squares from these digits would have to be 25, 36, 49, 64, 81, 100… none of 23, 32, 28, 82, 29, 92, 38, 83, 39, 93, 89, 98 is a square. <span class="ans">Answer: 0</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Foundation</span> Question 6 · printed p. 444</h2>
+<div class="q">
+  <p class="stem">A captain and vice-captain are chosen from Amanda, Belinda, Carol, Dianne and Emma. Order is important.</p>
+  <p class="part"><b>a</b> Use a tree diagram to list the possible pairings.</p>
+  <div class="work">
+    <p>5 choices for captain, then 4 left for vice-captain. 5 × 4 = 20 pairings. The captain is written first.</p>
+    <p class="ans">Answer: AB, AC, AD, AE, BC, BD, BE, CD, CE, DE, BA, CA, DA, EA, CB, DB, EB, DC, EC, ED</p>
+    <p>Tree idea: Start splits into A, B, C, D, E (captain). From A the vice-captain branches are B, C, D, E. The same pattern repeats for each captain.</p>
+    <div id="q6a"></div>
+  </div>
+  <p class="part"><b>b</b> If the choices were made at random:</p>
+  <div class="work">
+    <p>|S| = 20.</p>
+    <p><b>i</b> Carol captain and Emma vice-captain: only CE. <span class="ans">Answer: 1/20</span></p>
+    <p><b>ii</b> Belinda is captain or vice-captain: captain B → BA, BC, BD, BE (4); vice-captain B → AB, CB, DB, EB (4). Total 8. <span class="ans">Answer: 8/20 = 2/5</span></p>
+    <p><b>iii</b> Amanda is not selected: choose captain and vice from {B, C, D, E}. 4 × 3 = 12. <span class="ans">Answer: 12/20 = 3/5</span></p>
+    <p><b>iv</b> Emma is vice-captain: AE, BE, CE, DE. <span class="ans">Answer: 4/20 = 1/5</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Development</span> Question 7 · printed p. 444</h2>
+<div class="q tall">
+  <p class="stem">A coin is tossed three times. Draw a tree, then find each probability.</p>
+  <div class="work" id="q7tree"></div>
+  <div class="work">
+    <p>The eight equally likely outcomes are HHH, HHT, HTH, HTT, THH, THT, TTH, TTT.</p>
+    <p><b>a</b> Three heads: only HHH. <span class="ans">Answer: 1/8</span></p>
+    <p><b>b</b> A head and two tails: HTT, THT, TTH. <span class="ans">Answer: 3/8</span></p>
+    <p><b>c</b> At least two tails: two tails or three tails → HTT, THT, TTH, TTT. <span class="ans">Answer: 4/8 = 1/2</span></p>
+    <p><b>d</b> At most one head: 0 heads or 1 head → TTT, HTT, THT, TTH. <span class="ans">Answer: 4/8 = 1/2</span></p>
+    <p><b>e</b> More heads than tails: that means 2 or 3 heads → HHT, HTH, THH, HHH. <span class="ans">Answer: 4/8 = 1/2</span></p>
+    <p><b>f</b> A head on the second toss: the middle letter is H → HHH, HHT, THH, THT. <span class="ans">Answer: 4/8 = 1/2</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Development</span> Question 8 · printed p. 444</h2>
+<div class="q tall">
+  <p class="stem">A green die and a red die are thrown simultaneously. List the 36 outcomes on a two-dimensional graph, then find each probability. Label GxRy for green x and red y.</p>
+  <div class="work" id="q8graph"></div>
+  <div class="work">
+    <p>|S| = 36 equally likely dots.</p>
+    <p><b>a</b> Three on the green die: the whole G3 column, 6 dots. <span class="ans">Answer: 6/36 = 1/6</span></p>
+    <p><b>b</b> Four on the red die: the whole R4 row, 6 dots. <span class="ans">Answer: 6/36 = 1/6</span></p>
+    <p><b>c</b> Double five: only G5R5. <span class="ans">Answer: 1/36</span></p>
+    <p><b>d</b> Total seven: G1R6, G2R5, G3R4, G4R3, G5R2, G6R1. Six dots. <span class="ans">Answer: 6/36 = 1/6</span></p>
+    <p><b>e</b> Total greater than nine: sums 10, 11, 12 → G4R6, G5R5, G5R6, G6R4, G6R5, G6R6. Six dots. <span class="ans">Answer: 6/36 = 1/6</span></p>
+    <p><b>f</b> Even on both: green 2,4,6 and red 2,4,6. That is 3 × 3 = 9 dots. <span class="ans">Answer: 9/36 = 1/4</span></p>
+    <p><b>g</b> At least one two: G2 row-of-green (6 dots) plus red 2 with green not 2 (5 more). 11 dots. <span class="ans">Answer: 11/36</span></p>
+    <p><b>h</b> Neither a one nor a four: each die may only show 2, 3, 5 or 6. 4 × 4 = 16 dots. <span class="ans">Answer: 16/36 = 4/9</span></p>
+    <p><b>i</b> A five and a number greater than three: (green 5 and red 4,5,6) or (red 5 and green 4,5,6), but G5R5 counted once. 3 + 3 − 1 = 5 dots. <span class="ans">Answer: 5/36</span></p>
+    <p><b>j</b> The same number on both dice: the six doubles G1R1 … G6R6. <span class="ans">Answer: 6/36 = 1/6</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Development</span> Question 9 · printed p. 444</h2>
+<div class="q">
+  <p class="stem">Births of boys and girls are equally likely.</p>
+  <p class="part"><b>a</b> Family of two children</p>
+  <div class="work">
+    <p>Tree: BB, BG, GB, GG. Four equally likely outcomes.</p>
+    <div id="q9a"></div>
+    <p><b>i</b> Two girls: GG. <span class="ans">Answer: 1/4</span></p>
+    <p><b>ii</b> No girls: BB. <span class="ans">Answer: 1/4</span></p>
+    <p><b>iii</b> One boy and one girl: BG and GB. <span class="ans">Answer: 2/4 = 1/2</span></p>
+  </div>
+  <p class="part"><b>b</b> Family of three children</p>
+  <div class="work">
+    <p>Same tree as three coins, with B for H and G for T (or the other way). Eight outcomes: BBB, BBG, BGB, BGG, GBB, GBG, GGB, GGG.</p>
+    <p><b>i</b> Three boys: BBB. <span class="ans">Answer: 1/8</span></p>
+    <p><b>ii</b> Two girls and one boy: BGG, GBG, GGB. <span class="ans">Answer: 3/8</span></p>
+    <p><b>iii</b> More boys than girls: 2 boys or 3 boys → BBG, BGB, GBB, BBB. <span class="ans">Answer: 4/8 = 1/2</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Development</span> Question 10 · printed p. 444</h2>
+<div class="q">
+  <p class="stem">A coin is tossed four times. |S| = 2 × 2 × 2 × 2 = 16 equally likely outcomes.</p>
+  <div class="work">
+    <p>The 16 outcomes are all strings of four letters from {H, T}: HHHH, HHHT, HHTH, HHTT, HTHH, HTHT, HTTH, HTTT, THHH, THHT, THTH, THTT, TTHH, TTHT, TTTH, TTTT.</p>
+    <p><b>a</b> Four heads: only HHHH. <span class="ans">Answer: 1/16</span></p>
+    <p><b>b</b> Exactly three tails: exactly one H. The H can sit in 4 places: HTTT, THTT, TTHT, TTTH. <span class="ans">Answer: 4/16 = 1/4</span></p>
+    <p><b>c</b> At least two heads: easier with the complement. Not this event means 0 heads or 1 head: TTTT plus the four “exactly one H” strings → 5 outcomes. So 16 − 5 = 11. <span class="ans">Answer: 11/16</span></p>
+    <p><b>d</b> At most one head: 0 or 1 head — the same 5 outcomes as above. <span class="ans">Answer: 5/16</span></p>
+    <p><b>e</b> Two heads and two tails: choose 2 positions out of 4 for the heads. The six strings are HHTT, HTHT, HTTH, THHT, THTH, TTHH. <span class="ans">Answer: 6/16 = 3/8</span></p>
+    <p><b>f</b> More tails than heads: 3 tails (4 outcomes) or 4 tails (1 outcome). <span class="ans">Answer: 5/16</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Development</span> Question 11 · printed p. 444</h2>
+<div class="q">
+  <p class="stem">A hand has ten, jack, queen, king and ace. Two cards are drawn in succession <b>without replacement</b>.</p>
+  <div class="work">
+    <p>First card: 5 choices. Second: 4 left. |S| = 20 equally likely ordered pairs.</p>
+    <p><b>a</b> The ace is drawn (first or second). Complement: both cards from {10, J, Q, K}. That is 4 × 3 = 12 pairs with no ace, so 20 − 12 = 8 have the ace. <span class="ans">Answer: 8/20 = 2/5</span></p>
+    <p><b>b</b> The king is not drawn: both from {10, J, Q, A}. 4 × 3 = 12. <span class="ans">Answer: 12/20 = 3/5</span></p>
+    <p><b>c</b> The queen is the second card: first can be any of the other four, then Q. 4 × 1 = 4. <span class="ans">Answer: 4/20 = 1/5</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Challenge</span> Question 12 · printed p. 444</h2>
+<div class="q tall">
+  <p class="stem">Three-digit numbers from the digits 2, 5, 7 and 8, without repetition.</p>
+  <p class="part"><b>a</b> Tree diagram. How many outcomes?</p>
+  <div class="work">
+    <p>First digit: 4 choices. Second: 3 left. Third: 2 left. 4 × 3 × 2 = 24.</p>
+    <p class="ans">Answer: 24 outcomes</p>
+    <div id="q12a"></div>
+    <p>Full list: 257, 258, 275, 278, 285, 287, 527, 528, 572, 578, 582, 587, 725, 728, 752, 758, 782, 785, 825, 827, 852, 857, 872, 875.</p>
+  </div>
+  <p class="part"><b>b</b> Probability the number is:</p>
+  <div class="work">
+    <p>|S| = 24.</p>
+    <p><b>i</b> Greater than 528. Count from the list: 572, 578, 582, 587, 725, 728, 752, 758, 782, 785, 825, 827, 852, 857, 872, 875. That is 16 numbers. (528 itself is not greater; 527 and 258 and so on are smaller.) <span class="ans">Answer: 16/24 = 2/3</span></p>
+    <p><b>ii</b> Divisible by 3: digit-sum must be a multiple of 3. The only triple whose digits add to a multiple of 3 is 2, 5, 8 (sum 15). The six permutations are 258, 285, 528, 582, 825, 852. <span class="ans">Answer: 6/24 = 1/4</span></p>
+    <p><b>iii</b> Divisible by 13: from the list, 572 = 13 × 44 and 728 = 13 × 56. Two numbers. <span class="ans">Answer: 2/24 = 1/12</span></p>
+    <p><b>iv</b> Prime: even numbers and those ending in 5 are not prime. Left to test: 257, 527, 275 already out, 287 = 7 × 41, 527 = 17 × 31, 577 not in the list. The primes on the list are 257, 587, 827 and 857. Four numbers. <span class="ans">Answer: 4/24 = 1/6</span></p>
+  </div>
+</div>
+
+<h2><span class="band">Challenge</span> Question 13 · printed p. 444</h2>
+<div class="q">
+  <p class="stem">A coin is tossed n times, where n &gt; 1.</p>
+  <div class="work">
+    <p>Each toss has 2 equally likely results, so |S| = 2<sup>n</sup>.</p>
+    <p><b>a</b> n heads: only one string, all heads. <span class="ans">Answer: 1 / 2<sup>n</sup></span></p>
+    <p><b>b</b> At least one head and at least one tail means “not all heads and not all tails”. P(all heads) = 1/2<sup>n</sup> and P(all tails) = 1/2<sup>n</sup>, and those two outcomes do not overlap. So P = 1 − 2/2<sup>n</sup> = 1 − 2<sup>1−n</sup>.</p>
+    <p class="ans">Answer: 1 − 2<sup>1−n</sup></p>
+  </div>
+</div>
+
+<p class="foot">Worked for class distribution. Question wording abbreviated from CambridgeMATHS NSW Stage 6 Mathematics Advanced Year 11, Exercise 12C (ISBN 978-1-009-65470-8). Finals match the publisher answers booklet. Do not photocopy or upload the commercial textbook PDF.</p>
+
+<script>
+function line(x1,y1,x2,y2){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1c2333" stroke-width="2"/>`;}
+function node(x,y,t,hi){
+  const fill = hi ? "#f5e6a3" : "#e8e4dc";
+  return `<circle cx="${x}" cy="${y}" r="13" fill="${fill}" stroke="#1c2333" stroke-width="2"/>
+    <text x="${x}" y="${y+5}" text-anchor="middle" font-size="13" font-weight="800">${t}</text>`;
+}
+function lab(x,y,t){return `<text x="${x}" y="${y}" text-anchor="middle" font-size="12" font-weight="700" fill="#5a6272">${t}</text>`;}
+function out(x,y,t){return `<text x="${x}" y="${y+5}" text-anchor="start" font-size="14" font-weight="800">${t}</text>`;}
+
+document.getElementById("q1a").innerHTML = `<svg class="tree" viewBox="0 0 480 210">
+  ${lab(50,14,"Start")}${lab(150,14,"1st")}${lab(280,14,"2nd")}${lab(390,14,"Outcome")}
+  ${line(50,110,150,55)}${line(50,110,150,165)}
+  ${line(150,55,280,35)}${line(150,55,280,75)}
+  ${line(150,165,280,145)}${line(150,165,280,185)}
+  ${node(50,110,"·")}${node(150,55,"H")}${node(150,165,"T")}
+  ${node(280,35,"H")}${node(280,75,"T")}${node(280,145,"H")}${node(280,185,"T")}
+  ${out(360,35,"HH")}${out(360,75,"HT")}${out(360,145,"TH")}${out(360,185,"TT")}
+</svg>
+<p class="ans">Answer: HH, HT, TH, TT</p>`;
+
+(function(){
+  let body="";
+  for(let d=1;d<=6;d++){
+    const yH=28+(d-1)*24, yT=28+6*24+(d-1)*24;
+    body += line(110,90,190,yH)+line(110,210,190,yT)+out(210,yH,"H"+d)+out(210,yT,"T"+d);
+  }
+  document.getElementById("q2a").innerHTML = `<svg class="tree" viewBox="0 0 340 340">
+    ${lab(40,14,"Start")}${lab(110,14,"Coin")}${lab(190,14,"Die")}${lab(270,14,"Outcome")}
+    ${line(40,150,110,90)}${line(40,150,110,210)}${body}
+    ${node(40,150,"·")}${node(110,90,"H")}${node(110,210,"T")}
+  </svg>
+  <p class="ans">Answer: H1, H2, H3, H4, H5, H6, T1, T2, T3, T4, T5, T6</p>`;
+})();
+
+document.getElementById("q3a").innerHTML = `<svg class="tree" viewBox="0 0 460 200">
+  ${lab(40,14,"Start")}${lab(130,14,"1st")}${lab(250,14,"2nd")}${lab(360,14,"Outcome")}
+  ${line(40,100,130,45)}${line(40,100,130,100)}${line(40,100,130,155)}
+  ${line(130,45,250,28)}${line(130,45,250,62)}
+  ${line(130,100,250,84)}${line(130,100,250,116)}
+  ${line(130,155,250,138)}${line(130,155,250,172)}
+  ${node(40,100,"·")}${node(130,45,"T")}${node(130,100,"O")}${node(130,155,"E")}
+  ${node(250,28,"O")}${node(250,62,"E")}${node(250,84,"T")}${node(250,116,"E")}${node(250,138,"T")}${node(250,172,"O")}
+  ${out(330,28,"TO")}${out(330,62,"TE")}${out(330,84,"OT")}${out(330,116,"OE")}${out(330,138,"ET")}${out(330,172,"EO")}
+</svg>`;
+
+(function(){
+  const digits=[2,3,8,9];
+  const pairs=["23","32","28","82","29","92","38","83","39","93","89","98"];
+  // Show as listed outcomes under a first-digit tree
+  let y=0, body="", outs=[];
+  digits.forEach((a,i)=>{
+    const y1=40+i*48;
+    body += line(50,120,130,y1)+node(130,y1,a);
+    const others=digits.filter(d=>d!==a);
+    others.forEach((b,j)=>{
+      const y2=y1-14+j*14;
+      body += line(130,y1,230,y2)+node(230,y2,b)+out(300,y2,""+a+b);
+    });
+  });
+  document.getElementById("q5a").innerHTML = `<svg class="tree" viewBox="0 0 420 240">
+    ${lab(50,14,"Start")}${lab(130,14,"1st")}${lab(230,14,"2nd")}${lab(330,14,"Outcome")}
+    ${line(50,120,50,120)}${node(50,120,"·")}${body}
+  </svg>
+  <p class="ans">Answer: 23, 32, 28, 82, 29, 92, 38, 83, 39, 93, 89, 98</p>`;
+})();
+
+document.getElementById("q6a").innerHTML = `<svg class="tree" viewBox="0 0 500 170">
+  ${lab(40,14,"Start")}${lab(140,14,"Captain")}${lab(280,14,"Vice")}${lab(390,14,"If A is captain")}
+  ${line(40,90,140,90)}${node(40,90,"·")}${node(140,90,"A")}
+  ${line(140,90,260,40)}${line(140,90,260,70)}${line(140,90,260,110)}${line(140,90,260,140)}
+  ${node(260,40,"B")}${node(260,70,"C")}${node(260,110,"D")}${node(260,140,"E")}
+  ${out(340,40,"AB")}${out(340,70,"AC")}${out(340,110,"AD")}${out(340,140,"AE")}
+</svg>
+<p>Repeat the same four vice-captain branches for captain B, C, D and E (20 outcomes in all).</p>`;
+
+(function(){
+  const outs=["HHH","HHT","HTH","HTT","THH","THT","TTH","TTT"];
+  const gap=32, yOut=outs.map((_,i)=>48+i*gap);
+  const y3=[48+0.5*gap,48+2.5*gap,48+4.5*gap,48+6.5*gap];
+  const y2H=(y3[0]+y3[1])/2, y2T=(y3[2]+y3[3])/2, yS=(y2H+y2T)/2;
+  const x0=50,x1=130,x2=220,x3=320,x4=400;
+  let e=line(x0,yS,x1,y2H)+line(x0,yS,x1,y2T);
+  e+=line(x1,y2H,x2,y3[0])+line(x1,y2H,x2,y3[1])+line(x1,y2T,x2,y3[2])+line(x1,y2T,x2,y3[3]);
+  for(let i=0;i<4;i++) e+=line(x2,y3[i],x3,yOut[2*i])+line(x2,y3[i],x3,yOut[2*i+1]);
+  let nd=node(x0,yS,"·")+node(x1,y2H,"H")+node(x1,y2T,"T");
+  y3.forEach((y,i)=> nd+=node(x2,y,i%2===0?"H":"T"));
+  yOut.forEach((y,i)=> nd+=node(x3,y,i%2===0?"H":"T")+out(x4,y,outs[i]));
+  const h=48+7*gap+28;
+  document.getElementById("q7tree").innerHTML = `<svg class="tree" viewBox="0 0 520 ${h}">
+    ${lab(x0,14,"Start")}${lab(x1,14,"1st")}${lab(x2,14,"2nd")}${lab(x3,14,"3rd")}${lab(x4+20,14,"Outcome")}
+    ${e}${nd}
+  </svg>`;
+})();
+
+(function(){
+  const ox=70, oy=250, gap=34;
+  let dots="", axis="";
+  for(let g=1;g<=6;g++){
+    for(let r=1;r<=6;r++){
+      const x=ox+(g-1)*gap, y=oy-(r-1)*gap;
+      dots += `<circle cx="${x}" cy="${y}" r="5" fill="#5a6272" stroke="#1c2333"/>`;
+    }
+  }
+  for(let k=1;k<=6;k++){
+    axis += `<text x="${ox+(k-1)*gap}" y="${oy+20}" text-anchor="middle" font-size="12" font-weight="700">${k}</text>`;
+    axis += `<text x="${ox-20}" y="${oy-(k-1)*gap+4}" text-anchor="middle" font-size="12" font-weight="700">${k}</text>`;
+  }
+  document.getElementById("q8graph").innerHTML = `<svg class="dots" viewBox="0 0 340 300">
+    <line x1="${ox-12}" y1="${oy}" x2="${ox+5*gap+20}" y2="${oy}" stroke="#1c2333" stroke-width="2"/>
+    <line x1="${ox}" y1="${oy+12}" x2="${ox}" y2="${oy-5*gap-20}" stroke="#1c2333" stroke-width="2"/>
+    <text x="${ox+2.5*gap}" y="290" text-anchor="middle" font-size="13" font-weight="800">Green die → (Gx)</text>
+    <text x="16" y="140" text-anchor="middle" font-size="13" font-weight="800" transform="rotate(-90 16 140)">Red die ↑ (Ry)</text>
+    ${axis}${dots}
+  </svg>
+  <p class="ans">The 36 outcomes are G1R1 … G6R6 (every pair of faces).</p>`;
+})();
+
+document.getElementById("q9a").innerHTML = `<svg class="tree" viewBox="0 0 480 200">
+  ${lab(50,14,"Start")}${lab(150,14,"1st")}${lab(280,14,"2nd")}${lab(390,14,"Outcome")}
+  ${line(50,105,150,50)}${line(50,105,150,160)}
+  ${line(150,50,280,32)}${line(150,50,280,70)}
+  ${line(150,160,280,140)}${line(150,160,280,178)}
+  ${node(50,105,"·")}${node(150,50,"B")}${node(150,160,"G")}
+  ${node(280,32,"B")}${node(280,70,"G")}${node(280,140,"B")}${node(280,178,"G")}
+  ${out(360,32,"BB")}${out(360,70,"BG")}${out(360,140,"GB")}${out(360,178,"GG")}
+</svg>`;
+
+document.getElementById("q12a").innerHTML = `<svg class="tree" viewBox="0 0 480 260">
+  ${lab(40,14,"Start")}${lab(120,14,"1st")}${lab(200,14,"2nd")}${lab(290,14,"3rd")}${lab(380,14,"If 1st is 2")}
+  ${line(40,140,120,140)}${node(40,140,"·")}${node(120,140,"2")}
+  ${line(120,140,200,50)}${line(120,140,200,140)}${line(120,140,200,230)}
+  ${node(200,50,"5")}${node(200,140,"7")}${node(200,230,"8")}
+  ${line(200,50,290,32)}${line(200,50,290,68)}
+  ${line(200,140,290,122)}${line(200,140,290,158)}
+  ${line(200,230,290,212)}${line(200,230,290,248)}
+  ${node(290,32,"7")}${node(290,68,"8")}${node(290,122,"5")}${node(290,158,"8")}${node(290,212,"5")}${node(290,248,"7")}
+  ${out(360,32,"257")}${out(360,68,"258")}${out(360,122,"275")}${out(360,158,"278")}${out(360,212,"285")}${out(360,248,"287")}
+</svg>
+<p>The same 6-leaf block repeats when the first digit is 5, 7 or 8. Total 4 × 6 = 24.</p>`;
+</script>
+</body>
+</html>
