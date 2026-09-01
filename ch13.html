@@ -37,6 +37,13 @@
   }
   header h1 { font-size: 15px; margin: 0; font-weight: 650; }
   header .meta { margin-left: auto; font-size: 12px; opacity: .85; }
+  header .nav-links { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  header .nav-links a, header .nav-links button {
+    font: inherit; font-size: 12px; font-weight: 700; color: #f6f0e6;
+    background: transparent; border: 1.5px solid #6a7384; border-radius: 6px;
+    padding: 4px 10px; text-decoration: none; cursor: pointer; white-space: nowrap;
+  }
+  header .nav-links a:hover, header .nav-links button:hover { border-color: var(--gold); color: var(--gold); }
   .progress { height: 4px; background: #3a4150; grid-column: 1 / -1; }
   .progress > span { display: block; height: 100%; background: var(--gold); width: 0; }
   aside.toc {
@@ -184,7 +191,11 @@
 <div class="app">
 <header>
   <h1 id="hdr-title">Year 11 Mathematics Advanced · Chapter 13 Data and probability</h1>
-  <div class="meta">NESA 2024 · Statistical analysis · 45 minutes per section · <a href="year-11-advanced-hub.html" style="color:#c9a227">All chapters</a></div>
+  <div class="meta">NESA 2024 · Statistical analysis · 45 minutes per section</div>
+  <nav class="nav-links">
+    <a href="index.html">Course map</a>
+    <button type="button" id="signout">Sign out</button>
+  </nav>
 </header>
 <div class="progress"><span id="bar"></span></div>
 <aside class="toc" id="toc">
@@ -200,6 +211,16 @@
 </footer>
 </div>
 <script>
+(function () {
+  if (location.protocol !== "file:" && sessionStorage.getItem("y11adv-auth") !== "ok") {
+    location.replace("index.html");
+  }
+  var so = document.getElementById("signout");
+  if (so) so.addEventListener("click", function () {
+    sessionStorage.removeItem("y11adv-auth");
+    location.href = "index.html";
+  });
+})();
 const LESSONS = {};
 const ORDER = ["13A","13B","13C","REV"];
 const META = {
