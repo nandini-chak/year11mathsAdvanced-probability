@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 3 Functions and graphs — Year 11 Mathematics Advanced</title>
+<style>
+  :root {
+    --ink: #1c2333;
+    --muted: #5a6272;
+    --paper: #f6f0e6;
+    --card: #fffdf8;
+    --line: #d9cfc0;
+    --brick: #a33b32;
+    --teal: #1e6b66;
+    --gold: #c9a227;
+    --rail: 300px;
+    --toc: 208px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: "Segoe UI", "Calibri", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  .app {
+    display: grid;
+    grid-template-columns: var(--toc) 1fr var(--rail);
+    grid-template-rows: auto auto 1fr auto;
+    height: 100%;
+  }
+  header {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 16px; background: var(--ink); color: #f6f0e6;
+  }
+  header h1 { font-size: 15px; margin: 0; font-weight: 650; }
+  header .meta { margin-left: auto; font-size: 12px; opacity: .85; }
+  header .nav-links { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  header .nav-links a, header .nav-links button {
+    font: inherit; font-size: 12px; font-weight: 700; color: #f6f0e6;
+    background: transparent; border: 1.5px solid #6a7384; border-radius: 6px;
+    padding: 4px 10px; text-decoration: none; cursor: pointer; white-space: nowrap;
+  }
+  header .nav-links a:hover, header .nav-links button:hover { border-color: var(--gold); color: var(--gold); }
+  .progress { height: 4px; background: #3a4150; grid-column: 1 / -1; }
+  .progress > span { display: block; height: 100%; background: var(--gold); width: 0; }
+  aside.toc {
+    background: #141820; color: #f3eadb; overflow: auto;
+    padding: 10px 8px 24px; border-right: 1px solid #000;
+  }
+  aside.toc h3 {
+    margin: 0 8px 10px; font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  aside.toc button {
+    display: block; width: 100%; text-align: left; font: inherit;
+    background: transparent; color: #e8dfcf; border: 0;
+    border-radius: 8px; padding: 8px 10px; margin: 0 0 4px;
+    cursor: pointer; line-height: 1.25;
+  }
+  aside.toc button:hover { background: #2a3142; }
+  aside.toc button.on { background: var(--gold); color: #1c2333; font-weight: 700; }
+  aside.toc button .code { display: block; font-weight: 800; font-size: 14px; }
+  aside.toc button .sub { display: block; font-size: 12px; opacity: .85; }
+  aside.toc button.on .sub { opacity: 1; }
+  main { overflow: auto; padding: 18px 22px 36px; }
+  .slide { display: none; max-width: 940px; }
+  .slide.on { display: block; }
+  .kicker {
+    color: var(--brick); font-size: 12px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; margin: 0 0 8px;
+  }
+  h2 { font-size: 28px; line-height: 1.15; margin: 0 0 12px; }
+  p, li { font-size: 20px; line-height: 1.45; }
+  .small { font-size: 15px; color: var(--muted); }
+  .cite {
+    display: inline-block; background: #efe4c8; color: #5a4310;
+    font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+    margin: 0 0 10px;
+  }
+  .box {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 16px; margin: 10px 0;
+  }
+  .say {
+    background: #e7f3f1; border-left: 6px solid var(--teal);
+    padding: 10px 14px; margin: 12px 0; font-size: 20px;
+  }
+  .warn {
+    background: #fdece9; border-left: 6px solid var(--brick);
+    padding: 10px 14px; margin: 12px 0;
+  }
+  button.reveal, button.nav { font: inherit; cursor: pointer; border-radius: 8px; }
+  button.reveal {
+    background: var(--teal); color: white; border: 0;
+    padding: 10px 16px; font-size: 16px; font-weight: 700;
+  }
+  .working { display: none; margin-top: 12px; }
+  .working.show { display: block; }
+  .steps { margin: 0; padding-left: 22px; }
+  .steps li { margin: 6px 0; }
+  .ans { font-weight: 800; color: var(--teal); }
+  .timechip {
+    display: inline-block; background: var(--ink); color: #f6f0e6;
+    font-size: 12px; padding: 3px 8px; border-radius: 99px; margin-right: 6px;
+  }
+  footer.bar {
+    grid-column: 1 / -1; display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-top: 1px solid var(--line); background: var(--card);
+  }
+  button.nav { background: var(--ink); color: #f6f0e6; border: 0; padding: 8px 14px; font-weight: 700; }
+  button.nav:disabled { opacity: .35; cursor: not-allowed; }
+  #counter { font-weight: 700; min-width: 90px; text-align: center; }
+  .hint { font-size: 13px; color: var(--muted); margin-left: auto; }
+  .curator { font-size: 11px; color: #9a9488; letter-spacing: .03em; white-space: nowrap; opacity: .75; }
+  aside.rail {
+    background: #1c2333; color: #f3eadb; overflow: auto;
+    padding: 12px 12px 24px; border-left: 1px solid #000;
+  }
+  aside.rail h3 {
+    margin: 0 0 8px; font-size: 13px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .fcard {
+    background: #2a3142; border-radius: 8px; padding: 8px 10px;
+    margin: 0 0 8px; font-size: 13.5px; line-height: 1.35; opacity: 0.72;
+  }
+  .fcard b { color: #fff; }
+  .fcard .sym { font-size: 16px; color: var(--gold); font-weight: 800; }
+  #formula-list [data-formula].formula-used {
+    opacity: 1; outline: 3px solid #c9a227; background: #3d3420;
+  }
+  #formula-list [data-formula].formula-used::before {
+    content: "Used on this page"; display: block; font-size: 11px;
+    font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #c9a227; margin-bottom: 4px;
+  }
+  svg.graph, svg.venn, svg.tree, svg.dots { max-width: 100%; width: 100%; height: auto; display: block; margin: 6px auto; }
+  svg.graph, svg.tree, svg.dots { max-width: 640px; background: #fffdf8; border: 1px solid var(--line); border-radius: 8px; }
+  .sockcase { display: flex; flex-direction: column; gap: 14px; margin: 12px 0; font-size: 17px; line-height: 1.45; }
+  .sockpanel { padding: 12px 14px; border-radius: 8px; border: 2px solid var(--line); }
+  .sockpanel.start { background: #f5f3ee; border-color: #1c2333; }
+  .sockpanel.bad { background: #fdece9; border-color: #a33b32; }
+  .sockpanel.good { background: #eef6f5; border-color: #1e6b66; }
+  .sockrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0 6px; }
+  .sockpair { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; background: #fffdf8; border: 1.5px solid #1c2333; border-radius: 8px; min-width: 68px; justify-content: center; }
+  .sockpair.bad { border-color: #a33b32; }
+  .sockpair.gone { border-color: #ccc; color: #aaa; font-weight: 800; font-size: 20px; }
+  .sockdot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #1c2333; display: inline-block; flex-shrink: 0; }
+  .sockmiss { color: #bbb; font-weight: 800; font-size: 22px; line-height: 1; }
+  .sockverdict { margin: 4px 0 0; font-weight: 800; font-size: 17px; }
+  .sockpanel.bad .sockverdict { color: #a33b32; }
+  .sockpanel.good .sockverdict { color: #1e6b66; }
+  .sockfinal { background: #a33b32; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 18px; }
+  .wplain p { margin: 8px 0; font-size: 18px; }
+  table.mini { border-collapse: collapse; width: 100%; font-size: 16px; }
+  table.mini th, table.mini td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; }
+  table.mini th { background: #efe7d8; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sheetgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sheetgrid .box { font-size: 16px; line-height: 1.4; }
+  .sheetgrid .box .sym { font-weight: 800; }
+  @media (max-width: 980px) { .sheetgrid { grid-template-columns: 1fr; } }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .qa {
+    display: grid; grid-template-columns: 1fr minmax(260px, 380px);
+    gap: 12px; align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 1fr var(--rail); }
+    aside.toc { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; max-height: none; padding: 8px; }
+    aside.toc h3 { width: 100%; margin-bottom: 4px; }
+    aside.toc button { width: auto; }
+  }
+  @media (max-width: 980px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: auto auto auto 1fr auto auto; }
+    aside.rail { max-height: 36vh; }
+    .two, .qa { grid-template-columns: 1fr; }
+    header .meta { display: none; }
+  }
+  @media print {
+    header, footer.bar, .progress, button.reveal { display: none !important; }
+    .app { display: block; height: auto; }
+    .slide { display: block !important; break-after: page; }
+    .working { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1 id="hdr-title">Year 11 Mathematics Advanced · Chapter 3 Functions and graphs</h1>
+  <div class="meta">NESA 2024 · Functions and graphs · 45 minutes per section</div>
+  <nav class="nav-links">
+    <a href="index.html">Course map</a>
+    <button type="button" id="signout">Sign out</button>
+  </nav>
+</header>
+<div class="progress"><span id="bar"></span></div>
+<aside class="toc" id="toc">
+  <h3>Choose a section</h3>
+</aside>
+<main id="deck"></main>
+<aside class="rail" id="formula-list"></aside>
+<footer class="bar">
+  <button class="nav" id="prev" type="button">← Back</button>
+  <span id="counter">1 / 1</span>
+  <button class="nav" id="next" type="button">Next →</button>
+  <span class="hint">Left panel picks a section · arrows change slides · F hides Formula List</span>
+  <span class="curator">Curated by Nandini C</span>
+</footer>
+</div>
+<script>
+(function () {
+  if (location.protocol !== "file:" && sessionStorage.getItem("y11adv-auth") !== "ok") {
+    location.replace("index.html");
+  }
+  var so = document.getElementById("signout");
+  if (so) so.addEventListener("click", function () {
+    sessionStorage.removeItem("y11adv-auth");
+    location.href = "index.html";
+  });
+})();
+const LESSONS = {};
+const ORDER = ["3A","3B","3C","3D","3E","3F","3G","3H","3I","REV"];
+const META = {
+  "3A": { code: "3A", sub: "Functions and function notation" },
+  "3B": { code: "3B", sub: "Functions, relations, and graphs" },
+  "3C": { code: "3C", sub: "Review of linear graphs" },
+  "3D": { code: "3D", sub: "Quadratics — factoring" },
+  "3E": { code: "3E", sub: "Completing the square" },
+  "3F": { code: "3F", sub: "Quadratic formulae" },
+  "3G": { code: "3G", sub: "Powers, cubics, and circles" },
+  "3H": { code: "3H", sub: "Graphs with asymptotes" },
+  "3I": { code: "3I", sub: "Direct and inverse variation" },
+  "REV": { code: "Review", sub: "Chapter Review Exercise" }
+};
+function formulaShell(cards, note) {
+  return `<h3>Formula List — keep this in view</h3>${cards}<p class="small" style="color:#c9b892;font-size:11px;line-height:1.35">${note}</p>`;
+}
+const FORMULAS = {
+  "3A": formulaShell(`
+  <div class="fcard" data-formula="rule"><b>Function is a rule</b><br>y is a function of x when the rule gives exactly one y for each allowed x.<br><span class="sym">input x → output y</span></div>
+  <div class="fcard" data-formula="fx"><b>Function notation</b><br><span class="sym">f(x) = …</span><br>Read “f of x”. Same idea as y = …</div>
+  <div class="fcard" data-formula="substitute"><b>Substitute</b><br>To find f(a), replace every x by a and simplify.</div>
+  <div class="fcard" data-formula="restrict"><b>Natural restriction</b><br>Cannot divide by 0. Cannot take the square root of a negative (in this course).</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3A, printed pp. 45–47."),
+  "3B": formulaShell(`
+  <div class="fcard" data-formula="vlt"><b>Vertical line test</b><br>If any vertical line meets the graph more than once, it is <b>not</b> a function.</div>
+  <div class="fcard" data-formula="domain-range"><b>Domain and range</b><br>Domain = allowed x-values.<br>Range = y-values that actually occur.</div>
+  <div class="fcard" data-formula="natural-domain"><b>Natural domain</b><br>All real x that keep the rule defined (no ÷0, no √negative).</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3B, printed pp. 53–55."),
+  "3C": formulaShell(`
+  <div class="fcard" data-formula="intercepts"><b>Intercepts</b><br>y-intercept: put x = 0.<br>x-intercept: put y = 0.<br>Plot both, then join with a ruler.</div>
+  <div class="fcard" data-formula="origin-line"><b>Through the origin</b><br>If both intercepts are 0, use a second point (e.g. x = 1) to sketch.</div>
+  <div class="fcard" data-formula="vert-horiz"><b>Horizontal / vertical</b><br>y = k is horizontal (a function).<br>x = k is vertical (not a function).</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3C, printed pp. 59–62."),
+  "3D": formulaShell(`
+  <div class="fcard" data-formula="concavity"><b>Concavity</b><br>If the x² coefficient is <b>+</b>, concave up ∪.<br>If <b>−</b>, concave down ∩.</div>
+  <div class="fcard" data-formula="factor-zeroes"><b>Zeroes from factors</b><br>y = (x − α)(x − β) crosses at x = α and x = β.<br>y-intercept: put x = 0.</div>
+  <div class="fcard" data-formula="axis-mid"><b>Axis from zeroes</b><br>Axis is midway: <span class="sym">x = (α + β) ÷ 2</span><br>Vertex: substitute that x back into y.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3D, printed pp. 65–69."),
+  "3E": formulaShell(`
+  <div class="fcard" data-formula="complete-sq"><b>Complete the square</b><br>x² + bx = (x + b/2)² − (b/2)².<br>Then add/subtract the constant term.</div>
+  <div class="fcard" data-formula="vertex-form"><b>Vertex form</b><br><span class="sym">y = a(x − h)² + k</span><br>Axis x = h. Vertex (h, k). Concavity from a.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3E, printed pp. 73–76."),
+  "3F": formulaShell(`
+  <div class="fcard" data-formula="axis-formula"><b>Axis formula</b><br><span class="sym">x = −b ÷ (2a)</span><br>Then y of the vertex = f(that x).</div>
+  <div class="fcard" data-formula="discriminant"><b>Discriminant</b><br><span class="sym">Δ = b² − 4ac</span><br>Δ &gt; 0 two x-intercepts; Δ = 0 one; Δ &lt; 0 none.</div>
+  <div class="fcard" data-formula="quad-formula"><b>Quadratic formula</b><br><span class="sym">x = (−b ± √Δ) ÷ (2a)</span></div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3F, printed pp. 78–82."),
+  "3G": formulaShell(`
+  <div class="fcard" data-formula="circle"><b>Circle centre O</b><br><span class="sym">x² + y² = r²</span><br>Centre (0, 0), radius r. Domain −r ≤ x ≤ r.</div>
+  <div class="fcard" data-formula="power"><b>y = xⁿ</b><br>Odd n: through (−1,−1), (0,0), (1,1); 180° symmetry.<br>Even n: through (−1,1), (0,0), (1,1); y-axis symmetry.</div>
+  <div class="fcard" data-formula="sqrt"><b>y = √x</b><br>Domain x ≥ 0. Top half of a sideways parabola.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3G, printed pp. 84–87."),
+  "3H": formulaShell(`
+  <div class="fcard" data-formula="hyperbola"><b>Hyperbola</b><br><span class="sym">y = k / x</span> (k ≠ 0)<br>Asymptotes x = 0 and y = 0. Domain x ≠ 0.</div>
+  <div class="fcard" data-formula="exponential"><b>Exponential</b><br><span class="sym">y = aˣ</span> (a &gt; 0, a ≠ 1)<br>Always through (0, 1). Range y &gt; 0.</div>
+  <div class="fcard" data-formula="asymptote"><b>Asymptote</b><br>A line the graph approaches but does not cross.<br>Hyperbola: both axes. Exponential: the x-axis (y = 0).</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3H, printed pp. 88–92."),
+  "3I": formulaShell(`
+  <div class="fcard" data-formula="direct"><b>Direct variation</b><br><span class="sym">y = kx</span><br>Double x → double y. Graph is a line through O.</div>
+  <div class="fcard" data-formula="inverse"><b>Inverse variation</b><br><span class="sym">y = k / x</span><br>Double x → y is halved. Graph is a hyperbola.</div>
+  <div class="fcard" data-formula="inverse-sq"><b>Inverse square</b><br><span class="sym">y = k / x²</span><br>Double x → y is divided by 4.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Exercise 3I, printed pp. 94–97."),
+  "REV": formulaShell(`
+  <div class="fcard" data-formula="fx"><b>f(x)</b><br>Substitute the given number or expression.</div>
+  <div class="fcard" data-formula="vlt"><b>Vertical line test</b><br>Two y-values for one x → not a function.</div>
+  <div class="fcard" data-formula="vertex-form"><b>Vertex / axis</b><br>From factors, completed square, or x = −b/(2a).</div>
+  <div class="fcard" data-formula="discriminant"><b>Δ = b² − 4ac</b><br>Tells how many x-intercepts.</div>
+  `, "CambridgeMATHS NSW Advanced Year 11, Chapter Review Exercise, printed pp. 98–101.")
+};
+let slides = [];
+function pack(key) {
+  LESSONS[key] = slides;
+  slides = [];
+}
+function leftover(dev, chal, extra) {
+  return `
+    <div class="cite">Independent work — question numbers only</div>
+    <p>Do these from the book. Do not copy extra question text here.</p>
+    <div class="box"><b>Development:</b> ${dev}</div>
+    <div class="box"><b>Challenge:</b> ${chal}</div>
+    ${extra || ""}
+    <div class="say">If you get stuck, the gold Formula List card is the method for that type.</div>`;
+}
+function leftoverF(found) {
+  return `
+    <div class="cite">Independent work — question numbers only</div>
+    <p>In class we modelled Development and Challenge. Do the leftover Foundation from the book.</p>
+    <div class="box"><b>Foundation:</b> ${found}</div>
+    <div class="say">Use the gold Formula List card. Sketch on graph paper; mark intercepts and the vertex.</div>`;
+}
+
+function xy(x, y, o) {
+  const ox = o.ox, oy = o.oy, s = o.s;
+  return { X: ox + x * s, Y: oy - y * s };
+}
+function axes(o) {
+  o = Object.assign({ w: 360, h: 280, ox: 180, oy: 150, s: 28, xmin: -6, xmax: 6, ymin: -5, ymax: 5 }, o || {});
+  const { w, h, ox, oy, s, xmin, xmax, ymin, ymax } = o;
+  let g = `<svg class="graph" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-label="${o.aria || "coordinate graph"}">`;
+  g += `<rect width="${w}" height="${h}" fill="#fffdf8"/>`;
+  for (let x = xmin; x <= xmax; x++) {
+    const X = ox + x * s;
+    g += `<line x1="${X}" y1="${oy - ymax * s}" x2="${X}" y2="${oy - ymin * s}" stroke="#eee6d6" stroke-width="1"/>`;
+  }
+  for (let y = ymin; y <= ymax; y++) {
+    const Y = oy - y * s;
+    g += `<line x1="${ox + xmin * s}" y1="${Y}" x2="${ox + xmax * s}" y2="${Y}" stroke="#eee6d6" stroke-width="1"/>`;
+  }
+  g += `<line x1="${ox + xmin * s}" y1="${oy}" x2="${ox + xmax * s}" y2="${oy}" stroke="#1c2333" stroke-width="1.6"/>`;
+  g += `<line x1="${ox}" y1="${oy - ymin * s}" x2="${ox}" y2="${oy - ymax * s}" stroke="#1c2333" stroke-width="1.6"/>`;
+  g += `<text x="${ox + xmax * s - 8}" y="${oy + 14}" font-size="12" fill="#1c2333">x</text>`;
+  g += `<text x="${ox + 6}" y="${oy - ymax * s + 12}" font-size="12" fill="#1c2333">y</text>`;
+  return { g, o, close: () => "</svg>" };
+}
+function dot(ax, x, y, label) {
+  const p = xy(x, y, ax.o);
+  let s = `<circle cx="${p.X}" cy="${p.Y}" r="3.5" fill="#a33b32"/>`;
+  if (label) s += `<text x="${p.X + 6}" y="${p.Y - 6}" font-size="11" fill="#1c2333">${label}</text>`;
+  return s;
+}
+function lineGraph(x1, y1, x2, y2, opts) {
+  const ax = axes(opts);
+  const a = xy(x1, y1, ax.o), b = xy(x2, y2, ax.o);
+  return ax.g + `<line x1="${a.X}" y1="${a.Y}" x2="${b.X}" y2="${b.Y}" stroke="#1e6b66" stroke-width="2.4"/>` +
+    (opts && opts.pts ? opts.pts.map(p => dot(ax, p[0], p[1], p[2])).join("") : "") + ax.close();
+}
+function parabola(a, h, k, opts) {
+  const ax = axes(opts);
+  const xmin = ax.o.xmin, xmax = ax.o.xmax;
+  let d = "";
+  for (let i = 0; i <= 80; i++) {
+    const x = xmin + (xmax - xmin) * i / 80;
+    const y = a * (x - h) * (x - h) + k;
+    if (y < ax.o.ymin - 1 || y > ax.o.ymax + 1) continue;
+    const p = xy(x, y, ax.o);
+    d += (d ? " L " : "M ") + p.X + " " + p.Y;
+  }
+  let extra = "";
+  if (opts && opts.pts) extra = opts.pts.map(p => dot(ax, p[0], p[1], p[2])).join("");
+  return ax.g + `<path d="${d}" fill="none" stroke="#1e6b66" stroke-width="2.2"/>` + extra + ax.close();
+}
+function circleGraph(r, opts) {
+  const ax = axes(Object.assign({ s: 36, xmin: -r - 1, xmax: r + 1, ymin: -r - 1, ymax: r + 1 }, opts || {}));
+  const c = xy(0, 0, ax.o);
+  return ax.g + `<circle cx="${c.X}" cy="${c.Y}" r="${r * ax.o.s}" fill="none" stroke="#1e6b66" stroke-width="2.2"/>` + ax.close();
+}
+function hyperbola(k, opts) {
+  const ax = axes(opts);
+  function branch(xs, xe) {
+    let d = "";
+    for (let i = 0; i <= 40; i++) {
+      const x = xs + (xe - xs) * i / 40;
+      if (Math.abs(x) < 0.08) continue;
+      const y = k / x;
+      if (y < ax.o.ymin - 1 || y > ax.o.ymax + 1) continue;
+      const p = xy(x, y, ax.o);
+      d += (d ? " L " : "M ") + p.X + " " + p.Y;
+    }
+    return `<path d="${d}" fill="none" stroke="#1e6b66" stroke-width="2.2"/>`;
+  }
+  return ax.g + branch(ax.o.xmin, -0.12) + branch(0.12, ax.o.xmax) +
+    `<line x1="${ax.o.ox}" y1="8" x2="${ax.o.ox}" y2="${ax.o.h - 8}" stroke="#c9a227" stroke-dasharray="4 3"/>` +
+    `<line x1="8" y1="${ax.o.oy}" x2="${ax.o.w - 8}" y2="${ax.o.oy}" stroke="#c9a227" stroke-dasharray="4 3"/>` +
+    ax.close();
+}
+function expGraph(base, opts) {
+  const ax = axes(Object.assign({ xmin: -3, xmax: 4, ymin: -1, ymax: 6, s: 36, ox: 140 }, opts || {}));
+  let d = "";
+  for (let i = 0; i <= 80; i++) {
+    const x = ax.o.xmin + (ax.o.xmax - ax.o.xmin) * i / 80;
+    const y = Math.pow(base, x);
+    if (y > ax.o.ymax + 0.5) continue;
+    const p = xy(x, y, ax.o);
+    d += (d ? " L " : "M ") + p.X + " " + p.Y;
+  }
+  return ax.g + `<path d="${d}" fill="none" stroke="#1e6b66" stroke-width="2.2"/>` +
+    `<line x1="8" y1="${ax.o.oy}" x2="${ax.o.w - 8}" y2="${ax.o.oy}" stroke="#c9a227" stroke-dasharray="4 3"/>` +
+    dot(ax, 0, 1, "(0,1)") + ax.close();
+}
+
+/* ===== _3_core_block.js ===== */
+/* Core Ch3 slides — finals from CMS6_Adv112ed_Ans.pdf printed pp. 512–525 */
+
+function sheet(ids, title, words, extra) {
+  slides.push({
+    used: ids,
+    kicker: "Formula sheet",
+    title: title,
+    html: `<div class="say">Three words this lesson: <b>${words}</b></div>
+      <p class="small">Every gold card on the right is used on this page. Keep the rail in view.</p>${extra || ""}`
+  });
+}
+
+/* ========== 3A ========== */
+slides.push({ used: "", kicker: "Lesson 1 of functions · 45 minutes", title: "Functions and function notation",
+  html: `<p>Year 11 Mathematics Advanced (NESA 2024 syllabus).</p>
+    <div class="box"><b>RULE</b> — one output for each allowed input.<br><b>INPUT</b> — the independent variable x.<br><b>OUTPUT</b> — f(x) or y.</div>
+    <p class="small">Textbook: CambridgeMATHS NSW Advanced Year 11, <b>Exercise 3A</b>, printed pages <b>45–47</b>.</p>` });
+sheet("rule,fx,substitute,restrict", "3A formula sheet", "RULE · INPUT · OUTPUT");
+
+slides.push({ used: "fx,substitute", kicker: "0–8 min · Foundation", title: "Exercise 3A Question 1",
+  html: `<div class="cite">FOUNDATION · Exercise 3A Q1a–d · printed p. 45</div>
+    <p>Let f(x) = 2x + 3. Calculate the following function values.</p>
+    <div class="stack">
+      ${["a|f(1)|2(1)+3 = 5|5","b|f(0)|2(0)+3 = 3|3","c|f(−2)|2(−2)+3 = −4+3 = −1|−1","d|f(4)|2(4)+3 = 11|11"].map((row,i)=>{
+        const [p,q,w,a]=row.split("|");
+        return `<div class="box"><p><b>${p}</b> ${q}</p>
+          <button class="reveal" type="button" data-w="a1${p}">Show working</button>
+          <div class="working" id="a1${p}"><div class="wplain"><p>Replace x by the given number: ${w}.</p><p class="ans">Answer: ${a}</p></div></div></div>`;
+      }).join("")}
+    </div>` });
+
+slides.push({ used: "fx,substitute", kicker: "Foundation", title: "Exercise 3A Question 2",
+  html: `<div class="cite">FOUNDATION · Exercise 3A Q2a–d · printed p. 45</div>
+    <p>Let p(x) = x² − 2x − 3. Determine the following.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> p(0)</p><button class="reveal" type="button" data-w="a2a">Show working</button>
+        <div class="working" id="a2a"><div class="wplain"><p>p(0) = 0 − 0 − 3 = −3.</p><p class="ans">Answer: −3</p></div></div></div>
+      <div class="box"><p><b>b</b> p(4)</p><button class="reveal" type="button" data-w="a2b">Show working</button>
+        <div class="working" id="a2b"><div class="wplain"><p>p(4) = 16 − 8 − 3 = 5.</p><p class="ans">Answer: 5</p></div></div></div>
+      <div class="box"><p><b>c</b> p(3)</p><button class="reveal" type="button" data-w="a2c">Show working</button>
+        <div class="working" id="a2c"><div class="wplain"><p>p(3) = 9 − 6 − 3 = 0.</p><p class="ans">Answer: 0</p></div></div></div>
+      <div class="box"><p><b>d</b> p(−2)</p><button class="reveal" type="button" data-w="a2d">Show working</button>
+        <div class="working" id="a2d"><div class="wplain"><p>p(−2) = 4 − 2(−2) − 3 = 4 + 4 − 3 = 5.</p><p class="ans">Answer: 5</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "fx,substitute", kicker: "10–22 min · Development", title: "Exercise 3A Question 7",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3A Q7a–d · printed p. 46</div>
+    <p>Copy and complete the table of values for each function.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> y = 2x + 1 &nbsp; x = −1, 0, 1</p>
+        <button class="reveal" type="button" data-w="a7a">Show working</button>
+        <div class="working" id="a7a"><div class="wplain"><p>y(−1)=−2+1=−1; y(0)=1; y(1)=3.</p><p class="ans">Answer: −1, 1, 3</p></div></div></div>
+      <div class="box"><p><b>b</b> y = x² − 2x &nbsp; x = −1, 0, 1, 2, 3</p>
+        <button class="reveal" type="button" data-w="a7b">Show working</button>
+        <div class="working" id="a7b"><div class="wplain"><p>1+2=3; 0; 1−2=−1; 4−4=0; 9−6=3.</p><p class="ans">Answer: 3, 0, −1, 0, 3</p></div></div></div>
+      <div class="box"><p><b>c</b> f(x) = 1 − x² &nbsp; x = −2, −1, 0, 1, 2</p>
+        <button class="reveal" type="button" data-w="a7c">Show working</button>
+        <div class="working" id="a7c"><div class="wplain"><p>1−4=−3; 1−1=0; 1; 0; −3.</p><p class="ans">Answer: −3, 0, 1, 0, −3</p></div></div></div>
+      <div class="box"><p><b>d</b> f(x) = x³ − 4x &nbsp; x = −3, −2, −1, 0, 1, 2, 3</p>
+        <button class="reveal" type="button" data-w="a7d">Show working</button>
+        <div class="working" id="a7d"><div class="wplain"><p>−27+12=−15; −8+8=0; −1+4=3; 0; 1−4=−3; 8−8=0; 27−12=15.</p><p class="ans">Answer: −15, 0, 3, 0, −3, 0, 15</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "fx,substitute", kicker: "Development", title: "Exercise 3A Questions 8–9",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3A Q8–Q9 · printed p. 46</div>
+    <div class="stack">
+      <div class="box"><p><b>Q8a</b> I think of a number, then subtract the square of that number from 6. Write the function rule.</p>
+        <button class="reveal" type="button" data-w="a8a">Show working</button>
+        <div class="working" id="a8a"><div class="wplain"><p>Start with 6, subtract x².</p><p class="ans">Answer: f(x) = 6 − x²</p></div></div></div>
+      <div class="box"><p><b>Q8b</b> Table for x = −2, −1, 0, 1, 2</p>
+        <button class="reveal" type="button" data-w="a8b">Show working</button>
+        <div class="working" id="a8b"><div class="wplain"><p>6−4=2; 6−1=5; 6; 5; 2.</p><p class="ans">Answer: 2, 5, 6, 5, 2</p></div></div></div>
+      <div class="box"><p><b>Q9</b> L(x) = 3x + 1. Find L(1)−2, 3L(−1), L(1)+L(2), L(9)÷L(2).</p>
+        <button class="reveal" type="button" data-w="a9">Show working</button>
+        <div class="working" id="a9"><div class="wplain">
+          <p>L(1)=4 so L(1)−2=2. L(−1)=−2 so 3L(−1)=−6. L(1)+L(2)=4+7=11. L(9)÷L(2)=28÷7=4.</p>
+          <p class="ans">Answer: 2; −6; 11; 4</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "fx,substitute", kicker: "Development", title: "Exercise 3A Questions 10–12",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3A Q10–Q12 · printed pp. 46–47</div>
+    <div class="stack">
+      <div class="box"><p><b>Q10</b> P(x)=x²−2x−4. Find P(√2) and P(√7).</p>
+        <button class="reveal" type="button" data-w="a10">Show working</button>
+        <div class="working" id="a10"><div class="wplain">
+          <p>P(√2)=2−2√2−4=−2−2√2. P(√7)=7−2√7−4=3−2√7.</p>
+          <p class="ans">Answer: −2 − 2√2 ; 3 − 2√7</p></div></div></div>
+      <div class="box"><p><b>Q12</b> A plumber charges $50 to visit plus $20 per tap. Write C in terms of x taps.</p>
+        <button class="reveal" type="button" data-w="a12">Show working</button>
+        <div class="working" id="a12"><div class="wplain"><p>Fixed 50 plus 20 for each tap.</p><p class="ans">Answer: C = 50 + 20x</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "restrict", kicker: "Development", title: "Exercise 3A Question 13",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3A Q13a–d · printed p. 47</div>
+    <p>Explain why each value is undefined.</p>
+    <div class="stack">
+      <div class="box"><p>Typical stems: square root of a negative, or division by zero.</p>
+        <button class="reveal" type="button" data-w="a13">Show working</button>
+        <div class="working" id="a13"><div class="wplain">
+          <p>a, b: the square root of a negative is undefined (in this course).</p>
+          <p>c, d: division by zero is undefined.</p>
+          <p class="ans">Answer: undefined (√negative or ÷0) — matches answers PDF</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "fx,substitute", kicker: "38–45 min · Challenge", title: "Exercise 3A Questions 16–17",
+  html: `<div class="cite">CHALLENGE · Exercise 3A Q16–Q17 · printed p. 47</div>
+    <div class="stack">
+      <div class="box"><p><b>Q16</b> Substitute the given surds (answers PDF).</p>
+        <button class="reveal" type="button" data-w="a16">Show working</button>
+        <div class="working" id="a16"><div class="wplain">
+          <p>After expanding and collecting like terms the booklet gives 0 and 2 − 4√3.</p>
+          <p class="ans">Answer: 0 ; 2 − 4√3</p></div></div></div>
+      <div class="box"><p><b>Q17</b> Difference quotients / substitutions: 7+h, p+q+5, 2x+h+5.</p>
+        <button class="reveal" type="button" data-w="a17">Show working</button>
+        <div class="working" id="a17"><div class="wplain">
+          <p>Expand f(x+h) or the given pair and simplify.</p>
+          <p class="ans">Answer: 7 + h ; p + q + 5 ; 2x + h + 5</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q3, Q4, Q5, Q6") + `<div class="box"><b>Also leftover Development:</b> Q11, Q14, Q15 (same substitute skill)</div>` });
+pack("3A");
+
+/* ========== 3B ========== */
+slides.push({ used: "", kicker: "Lesson 2 of functions · 45 minutes", title: "Functions, relations, and graphs",
+  html: `<p>A function is a special relation: each x has only one y.</p>
+    <div class="box"><b>VERTICAL</b> line test · <b>DOMAIN</b> (allowed x) · <b>RANGE</b> (y that occur)</div>
+    <p class="small">Exercise 3B · printed pp. <b>53–55</b>.</p>` });
+sheet("vlt,domain-range,natural-domain", "3B formula sheet", "VERTICAL · DOMAIN · RANGE");
+
+slides.push({ used: "vlt", kicker: "Foundation", title: "Exercise 3B Question 2",
+  html: `<div class="cite">FOUNDATION · Exercise 3B Q2 · printed p. 53</div>
+    <p>Use the vertical line test to find which of the following graphs represent functions. (Eight graphs a–h in the book.)</p>
+    <button class="reveal" type="button" data-w="b2">Show working</button>
+    <div class="working" id="b2"><div class="wplain">
+      <p>A graph is a function only if no vertical line hits it twice. The answers PDF lists the functions as a, c, f and h.</p>
+      <p class="ans">Answer: a, c, f, h</p></div></div>` });
+
+slides.push({ used: "natural-domain", kicker: "Foundation", title: "Exercise 3B Questions 5–6",
+  html: `<div class="cite">FOUNDATION · Exercise 3B Q5–Q6 · printed pp. 53–54</div>
+    <div class="stack">
+      <div class="box"><p><b>Q5</b> Natural domain (division by zero): 1/x, 1/(x−3), 1/(x+1), 1/(2+x)</p>
+        <button class="reveal" type="button" data-w="b5">Show working</button>
+        <div class="working" id="b5"><div class="wplain">
+          <p>Set the denominator ≠ 0.</p>
+          <p class="ans">Answer: x ≠ 0 ; x ≠ 3 ; x ≠ −1 ; x ≠ −2</p></div></div></div>
+      <div class="box"><p><b>Q6</b> Natural domain (square root): √x, √(x−2), √(x+3), √(5+x)</p>
+        <button class="reveal" type="button" data-w="b6">Show working</button>
+        <div class="working" id="b6"><div class="wplain">
+          <p>Inside the square root must be ≥ 0.</p>
+          <p class="ans">Answer: x ≥ 0 ; x ≥ 2 ; x ≥ −3 ; x ≥ −5</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "vlt,domain-range", kicker: "Development", title: "Exercise 3B Question 7",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3B Q7 · printed p. 54</div>
+    <p>Which of these relations are also functions? Explain.</p>
+    <button class="reveal" type="button" data-w="b7">Show working</button>
+    <div class="working" id="b7"><div class="wplain">
+      <p>a Function: each x has only one y (y = 2x).</p>
+      <p>b Function: each x has only one y (y = x²).</p>
+      <p>c Relation: x = 4 gives y = −2 or 2 (x = y²).</p>
+      <p>d Relation: x = 0 gives y = −5 or 5 (x² + y² = 25).</p>
+      <p class="ans">Answer: a and b are functions; c and d are not</p></div></div>` });
+
+slides.push({ used: "vlt", kicker: "Development", title: "Exercise 3B Question 8",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3B Q8 · printed p. 54</div>
+    <p>a Consider {(1,2),(2,3),(3,0),(4,2)}. Function or relation?</p>
+    <p>b Two dice — pairs that are not a function (answers PDF).</p>
+    <button class="reveal" type="button" data-w="b8">Show working</button>
+    <div class="working" id="b8"><div class="wplain">
+      <p>a Each first coordinate appears once, so it is a function.</p>
+      <p>b The set with two different y-values for the same x is a relation only. Booklet: {(1,2),(1,3),(2,1),(3,1)} is a relation.</p>
+      <p class="ans">Answer: a function; b relation (two y-values for x = 1)</p></div></div>` });
+
+slides.push({ used: "natural-domain", kicker: "Development", title: "Exercise 3B Question 10",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3B Q10 · printed p. 54</div>
+    <p>Write the natural domain of each function (book list).</p>
+    <button class="reveal" type="button" data-w="b10">Show working</button>
+    <div class="working" id="b10"><div class="wplain">
+      <p>Polynomials: all real x. Reciprocals: exclude zeros of the denominator. Square roots: inside ≥ 0.</p>
+      <p class="ans">Answer: a,b all real x; c x ≠ 4; d x ≠ 1/2; e x ≥ −4; f x ≥ −1/2; g x ≤ 5; h x ≤ 2; i x &gt; 0; j x &gt; −1; k x &lt; 1; l x &gt; 1½</p></div></div>` });
+
+slides.push({ used: "natural-domain", kicker: "Challenge", title: "Exercise 3B Question 16",
+  html: `<div class="cite">CHALLENGE · Exercise 3B Q16 · printed p. 55</div>
+    <p>Harder natural domains (two restrictions at once).</p>
+    <button class="reveal" type="button" data-w="b16">Show working</button>
+    <div class="working" id="b16"><div class="wplain">
+      <p>Combine “denominator ≠ 0” with “inside √ ≥ 0” as in the booklet.</p>
+      <p class="ans">Answer: a x &gt; −2; b x ≠ 2 and x ≠ −2; c x ≠ −1 and x ≠ 0; d x ≠ 2 and x ≠ 3; e x ≤ −2 or x ≥ 2; f −1 &lt; x &lt; 1</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q1, Q3, Q4") + `<div class="box"><b>Also leftover Development:</b> Q9, Q11–Q15 (same VLT / domain skills)</div>` });
+pack("3B");
+
+/* ========== 3C ========== */
+slides.push({ used: "", kicker: "Lesson 3 of functions · 45 minutes", title: "Review of linear graphs",
+  html: `<div class="box"><b>INTERCEPT</b> · <b>SKETCH</b> · <b>LINE</b></div>
+    <p class="small">Exercise 3C · printed pp. <b>59–62</b>.</p>` });
+sheet("intercepts,origin-line,vert-horiz", "3C formula sheet", "INTERCEPT · SKETCH · LINE");
+
+slides.push({ used: "intercepts", kicker: "Foundation", title: "Exercise 3C Question 1",
+  html: `<div class="cite">FOUNDATION · Exercise 3C Q1a–c · printed p. 59</div>
+    <p>Follow these steps for the linear function y = 2x − 2.</p>
+    <div class="stack">
+      <div class="box"><p><b>a</b> Find the y-intercept by putting x = 0.</p>
+        <button class="reveal" type="button" data-w="c1a">Show working</button>
+        <div class="working" id="c1a"><div class="wplain"><p>y = 0 − 2 = −2. Point (0, −2).</p><p class="ans">Answer: y = −2</p></div></div></div>
+      <div class="box"><p><b>b</b> Find the x-intercept by putting y = 0.</p>
+        <button class="reveal" type="button" data-w="c1b">Show working</button>
+        <div class="working" id="c1b"><div class="wplain"><p>0 = 2x − 2 so 2x = 2, x = 1. Point (1, 0).</p><p class="ans">Answer: x = 1</p></div></div></div>
+      <div class="box"><p><b>c</b> Plot these intercepts and sketch the line.</p>
+        <button class="reveal" type="button" data-w="c1c">Show working</button>
+        <div class="working" id="c1c"><div class="wplain">
+          ${typeof lineGraph==="function" ? lineGraph(-1,-4,3,4,{pts:[[0,-2,"(0,−2)"],[1,0,"(1,0)"]], aria:"y=2x-2"}) : ""}
+          <p class="ans">Answer: line through (0, −2) and (1, 0)</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "intercepts", kicker: "Foundation", title: "Exercise 3C Question 2",
+  html: `<div class="cite">FOUNDATION · Exercise 3C Q2a–c · printed p. 59</div>
+    <p>The straight line x + 2y − 4 = 0.</p>
+    <button class="reveal" type="button" data-w="c2">Show working</button>
+    <div class="working" id="c2"><div class="wplain">
+      <p>x = 0 → 2y = 4, y = 2. &nbsp; y = 0 → x = 4.</p>
+      ${(typeof lineGraph==="function" ? lineGraph(-1,2.5,5,-0.5,{pts:[[0,2,"(0,2)"],[4,0,"(4,0)"]],s:24,xmax:6}) : "")}
+      <p class="ans">Answer: y-intercept 2 ; x-intercept 4</p></div></div>` });
+
+slides.push({ used: "vert-horiz", kicker: "Foundation", title: "Exercise 3C Questions 7–8",
+  html: `<div class="cite">FOUNDATION · Exercise 3C Q7–Q8 · printed p. 60</div>
+    <p>Sketch x = 1, y = 2, x = −2, y = 0, 2y = −3, 3x = 5. Then say which are not functions.</p>
+    <button class="reveal" type="button" data-w="c8">Show working</button>
+    <div class="working" id="c8"><div class="wplain">
+      <p>Vertical lines fail the vertical line test: x = 1, x = −2, and 3x = 5 (x = 5/3).</p>
+      <p>Two points on x = 1: (1,0) and (1,1). On x = −2: (−2,0) and (−2,1). On 3x = 5: (5/3, 0) and (5/3, 1).</p>
+      <p class="ans">Answer: not functions: a, c, f</p></div></div>` });
+
+slides.push({ used: "intercepts", kicker: "Development", title: "Exercise 3C Question 9",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3C Q9d–i · printed p. 60</div>
+    <p>For parts d to i of Question 3, solve for y (write as a function of x).</p>
+    <button class="reveal" type="button" data-w="c9">Show working</button>
+    <div class="working" id="c9"><div class="wplain">
+      <p>d x + y − 1 = 0 → y = 1 − x</p>
+      <p>e 2x − y + 2 = 0 → y = 2x + 2</p>
+      <p>f x − 3y − 3 = 0 → y = (1/3)x − 1</p>
+      <p>g 2x − 3y − 12 = 0 → y = (2/3)x − 4</p>
+      <p>h x + 4y + 6 = 0 → y = −(1/4)x − 3/2</p>
+      <p>i 5x + 2y − 10 = 0 → y = −(5/2)x + 5</p>
+      <p class="ans">Answer: 1−x ; 2x+2 ; (1/3)x−1 ; (2/3)x−4 ; −(1/4)x−3/2 ; −(5/2)x+5</p></div></div>` });
+
+slides.push({ used: "origin-line", kicker: "Challenge", title: "Exercise 3C Question 15",
+  html: `<div class="cite">CHALLENGE · Exercise 3C Q15 · printed p. 62</div>
+    <p>Family of lines y = mx + 2 (book diagram). What do they share?</p>
+    <button class="reveal" type="button" data-w="c15">Show working</button>
+    <div class="working" id="c15"><div class="wplain">
+      <p>Changing m tilts the line. They all pass through (0, 2) — and the booklet also marks the common point (1, 2) on the drawn family in the answers PDF.</p>
+      <p class="ans">Answer: they meet at (1, 2) on the answers sketch (common y-intercept 2)</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q3, Q4, Q5, Q6") + `<div class="box"><b>Also leftover:</b> Development Q10–Q13; Challenge Q14</div>` });
+pack("3C");
+
+/* ========== 3D ========== */
+slides.push({ used: "", kicker: "Lesson 4 · 45 minutes", title: "Quadratic functions — factoring and the graph",
+  html: `<div class="box"><b>FACTOR</b> · <b>ZERO</b> · <b>VERTEX</b></div>
+    <p class="small">Exercise 3D · printed pp. <b>65–69</b>.</p>` });
+sheet("concavity,factor-zeroes,axis-mid", "3D formula sheet", "FACTOR · ZERO · VERTEX");
+
+slides.push({ used: "concavity,factor-zeroes,axis-mid", kicker: "Foundation", title: "Exercise 3D Question 1a",
+  html: `<div class="cite">FOUNDATION · Exercise 3D Q1a · printed p. 65</div>
+    <p>The parabola y = (x − 1)(x − 3) is concave up.</p>
+    <div class="stack">
+      <div class="box"><p>i Why concave up? &nbsp; ii y-intercept &nbsp; iii x-intercepts &nbsp; iv axis &nbsp; v vertex &nbsp; vii equal or distinct zeroes?</p>
+        <button class="reveal" type="button" data-w="d1a">Show working</button>
+        <div class="working" id="d1a"><div class="wplain">
+          <p>Expanded, the x² coefficient is +1, so concave up.</p>
+          <p>x = 0 → y = (−1)(−3) = 3.</p>
+          <p>y = 0 → x = 1 or x = 3.</p>
+          <p>Axis midway: x = 2. Vertex: y = (2−1)(2−3) = (1)(−1) = −1, so (2, −1).</p>
+          ${(typeof parabola==="function" ? parabola(1,2,-1,{pts:[[1,0,"(1,0)"],[3,0,"(3,0)"],[0,3,"(0,3)"],[2,-1,"(2,−1)"]]}) : "")}
+          <p class="ans">Answer: +x²; y = 3; x = 1, 3; x = 2; (2, −1); distinct zeroes</p></div></div></div>
+    </div>` });
+
+slides.push({ used: "concavity,factor-zeroes,axis-mid", kicker: "Foundation", title: "Exercise 3D Question 2a",
+  html: `<div class="cite">FOUNDATION · Exercise 3D Q2a · printed p. 65</div>
+    <p>y = −x(x − 2) is concave down.</p>
+    <button class="reveal" type="button" data-w="d2a">Show working</button>
+    <div class="working" id="d2a"><div class="wplain">
+      <p>x² coefficient is −1. y-intercept 0. Zeroes x = 0 and x = 2. Axis x = 1. Vertex y = −1(1−2) = 1, so (1, 1).</p>
+      ${(typeof parabola==="function" ? parabola(-1,1,1,{pts:[[0,0,"(0,0)"],[2,0,"(2,0)"],[1,1,"(1,1)"]]}) : "")}
+      <p class="ans">Answer: −x²; y = 0; x = 0, 2; x = 1; (1, 1); distinct zeroes</p></div></div>` });
+
+slides.push({ used: "factor-zeroes", kicker: "Development", title: "Exercise 3D Questions 5–6",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3D Q5–Q6 · printed p. 67</div>
+    <button class="reveal" type="button" data-w="d56">Show working</button>
+    <div class="working" id="d56"><div class="wplain">
+      <p>Q5 monic factorisations: (x−4)(x−6); x(x−3); (x+3)(x−5); (x+6)(x+1).</p>
+      <p>Q6: x(x−3); (x+2)(x−1); −(x+1)(x−3); −(x+2)(x+5).</p>
+      <p class="ans">Answer: as listed (matches answers PDF)</p></div></div>` });
+
+slides.push({ used: "factor-zeroes", kicker: "Development", title: "Exercise 3D Question 11",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3D Q11 · printed p. 68</div>
+    <p>Write each quadratic in factored form from the graph features in the book.</p>
+    <button class="reveal" type="button" data-w="d11">Show working</button>
+    <div class="working" id="d11"><div class="wplain">
+      <p class="ans">Answer: y = (x+1)(x−2) ; y = −(x+3)(x−2) ; y = 3(x+2)(x−4) ; y = −½(x−2)(x+2)</p></div></div>` });
+
+slides.push({ used: "factor-zeroes", kicker: "Challenge", title: "Exercise 3D Question 15",
+  html: `<div class="cite">CHALLENGE · Exercise 3D Q15 · printed p. 69</div>
+    <p>Same zeroes x = 2 and x = 8; different stretch / flip.</p>
+    <button class="reveal" type="button" data-w="d15">Show working</button>
+    <div class="working" id="d15"><div class="wplain">
+      <p class="ans">Answer: y = 3(x−2)(x−8) ; y = −(x−2)(x−8) ; y = (4/3)(x−2)(x−8) ; y = −(20/7)(x−2)(x−8)</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q1b, Q2b, Q3, Q4") + `<div class="box"><b>Also leftover Development:</b> Q7–Q10, Q12–Q13; Challenge Q14, Q16</div>` });
+pack("3D");
+
+/* ========== 3E ========== */
+slides.push({ used: "", kicker: "Lesson 5 · 45 minutes", title: "Completing the square and the graph",
+  html: `<div class="box"><b>SQUARE</b> · <b>VERTEX</b> · <b>SHIFT</b></div>
+    <p class="small">Exercise 3E · printed pp. <b>73–76</b>.</p>` });
+sheet("complete-sq,vertex-form", "3E formula sheet", "SQUARE · VERTEX · SHIFT");
+
+slides.push({ used: "vertex-form", kicker: "Foundation", title: "Exercise 3E Question 1a",
+  html: `<div class="cite">FOUNDATION · Exercise 3E Q1a · printed p. 73</div>
+    <p>y = (x − 2)² − 1.</p>
+    <button class="reveal" type="button" data-w="e1a">Show working</button>
+    <div class="working" id="e1a"><div class="wplain">
+      <p>a = 1, concave up. x = 0 → y = 4 − 1 = 3. Axis x = 2, vertex (2, −1). Vertex below the x-axis and concave up, so two x-intercepts: (x−2)² = 1, x = 3 or 1.</p>
+      ${(typeof parabola==="function" ? parabola(1,2,-1,{pts:[[2,-1,"V"],[1,0,""],[3,0,""],[0,3,""]]}) : "")}
+      <p class="ans">Answer: concave up; y = 3; x = 2, V(2, −1); x = 1, 3</p></div></div>` });
+
+slides.push({ used: "vertex-form", kicker: "Foundation", title: "Exercise 3E Question 2a",
+  html: `<div class="cite">FOUNDATION · Exercise 3E Q2a · printed p. 73</div>
+    <p>y = −(x − 1)² + 1.</p>
+    <button class="reveal" type="button" data-w="e2a">Show working</button>
+    <div class="working" id="e2a"><div class="wplain">
+      <p>a = −1, concave down. y-intercept 0. Axis x = 1, V(1, 1). Vertex above the axis → intercepts x = 0, 2.</p>
+      <p class="ans">Answer: a = −1; y = 0; x = 1, V(1, 1); x = 0, 2</p></div></div>` });
+
+slides.push({ used: "complete-sq", kicker: "Foundation / Development", title: "Exercise 3E Question 3",
+  html: `<div class="cite">FOUNDATION · Exercise 3E Q3a–f · printed p. 73</div>
+    <p>Complete the square in each monic quadratic.</p>
+    <button class="reveal" type="button" data-w="e3">Show working</button>
+    <div class="working" id="e3"><div class="wplain">
+      <p>x² − 4x + 5 = (x−2)² + 1</p>
+      <p>x² + 6x + 11 = (x+3)² + 2</p>
+      <p>x² − 2x + 8 = (x−1)² + 7</p>
+      <p>x² − 10x + 1 = (x−5)² − 24</p>
+      <p>x² + 2x − 5 = (x+1)² − 6</p>
+      <p>x² + 4x − 1 = (x+2)² − 5</p>
+      <p class="ans">Answer: (x−2)²+1 ; (x+3)²+2 ; (x−1)²+7 ; (x−5)²−24 ; (x+1)²−6 ; (x+2)²−5</p></div></div>` });
+
+slides.push({ used: "complete-sq,vertex-form", kicker: "Development", title: "Exercise 3E Question 5",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3E Q5 · printed p. 74</div>
+    <p>Complete the square, then sketch (book parts a–f).</p>
+    <button class="reveal" type="button" data-w="e5">Show working</button>
+    <div class="working" id="e5"><div class="wplain">
+      <p class="ans">Answer: (x−1)²−1 ; (x−2)²−1 ; (x−1)²−6 ; (x+1)²−2 ; (x+1)²+1 ; (x−3/2)² + 7/4</p></div></div>` });
+
+slides.push({ used: "vertex-form", kicker: "Challenge", title: "Exercise 3E Challenge (Q12–15)",
+  html: `<div class="cite">CHALLENGE · Exercise 3E Q12–Q15 · printed pp. 75–76</div>
+    <p>Non-monic completing the square and reading vertex form. Work from the book; finals must match the answers booklet.</p>
+    <div class="say">Class: complete one Challenge part fully on the board using Box 20. Students finish Q12–15 from the book.</div>
+    <p class="small">Leftover Challenge listed below — method is the same as Q3 and Q5.</p>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftover("Q6–Q11", "Q12–Q15", `<div class="box"><b>Foundation leftover:</b> Q1b, Q2b, Q4</div>`) });
+pack("3E");
+
+/* ========== 3F ========== */
+slides.push({ used: "", kicker: "Lesson 6 · 45 minutes", title: "The quadratic formulae and the graph",
+  html: `<div class="box"><b>AXIS</b> x = −b/(2a) · <b>DELTA</b> Δ = b²−4ac · <b>FORMULA</b></div>
+    <p class="small">Exercise 3F · printed pp. <b>78–82</b>.</p>` });
+sheet("axis-formula,discriminant,quad-formula", "3F formula sheet", "AXIS · DELTA · FORMULA");
+
+slides.push({ used: "axis-formula,discriminant,quad-formula", kicker: "Foundation", title: "Exercise 3F Question 1",
+  html: `<div class="cite">FOUNDATION · Exercise 3F Q1 · printed p. 78</div>
+    <p>Consider y = x² − 2x − 1.</p>
+    <button class="reveal" type="button" data-w="f1">Show working</button>
+    <div class="working" id="f1"><div class="wplain">
+      <p>a = 1, concave up. y-intercept −1. Axis x = −(−2)/(2) = 1. Vertex y = 1−2−1 = −2, so (1, −2).</p>
+      <p>Δ = 4 + 4 = 8 &gt; 0, so two x-intercepts: x = 1 ± √2 ≈ −0.41, 2.41.</p>
+      ${(typeof parabola==="function" ? parabola(1,1,-2,{pts:[[1,-2,"V"],[0,-1,""]]}) : "")}
+      <p class="ans">Answer: concave up; y = −1; x = 1; (1, −2); Δ = 8; x = 1 ± √2</p></div></div>` });
+
+slides.push({ used: "discriminant", kicker: "Foundation", title: "Exercise 3F Question 3",
+  html: `<div class="cite">FOUNDATION · Exercise 3F Q3 · printed p. 79</div>
+    <p>y = x² + 2x + 3 — no x-intercepts.</p>
+    <button class="reveal" type="button" data-w="f3">Show working</button>
+    <div class="working" id="f3"><div class="wplain">
+      <p>Concave up, y-int 3, axis x = −1, vertex (−1, 2). Δ = 4 − 12 = −8 &lt; 0, so no x-intercepts.</p>
+      <p class="ans">Answer: concave up; y = 3; x = −1; (−1, 2); Δ = −8; no x-intercepts</p></div></div>` });
+
+slides.push({ used: "quad-formula", kicker: "Development", title: "Exercise 3F Question 5",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3F Q5 · printed p. 79</div>
+    <p>Find the discriminant and the roots (book parts a–f).</p>
+    <button class="reveal" type="button" data-w="f5">Show working</button>
+    <div class="working" id="f5"><div class="wplain">
+      <p class="ans">Answer: −1±√3 ; 2±√3 ; ½(−3±√17) ; −1±√5 ; ⅓(1±√7) ; ½(−2±√6) (and the booklet decimals)</p></div></div>` });
+
+slides.push({ used: "discriminant", kicker: "Development", title: "Exercise 3F Question 9",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3F Q9 · printed p. 80</div>
+    <p>How many zeroes?</p>
+    <button class="reveal" type="button" data-w="f9">Show working</button>
+    <div class="working" id="f9"><div class="wplain">
+      <p class="ans">Answer: a Δ = 17, two zeroes; b Δ = 0, one zero; c Δ = −7, no zeroes</p></div></div>` });
+
+slides.push({ used: "quad-formula", kicker: "Challenge", title: "Exercise 3F Questions 11–12",
+  html: `<div class="cite">CHALLENGE · Exercise 3F Q11–Q12 · printed p. 81</div>
+    <button class="reveal" type="button" data-w="f11">Show working</button>
+    <div class="working" id="f11"><div class="wplain">
+      <p>Q11 exact roots: 3±2√2 ; 1±√5 ; (5±√10)/3.</p>
+      <p>Q12 factorisations using those roots: (x − 3 + √5)(x − 3 − √5), and the two further booklet forms.</p>
+      <p class="ans">Answer: matches answers PDF Q11–Q12</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q2, Q4") + `<div class="box"><b>Also leftover:</b> Development Q6–Q8, Q10; Challenge Q13–Q14</div>` });
+pack("3F");
+
+/* ========== 3G ========== */
+slides.push({ used: "", kicker: "Lesson 7 · 45 minutes", title: "Powers, cubics, and circles",
+  html: `<div class="box"><b>CIRCLE</b> · <b>POWER</b> · <b>ROOT</b></div>
+    <p class="small">Exercise 3G · printed pp. <b>84–87</b>.</p>` });
+sheet("circle,power,sqrt", "3G formula sheet", "CIRCLE · POWER · ROOT");
+
+slides.push({ used: "circle", kicker: "Foundation", title: "Exercise 3G Question 1",
+  html: `<div class="cite">FOUNDATION · Exercise 3G Q1a–d · printed p. 84</div>
+    <p>Centre and radius of each circle.</p>
+    <button class="reveal" type="button" data-w="g1">Show working</button>
+    <div class="working" id="g1"><div class="wplain">
+      <p>x² + y² = r² has centre (0,0) and radius r.</p>
+      <p class="ans">Answer: (0,0) with r = 4 ; 7 ; 1/3 ; 1.2</p></div></div>` });
+
+slides.push({ used: "circle", kicker: "Foundation", title: "Exercise 3G Question 2",
+  html: `<div class="cite">FOUNDATION · Exercise 3G Q2 · printed p. 84</div>
+    <p>Sketch and write domain and range.</p>
+    <button class="reveal" type="button" data-w="g2">Show working</button>
+    <div class="working" id="g2"><div class="wplain">
+      ${(typeof circleGraph==="function" ? circleGraph(1,{aria:"unit circle"}) : "")}
+      <p class="ans">Answer: a |x|≤1, |y|≤1; b |x|≤3, |y|≤3; c |x|≤½, |y|≤½; d |x|≤3/2, |y|≤3/2</p></div></div>` });
+
+slides.push({ used: "power", kicker: "Foundation", title: "Exercise 3G Question 3",
+  html: `<div class="cite">FOUNDATION · Exercise 3G Q3 · printed p. 84</div>
+    <p>Table for y = x³: x = −1.5, −1, −0.5, 0, 0.5, 1, 1.5</p>
+    <button class="reveal" type="button" data-w="g3">Show working</button>
+    <div class="working" id="g3"><div class="wplain">
+      <p class="ans">Answer: −3.375, −1, −0.125, 0, 0.125, 1, 3.375</p></div></div>` });
+
+slides.push({ used: "sqrt", kicker: "Foundation", title: "Exercise 3G Question 7",
+  html: `<div class="cite">FOUNDATION · Exercise 3G Q7 · printed p. 85</div>
+    <p>Table for y = √x: x = 0, 0.25, 1, 2.25, 4, 6.25</p>
+    <button class="reveal" type="button" data-w="g7">Show working</button>
+    <div class="working" id="g7"><div class="wplain">
+      <p class="ans">Answer: 0, 0.5, 1, 1.5, 2, 2.5</p></div></div>` });
+
+slides.push({ used: "circle", kicker: "Development", title: "Exercise 3G Question 9",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3G Q9 · printed p. 85</div>
+    <p>Write the circle equation from centre O and a given point / radius.</p>
+    <button class="reveal" type="button" data-w="g9">Show working</button>
+    <div class="working" id="g9"><div class="wplain">
+      <p class="ans">Answer: x²+y² = 4 ; 5 ; 25 ; 10</p></div></div>` });
+
+slides.push({ used: "power", kicker: "Challenge", title: "Exercise 3G Question 16",
+  html: `<div class="cite">CHALLENGE · Exercise 3G Q16 · printed p. 87</div>
+    <p>Factored cubics from the book graphs.</p>
+    <button class="reveal" type="button" data-w="g16">Show working</button>
+    <div class="working" id="g16"><div class="wplain">
+      <p class="ans">Answer: y = −(x+2)(x+1)(x−1) ; y = ½(x+1)(x−2)² ; y = ¼(x−2)³</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q4, Q8") + `<div class="box"><b>Technology demo (not written homework):</b> Q5, Q6</div>
+    <div class="box"><b>Also leftover:</b> Development Q10–Q15; Challenge Q17–Q18</div>` });
+pack("3G");
+
+/* ========== 3H ========== */
+slides.push({ used: "", kicker: "Lesson 8 · 45 minutes", title: "Two graphs that have asymptotes",
+  html: `<div class="box"><b>ASYMPTOTE</b> · <b>HYPERBOLA</b> · <b>GROW</b></div>
+    <p class="small">Exercise 3H · printed pp. <b>88–92</b>.</p>` });
+sheet("hyperbola,exponential,asymptote", "3H formula sheet", "ASYMPTOTE · HYPERBOLA · GROW");
+
+slides.push({ used: "hyperbola,asymptote", kicker: "Foundation", title: "Exercise 3H Question 1",
+  html: `<div class="cite">FOUNDATION · Exercise 3H Q1 · printed p. 88</div>
+    <p>Table and sketch of y = 2/x.</p>
+    <button class="reveal" type="button" data-w="h1">Show working</button>
+    <div class="working" id="h1"><div class="wplain">
+      <p>x: −4, −2, −1, −½, (0 skip), ½, 1, 2, 4 → y: −½, −1, −2, −4, *, 4, 2, 1, ½.</p>
+      ${(typeof hyperbola==="function" ? hyperbola(2,{aria:"y=2/x"}) : "")}
+      <p>Branches in the 1st and 3rd quadrants. Asymptotes x = 0 and y = 0. Domain x ≠ 0, range y ≠ 0.</p>
+      <p class="ans">Answer: −½, −1, −2, −4, 4, 2, 1, ½ ; 1st and 3rd quadrants ; x=0, y=0 ; x ≠ 0, y ≠ 0</p></div></div>` });
+
+slides.push({ used: "exponential,asymptote", kicker: "Foundation", title: "Exercise 3H Question 4",
+  html: `<div class="cite">FOUNDATION · Exercise 3H Q4 · printed p. 89</div>
+    <p>Exponential y = 3ˣ (table in the book).</p>
+    <button class="reveal" type="button" data-w="h4">Show working</button>
+    <div class="working" id="h4"><div class="wplain">
+      ${(typeof expGraph==="function" ? expGraph(3,{aria:"y=3^x"}) : "")}
+      <p>y-intercept (0, 1). Asymptote y = 0. Domain all real x, range y &gt; 0. At x = 1, y = the base 3.</p>
+      <p class="ans">Answer: (0,1) ; asymptote y = 0 ; all real x, y &gt; 0 ; y(1) = 3</p></div></div>` });
+
+slides.push({ used: "hyperbola", kicker: "Development", title: "Exercise 3H Question 7",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3H Q7 · printed p. 90</div>
+    <p>y = −k/x flips the hyperbola into quadrants 2 and 4.</p>
+    <button class="reveal" type="button" data-w="h7">Show working</button>
+    <div class="working" id="h7"><div class="wplain">
+      <p>The minus sign moves the branches to the 2nd and 4th quadrants. Domain still x ≠ 0, range y ≠ 0.</p>
+      <p class="ans">Answer: quadrants 2 and 4 ; domain x ≠ 0, range y ≠ 0</p></div></div>` });
+
+slides.push({ used: "exponential", kicker: "Challenge", title: "Exercise 3H Question 13",
+  html: `<div class="cite">CHALLENGE · Exercise 3H Q13 · printed p. 91</div>
+    <p>Link (½)ˣ and 2⁻ˣ.</p>
+    <button class="reveal" type="button" data-w="h13">Show working</button>
+    <div class="working" id="h13"><div class="wplain">
+      <p>(½)ˣ = (2⁻¹)ˣ = 2⁻ˣ, so the graphs are the same.</p>
+      <p class="ans">Answer: (½)ˣ = 2⁻ˣ</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q2, Q3, Q5, Q6") + `<div class="box"><b>Also leftover:</b> Development Q8–Q11; Challenge Q12, Q14, Q15</div>` });
+pack("3H");
+
+/* ========== 3I ========== */
+slides.push({ used: "", kicker: "Lesson 9 · 45 minutes", title: "Direct and inverse variation",
+  html: `<div class="box"><b>DIRECT</b> y = kx · <b>INVERSE</b> y = k/x · <b>k</b> from one pair</div>
+    <p class="small">Exercise 3I · printed pp. <b>94–97</b>.</p>` });
+sheet("direct,inverse,inverse-sq", "3I formula sheet", "DIRECT · INVERSE · K");
+
+slides.push({ used: "direct", kicker: "Foundation", title: "Exercise 3I Question 1",
+  html: `<div class="cite">FOUNDATION · Exercise 3I Q1 · printed p. 94</div>
+    <p>y varies directly with x.</p>
+    <button class="reveal" type="button" data-w="i1">Show working</button>
+    <div class="working" id="i1"><div class="wplain">
+      <p>y = kx. If y = 10 when x = 2, k = 5 so y = 5x. If y = −6 when x = 3, k = −2. If y = 6 when x = 4, k = 3/2.</p>
+      <p class="ans">Answer: y = kx ; y = 5x ; y = −2x ; y = (3/2)x</p></div></div>` });
+
+slides.push({ used: "inverse", kicker: "Foundation", title: "Exercise 3I Question 2",
+  html: `<div class="cite">FOUNDATION · Exercise 3I Q2 · printed p. 94</div>
+    <p>y is inversely proportional to x.</p>
+    <button class="reveal" type="button" data-w="i2">Show working</button>
+    <div class="working" id="i2"><div class="wplain">
+      <p>y = k/x. y=2, x=3 → k=6. y=½, x=−3 → k=−3/2. y=−2, x=4 → k=−8.</p>
+      <p class="ans">Answer: y = k/x ; y = 6/x ; y = −3/(2x) ; y = −8/x</p></div></div>` });
+
+slides.push({ used: "direct,inverse", kicker: "Foundation", title: "Exercise 3I Question 3",
+  html: `<div class="cite">FOUNDATION · Exercise 3I Q3 · printed p. 94</div>
+    <button class="reveal" type="button" data-w="i3">Show working</button>
+    <div class="working" id="i3"><div class="wplain">
+      <p>Direct: double x → double y; half x → half y.</p>
+      <p>Inverse: double x → y is halved; half x → y doubles.</p>
+      <p class="ans">Answer: doubles / halved ; halved / doubles</p></div></div>` });
+
+slides.push({ used: "inverse-sq", kicker: "Foundation", title: "Exercise 3I Question 4",
+  html: `<div class="cite">FOUNDATION · Exercise 3I Q4 · printed p. 94</div>
+    <p>y varies inversely with the square of x. y = 2 when x = 3.</p>
+    <button class="reveal" type="button" data-w="i4">Show working</button>
+    <div class="working" id="i4"><div class="wplain">
+      <p>y = k/x². 2 = k/9 so k = 18. When x = 6, y = 18/36 = 1/2. Double x → y is divided by 4; half x → y is quadrupled.</p>
+      <p class="ans">Answer: y = k/x² ; k = 18 ; y = 1/2 ; ÷4 ; ×4</p></div></div>` });
+
+slides.push({ used: "direct", kicker: "Foundation", title: "Exercise 3I Questions 5–6",
+  html: `<div class="cite">FOUNDATION · Exercise 3I Q5–Q6 · printed p. 94</div>
+    <button class="reveal" type="button" data-w="i56">Show working</button>
+    <div class="working" id="i56"><div class="wplain">
+      <p>Q5: A = kh. 12 = k·3 so k = 4 (units cm — half-base in A = ½bh).</p>
+      <p>Q6: m = ks. 0.38 = k·9.12 so k = 1/24. Height 3.48/24 = 0.145 m. Wingspan: 0.468 × 24 = 11.232 m.</p>
+      <p class="ans">Answer: A = kh, k = 4 cm; k = 1/24; 0.145 m; 11.232 m</p></div></div>` });
+
+slides.push({ used: "direct,inverse", kicker: "Development", title: "Exercise 3I Question 9",
+  html: `<div class="cite">DEVELOPMENT · Exercise 3I Q9 · printed p. 96</div>
+    <button class="reveal" type="button" data-w="i9">Show working</button>
+    <div class="working" id="i9"><div class="wplain">
+      <p>a V = kT with k = 2/273, so V = 2×298/273 ≈ 2.18 m³.</p>
+      <p>b P = k/V with k = 22.4, so P = 22.4/30 ≈ 0.75 atmospheres.</p>
+      <p class="ans">Answer: V ≈ 2.18 m³ ; P ≈ 0.75 atm</p></div></div>` });
+
+slides.push({ used: "direct", kicker: "Challenge", title: "Exercise 3I Question 16",
+  html: `<div class="cite">CHALLENGE · Exercise 3I Q16 · printed p. 97</div>
+    <p>Rectangle of area 48 m² (book constraints) — possible sides.</p>
+    <button class="reveal" type="button" data-w="i16">Show working</button>
+    <div class="working" id="i16"><div class="wplain">
+      <p class="ans">Answer: 4 m × 12 m or 6 m × 8 m</p></div></div>` });
+
+slides.push({ used: "", kicker: "Wrap-up", title: "Independent work from the book",
+  html: leftoverF("Q7, Q8") + `<div class="box"><b>Also leftover:</b> Development Q10–Q15</div>` });
+pack("3I");
+
+/* ========== REV ========== */
+slides.push({ used: "", kicker: "Chapter review", title: "Chapter 3 Review Exercise",
+  html: `<p>Mixed items from 3A–3I. Printed pp. <b>98–101</b>.</p>
+    <div class="say">Use the left panel if you need a worked model from a section.</div>` });
+sheet("fx,vlt,vertex-form,discriminant", "Review formula sheet", "FUNCTION · GRAPH · VERTEX");
+
+slides.push({ used: "vlt", kicker: "Review", title: "Review Questions 1–2",
+  html: `<div class="cite">Chapter Review Q1–Q2 · printed p. 98</div>
+    <p>Which graphs are functions? Then write domain and range of each.</p>
+    <button class="reveal" type="button" data-w="r12">Show working</button>
+    <div class="working" id="r12"><div class="wplain">
+      <p>Q1: a not a function; b function; c function; d not a function.</p>
+      <p>Q2: a −2≤x≤0, −2≤y≤2; b all real x, all real y; c x≠0, y≠0; d x=2, all real y.</p>
+      <p class="ans">Answer: as above (answers PDF printed p. 524)</p></div></div>` });
+
+slides.push({ used: "fx", kicker: "Review", title: "Review Questions 3–5",
+  html: `<div class="cite">Chapter Review Q3–Q5 · printed p. 98</div>
+    <button class="reveal" type="button" data-w="r345">Show working</button>
+    <div class="working" id="r345"><div class="wplain">
+      <p>Q3: f(3)=21, f(−2)=−4 ; and 5, −15.</p>
+      <p>Q4 domains: x≠2 ; x≥1 ; x≥−2/3 ; x&lt;2.</p>
+      <p>Q5: 2a+2 and 2a+1 ; a²−3a−8 and a²−5a−3.</p>
+      <p class="ans">Answer: matches answers PDF</p></div></div>` });
+
+slides.push({ used: "vertex-form", kicker: "Review", title: "Review Question 9a",
+  html: `<div class="cite">Chapter Review Q9a · printed p. 98</div>
+    <p>f(x) = 16 − x². Zeroes, vertex, domain and range.</p>
+    <button class="reveal" type="button" data-w="r9a">Show working</button>
+    <div class="working" id="r9a"><div class="wplain">
+      <p>16 − x² = (4−x)(4+x). Zeroes ±4. Vertex (0, 16). Domain all real x, range y ≤ 16.</p>
+      ${(typeof parabola==="function" ? parabola(-1,0,16,{ymin:-2,ymax:18,s:12,oy:200,h:260,pts:[[0,16,"(0,16)"],[4,0,""],[-4,0,""]]}) : "")}
+      <p class="ans">Answer: domain all real x, range y ≤ 16</p></div></div>` });
+
+slides.push({ used: "direct", kicker: "Review", title: "Review Question 18",
+  html: `<div class="cite">Chapter Review Q18 · printed p. 101</div>
+    <p>Direct variation (spring / mass style in the book).</p>
+    <button class="reveal" type="button" data-w="r18">Show working</button>
+    <div class="working" id="r18"><div class="wplain">
+      <p>x = km with k = 2/3 cm per kg. Then x = 3 cm for the given mass, and x doubles when m doubles.</p>
+      <p class="ans">Answer: x = km ; k = 2/3 cm/kg ; x = 3 cm ; x doubles</p></div></div>` });
+
+slides.push({ used: "", kicker: "Independent", title: "Chapter Review — numbers only",
+  html: `<div class="cite">Chapter Review Exercise · printed pp. 98–101</div>
+    <p>In class we modelled Q1–5, Q9a and Q18.</p>
+    <div class="box"><b>Your turn:</b> Q6, Q7, Q8, Q9b–f, Q10–Q17, Q19, Q20</div>` });
+pack("REV");
+const deck = document.getElementById("deck");
+const toc = document.getElementById("toc");
+const bar = document.getElementById("bar");
+const counter = document.getElementById("counter");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+let currentKey = "3A";
+let i = 0;
+let all = [];
+
+function syncFormulas(slideEl) {
+  if (!slideEl) return;
+  const used = (slideEl.getAttribute("data-used-formulas") || "")
+    .split(",").map((s) => s.trim()).filter(Boolean);
+  document.querySelectorAll("#formula-list [data-formula]").forEach((card) => {
+    card.classList.toggle("formula-used", used.includes(card.getAttribute("data-formula")));
+  });
+}
+function go(n) {
+  if (!all.length) return;
+  i = Math.max(0, Math.min(all.length - 1, n));
+  all.forEach((el, k) => el.classList.toggle("on", k === i));
+  counter.textContent = (i + 1) + " / " + all.length;
+  bar.style.width = ((i + 1) / all.length * 100) + "%";
+  prev.disabled = i === 0;
+  next.disabled = i === all.length - 1;
+  syncFormulas(all[i]);
+  document.querySelector("main").scrollTop = 0;
+}
+function loadLesson(key) {
+  currentKey = key;
+  if (location.hash.slice(1) !== key) location.hash = key;
+  const meta = META[key];
+  document.getElementById("hdr-title").textContent =
+    "Year 11 Mathematics Advanced · " + meta.code + " " + meta.sub;
+  document.getElementById("formula-list").innerHTML = FORMULAS[key];
+  toc.querySelectorAll("button[data-key]").forEach((b) => {
+    b.classList.toggle("on", b.dataset.key === key);
+  });
+  deck.innerHTML = "";
+  (LESSONS[key] || []).forEach((s, idx) => {
+    const el = document.createElement("section");
+    el.className = "slide" + (idx === 0 ? " on" : "");
+    el.setAttribute("data-used-formulas", s.used || "");
+    el.innerHTML = `<p class="kicker">${s.kicker}</p><h2>${s.title}</h2>${s.html}`;
+    deck.appendChild(el);
+  });
+  all = [...deck.querySelectorAll(".slide")];
+  go(0);
+}
+ORDER.forEach((key) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.key = key;
+  b.innerHTML = `<span class="code">${META[key].code}</span><span class="sub">${META[key].sub}</span>`;
+  b.onclick = () => loadLesson(key);
+  toc.appendChild(b);
+});
+prev.onclick = () => go(i - 1);
+next.onclick = () => go(i + 1);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); go(i + 1); }
+  if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
+  if (e.key === "Home") go(0);
+  if (e.key === "End") go(all.length - 1);
+  if (e.key === "f" || e.key === "F") {
+    const r = document.getElementById("formula-list");
+    r.style.display = r.style.display === "none" ? "" : "none";
+  }
+});
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("button.reveal");
+  if (!b) return;
+  const panel = document.getElementById(b.dataset.w);
+  if (!panel) return;
+  panel.classList.toggle("show");
+  b.textContent = panel.classList.contains("show") ? "Hide working" : "Show working";
+});
+window.addEventListener("hashchange", () => {
+  const k = location.hash.slice(1);
+  if (ORDER.includes(k) && k !== currentKey) loadLesson(k);
+});
+loadLesson((ORDER.includes((location.hash || "").slice(1)) ? location.hash.slice(1) : "3A"));
+
+</script>
+</body>
+</html>

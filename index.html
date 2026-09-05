@@ -183,7 +183,7 @@
   .intro p { margin: 0; font-size: 17px; color: var(--muted); max-width: 640px; line-height: 1.45; }
   .chapters {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
   }
   .chapter {
@@ -255,6 +255,7 @@
     <h1>Year 11 Mathematics Advanced</h1>
     <p>Portable teaching lessons from CambridgeMATHS NSW Advanced Year 11. Sign in to open the course map.</p>
     <ul class="brand-path">
+      <li><strong>Chapter 3</strong> — Functions and graphs (3A–3I + Review)</li>
       <li><strong>Chapter 12</strong> — Probability (12A–12G + Review)</li>
       <li><strong>Chapter 13</strong> — Data and probability (13A–13C + Review)</li>
     </ul>
@@ -284,10 +285,28 @@
   <div class="wrap">
     <div class="intro">
       <p class="kicker">Course map · 45-minute lessons</p>
-      <h2>Statistical analysis</h2>
-      <p>Work Chapter 12 first (sets through conditional probability), then Chapter 13 (frequency, ogives, grouped data). Each lesson has a formula list on every slide. Leftover Development and Challenge numbers are listed at the end of a section.</p>
+      <h2>Year 11 Mathematics Advanced</h2>
+      <p>Start with Chapter 3 (functions and graphs), then Chapter 12 (probability), then Chapter 13 (data). Each lesson has a formula list on every slide. Leftover exercise numbers are listed at the end of a section.</p>
     </div>
     <div class="chapters">
+      <article class="chapter">
+        <span class="num">Chapter 3</span>
+        <h3>Functions and graphs</h3>
+        <p class="blurb">Function notation, domain and range, lines, quadratics (three methods), circles and powers, asymptotes, and variation.</p>
+        <ol>
+          <li>3A Functions and function notation</li>
+          <li>3B Functions, relations, and graphs</li>
+          <li>3C Review of linear graphs</li>
+          <li>3D Quadratics — factoring</li>
+          <li>3E Completing the square</li>
+          <li>3F Quadratic formulae</li>
+          <li>3G Powers, cubics, and circles</li>
+          <li>3H Graphs with asymptotes</li>
+          <li>3I Direct and inverse variation</li>
+          <li>Chapter review</li>
+        </ol>
+        <a class="btn btn-open go" href="ch3.html">Open Chapter 3 lesson</a>
+      </article>
       <article class="chapter">
         <span class="num">Chapter 12</span>
         <h3>Probability</h3>
@@ -319,7 +338,7 @@
     </div>
     <p class="foot">
       CambridgeMATHS NSW Advanced Year 11 — exercise numbers cited from the textbook; commercial PDF not included.<br>
-      Open a lesson, then use the left panel to pick a section (12A, 12B, … or 13A, 13B, …).
+      Open a lesson, then use the left panel to pick a section (3A, 3B, … or 12A, … or 13A, …).
     </p>
   </div>
 </div>
