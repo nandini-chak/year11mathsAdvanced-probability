@@ -187,6 +187,48 @@
     .working { display: block !important; }
   }
 </style>
+
+<style>
+  :root { --rail: 380px; --toc: 236px; }
+  header { padding: 10px 18px; gap: 14px; }
+  header h1 { font-size: 22px; }
+  header .meta { font-size: 16px; }
+  header .nav-links a, header .nav-links button { font-size: 16px; padding: 6px 12px; }
+  aside.toc { padding: 12px 10px 28px; }
+  aside.toc h3 { font-size: 14px; }
+  aside.toc button { padding: 10px 12px; }
+  aside.toc button .code { font-size: 18px; }
+  aside.toc button .sub { font-size: 15px; }
+  main { padding: 22px 28px 48px; }
+  .slide { max-width: 1180px; }
+  .kicker { font-size: 18px; margin: 0 0 10px; }
+  h2 { font-size: 42px; line-height: 1.12; margin: 0 0 16px; }
+  p, li { font-size: 30px; line-height: 1.4; }
+  .small { font-size: 22px; }
+  .cite { font-size: 18px; padding: 5px 10px; margin: 0 0 14px; }
+  .box { padding: 16px 18px; margin: 14px 0; }
+  .say { font-size: 30px; padding: 14px 18px; margin: 16px 0; }
+  .warn { font-size: 28px; }
+  button.reveal { padding: 14px 22px; font-size: 22px; }
+  .wplain p { font-size: 28px; margin: 10px 0; }
+  table.mini { font-size: 22px; }
+  table.mini th, table.mini td { padding: 10px 12px; }
+  .sheetgrid { gap: 14px; }
+  .sheetgrid .box { font-size: 24px; line-height: 1.4; }
+  footer.bar { padding: 10px 18px; gap: 12px; }
+  button.nav { padding: 12px 20px; font-size: 18px; }
+  #counter { font-size: 18px; min-width: 110px; }
+  .hint { font-size: 16px; }
+  .curator { font-size: 13px; }
+  aside.rail { padding: 14px 14px 28px; }
+  aside.rail h3 { font-size: 16px; }
+  .fcard { font-size: 18px; line-height: 1.4; padding: 12px 12px; margin: 0 0 12px; }
+  .fcard .sym { font-size: 22px; }
+  #formula-list [data-formula].formula-used::before { font-size: 13px; }
+  aside.rail .small { font-size: 16px !important; line-height: 1.4 !important; }
+  .timechip { font-size: 16px; padding: 4px 10px; }
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -238,7 +280,7 @@ const META = {
   "REV": { code: "Review", sub: "Chapter Review Exercise" }
 };
 function formulaShell(cards, note) {
-  return `<h3>Formula List — keep this in view</h3>${cards}<p class="small" style="color:#c9b892;font-size:11px;line-height:1.35">${note}</p>`;
+  return `<h3>Formula List — keep this in view</h3>${cards}<p class="small" style="color:#c9b892">${note}</p>`;
 }
 const FORMULAS = {
   "3A": formulaShell(`
@@ -334,14 +376,14 @@ function axes(o) {
   }
   g += `<line x1="${ox + xmin * s}" y1="${oy}" x2="${ox + xmax * s}" y2="${oy}" stroke="#1c2333" stroke-width="1.6"/>`;
   g += `<line x1="${ox}" y1="${oy - ymin * s}" x2="${ox}" y2="${oy - ymax * s}" stroke="#1c2333" stroke-width="1.6"/>`;
-  g += `<text x="${ox + xmax * s - 8}" y="${oy + 14}" font-size="12" fill="#1c2333">x</text>`;
-  g += `<text x="${ox + 6}" y="${oy - ymax * s + 12}" font-size="12" fill="#1c2333">y</text>`;
+  g += `<text x="${ox + xmax * s - 8}" y="${oy + 16}" font-size="16" fill="#1c2333">x</text>`;
+  g += `<text x="${ox + 6}" y="${oy - ymax * s + 16}" font-size="16" fill="#1c2333">y</text>`;
   return { g, o, close: () => "</svg>" };
 }
 function dot(ax, x, y, label) {
   const p = xy(x, y, ax.o);
   let s = `<circle cx="${p.X}" cy="${p.Y}" r="3.5" fill="#a33b32"/>`;
-  if (label) s += `<text x="${p.X + 6}" y="${p.Y - 6}" font-size="11" fill="#1c2333">${label}</text>`;
+  if (label) s += `<text x="${p.X + 6}" y="${p.Y - 6}" font-size="14" fill="#1c2333">${label}</text>`;
   return s;
 }
 function lineGraph(x1, y1, x2, y2, opts) {
@@ -3210,7 +3252,21 @@ slides.push({
     <button class="reveal" type="button" data-w="g17">Show working</button>
     <div class="working" id="g17"><div class="wplain">
       <p>Top half y = √x and bottom half y = −√x join into one sideways parabola.</p>
-      ${curveGraph((x) => (x >= 0 ? Math.sqrt(x) : NaN), { xmin: -1, xmax: 6, ymin: -3, ymax: 3, s: 32, ox: 80, oy: 140 })}
+      ${(() => {
+        const ax = axes({ xmin: -1, xmax: 6, ymin: -3, ymax: 3, s: 32, ox: 80, oy: 140 });
+        function path(fn) {
+          let d = "", pen = false;
+          for (let i = 0; i <= 80; i++) {
+            const x = i / 80 * 6;
+            const y = fn(x);
+            const p = xy(x, y, ax.o);
+            d += (pen ? " L " : "M ") + p.X + " " + p.Y;
+            pen = true;
+          }
+          return `<path d="${d}" fill="none" stroke="#1e6b66" stroke-width="2.2"/>`;
+        }
+        return ax.g + path((x) => Math.sqrt(x)) + path((x) => -Math.sqrt(x)) + ax.close();
+      })()}
       <p>Squaring either equation gives x = y². That is y = x² with x and y swapped, so the parabola opens to the right.</p>
       <p class="ans">Answer: It is a concave-right parabola. In both cases, squaring gives x = y². This is the result of swapping x and y in y = x².</p>
     </div></div>`
@@ -3881,7 +3937,7 @@ slides.push({
 });
 
 slides.push({
-  used: "vlt,domain-range",
+  used: "vlt",
   kicker: "Review",
   title: "Review Question 1",
   html: `
@@ -3920,7 +3976,7 @@ slides.push({
 });
 
 slides.push({
-  used: "vlt,domain-range",
+  used: "vlt",
   kicker: "Review",
   title: "Review Question 2",
   html: `
@@ -4036,7 +4092,7 @@ slides.push({
 });
 
 slides.push({
-  used: "direct",
+  used: "fx",
   kicker: "Review",
   title: "Review Question 18",
   html: `
